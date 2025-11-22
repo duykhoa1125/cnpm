@@ -1,0 +1,1709 @@
+<!DOCTYPE html>
+<html lang="vi">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>HCMUT LMS | Ultimate v8.1</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <link
+      href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@300;400;500;600;700;800&display=swap"
+      rel="stylesheet"
+    />
+    <link
+      rel="stylesheet"
+      href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css"
+    />
+    <link rel="stylesheet" href="css/styles.css" />
+    <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+    <script>
+      tailwind.config = {
+        theme: {
+          extend: {
+            fontFamily: { sans: ['"Plus Jakarta Sans"', "sans-serif"] },
+            colors: {
+              primary: "#3b82f6",
+              secondary: "#6366f1",
+              glass: "rgba(255, 255, 255, 0.6)",
+              darkglass: "rgba(15, 23, 42, 0.6)",
+            },
+            boxShadow: {
+              glass: "0 8px 32px 0 rgba(31, 38, 135, 0.07)",
+              glow: "0 0 20px rgba(59, 130, 246, 0.5)",
+            },
+          },
+        },
+      };
+    </script>
+    
+  </head>
+  <body class="text-slate-600 antialiased h-screen flex overflow-hidden">
+    <!-- LOGIN SCREEN -->
+    <div
+      id="login-screen"
+      class="fixed inset-0 z-50 flex items-center justify-center p-4"
+    >
+      <div
+        class="glass-panel p-10 rounded-[32px] w-full max-w-md relative shadow-2xl"
+      >
+        <div class="text-center mb-8">
+          <div
+            class="w-20 h-20 mx-auto bg-gradient-to-br from-blue-600 to-indigo-600 rounded-2xl flex items-center justify-center text-white text-3xl font-bold shadow-lg mb-4"
+          >
+            BK
+          </div>
+          <h2 class="text-2xl font-bold text-slate-800">HCMUT LMS</h2>
+          <p class="text-sm text-slate-500">
+            Hệ thống quản lý học tập toàn diện
+          </p>
+        </div>
+        <form onsubmit="handleLogin(event)" class="space-y-5">
+          <input
+            type="text"
+            id="login-username"
+            value="hcmut_student"
+            class="w-full p-4 bg-white/50 border border-white rounded-xl focus:ring-2 focus:ring-blue-500 outline-none"
+            placeholder="SSO ID"
+          />
+          <input
+            type="password"
+            value="password"
+            class="w-full p-4 bg-white/50 border border-white rounded-xl focus:ring-2 focus:ring-blue-500 outline-none"
+            placeholder="Password"
+          />
+          <div class="relative">
+            <select
+              id="role-select"
+              class="w-full p-4 bg-white/50 border border-white rounded-xl focus:ring-2 focus:ring-blue-500 outline-none appearance-none cursor-pointer"
+            >
+              <option value="student">Sinh viên (Student)</option>
+              <option value="tutor">Gia sư (Tutor)</option>
+              <option value="admin">Quản trị viên (Admin)</option>
+            </select>
+            <i
+              class="fa-solid fa-chevron-down absolute right-4 top-5 text-slate-400 pointer-events-none"
+            ></i>
+          </div>
+          <button
+            class="w-full bg-blue-600 text-white font-bold py-4 rounded-xl hover:bg-blue-700 transition shadow-lg"
+          >
+            Đăng nhập qua SSO
+          </button>
+        </form>
+      </div>
+    </div>
+
+    <!-- MAIN APP -->
+    <div id="main-app" class="hidden flex w-full h-full">
+      <!-- SIDEBAR -->
+      <aside class="hidden md:flex flex-col w-72 p-4 h-full z-30">
+        <div
+          class="glass-panel h-full rounded-[24px] flex flex-col relative overflow-hidden"
+        >
+          <div class="p-6 flex items-center gap-3">
+            <div
+              class="w-10 h-10 bg-blue-600 rounded-xl flex items-center justify-center text-white font-bold flex-shrink-0"
+            >
+              BK
+            </div>
+            <div class="min-w-0">
+              <h1 class="font-bold text-slate-800 text-lg truncate">
+                LMS Portal
+              </h1>
+              <span
+                id="portal-badge"
+                class="text-[10px] font-bold uppercase tracking-wider text-blue-500"
+                >STUDENT</span
+              >
+            </div>
+          </div>
+          <nav
+            id="sidebar-nav"
+            class="flex-1 px-4 space-y-1 overflow-y-auto py-4"
+          ></nav>
+          <div class="p-4 mt-auto">
+            <div class="glass-card p-3 rounded-xl flex items-center gap-3 mb-3">
+              <img
+                src="https://ui-avatars.com/api/?name=User&background=eff6ff&color=2563eb"
+                class="w-10 h-10 rounded-full border-2 border-white user-avatar flex-shrink-0"
+              />
+              <div class="overflow-hidden w-full min-w-0">
+                <p
+                  class="text-sm font-bold text-slate-700 truncate user-name-display"
+                >
+                  Nguyen Van A
+                </p>
+                <p class="text-xs text-slate-500 truncate user-role-display">
+                  Student
+                </p>
+              </div>
+            </div>
+            <button
+              onclick="logout()"
+              class="w-full py-3 rounded-xl text-sm font-bold text-red-500 hover:bg-red-50 transition flex items-center justify-center gap-2"
+            >
+              <i class="fa-solid fa-power-off"></i> Đăng xuất
+            </button>
+          </div>
+        </div>
+      </aside>
+
+      <!-- CONTENT -->
+      <main class="flex-1 flex flex-col h-full overflow-hidden relative z-10">
+        <header class="h-20 flex items-center justify-between px-8 lg:px-10">
+          <h2 id="page-title" class="text-2xl font-bold text-slate-800">
+            Tổng quan
+          </h2>
+          <div class="flex items-center gap-4">
+            <button
+              onclick="toggleNotifications()"
+              class="w-10 h-10 bg-white/60 rounded-full flex items-center justify-center shadow-sm hover:bg-white transition relative"
+            >
+              <i class="fa-regular fa-bell text-slate-600"></i>
+              <span
+                class="absolute top-2 right-2 w-2 h-2 bg-red-500 rounded-full"
+              ></span>
+            </button>
+            <!-- Notification Dropdown -->
+            <div
+              id="notification-dropdown"
+              class="hidden absolute right-10 top-16 w-80 glass-panel rounded-2xl overflow-hidden z-50"
+            >
+              <div class="p-4 border-b border-white/50 font-bold text-sm">
+                Thông báo
+              </div>
+              <div class="p-2 space-y-1">
+                <div class="p-3 hover:bg-blue-50/50 rounded-xl cursor-pointer">
+                  <p class="text-xs font-bold text-blue-600">Lớp học</p>
+                  <p class="text-sm text-slate-700 font-medium">
+                    Thay đổi phòng học Giải tích 1
+                  </p>
+                  <p class="text-xs text-slate-400">2 phút trước</p>
+                </div>
+              </div>
+            </div>
+          </div>
+        </header>
+
+        <div
+          class="flex-1 overflow-y-auto px-8 lg:px-10 pb-10 scroll-smooth"
+          id="content-area"
+        >
+          <!-- ================= STUDENT: DASHBOARD ================= -->
+          <div id="dashboard_student" class="section-view space-y-6">
+            <div
+              class="glass-card p-8 rounded-[32px] bg-gradient-to-br from-blue-50/50 to-indigo-50/50"
+            >
+              <div class="flex justify-between items-end">
+                <div>
+                  <h3 class="text-lg text-slate-500 font-medium mb-1">
+                    Xin chào,
+                  </h3>
+                  <h1
+                    class="text-4xl font-black text-slate-800 user-name-display"
+                  >
+                    Nguyen Van A
+                  </h1>
+                </div>
+                <div class="text-right hidden md:block">
+                  <p class="text-sm text-slate-400 font-bold uppercase">
+                    GPA Tích lũy
+                  </p>
+                  <p class="text-5xl font-black text-blue-600">3.65</p>
+                </div>
+              </div>
+            </div>
+            <div class="grid grid-cols-1 md:grid-cols-3 gap-6">
+              <div
+                class="glass-card p-6 rounded-[24px] border-l-4 border-green-500 flex flex-col justify-center"
+              >
+                <p class="text-xs font-bold text-slate-400 uppercase truncate">
+                  Môn đang học
+                </p>
+                <p class="text-3xl font-black text-slate-800 truncate">04</p>
+              </div>
+              <div
+                class="glass-card p-6 rounded-[24px] border-l-4 border-purple-500 flex flex-col justify-center"
+              >
+                <p class="text-xs font-bold text-slate-400 uppercase truncate">
+                  Tín chỉ
+                </p>
+                <p class="text-3xl font-black text-slate-800 truncate">84</p>
+              </div>
+              <div
+                class="glass-card p-6 rounded-[24px] border-l-4 border-orange-500 flex flex-col justify-center"
+              >
+                <p class="text-xs font-bold text-slate-400 uppercase truncate">
+                  Bài tập chưa nộp
+                </p>
+                <p class="text-3xl font-black text-slate-800 truncate">02</p>
+              </div>
+            </div>
+
+            <!-- Added Study Schedule -->
+            <div class="glass-card p-6 rounded-[28px]">
+              <div class="flex justify-between items-center mb-4">
+                <h4 class="font-bold text-slate-700">Lịch học hôm nay</h4>
+                <button class="text-blue-600 text-xs font-bold hover:underline">
+                  Xem tất cả
+                </button>
+              </div>
+              <div class="space-y-3">
+                <div
+                  class="flex items-center p-3 bg-white/40 rounded-xl border border-white/50 hover:bg-white/60 transition"
+                >
+                  <div
+                    class="w-12 h-12 rounded-lg bg-blue-100 text-blue-600 flex flex-col items-center justify-center text-xs font-bold mr-4 flex-shrink-0"
+                  >
+                    <span>07:00</span>
+                  </div>
+                  <div class="flex-1 min-w-0">
+                    <h5 class="font-bold text-slate-800 text-sm truncate">
+                      Giải tích 1
+                    </h5>
+                    <p class="text-xs text-slate-500 truncate">
+                      <i class="fa-solid fa-location-dot mr-1"></i> H6-302
+                    </p>
+                  </div>
+                  <span
+                    class="px-3 py-1 bg-green-100 text-green-700 text-[10px] font-bold rounded-full flex-shrink-0"
+                    >Sắp diễn ra</span
+                  >
+                </div>
+                <div
+                  class="flex items-center p-3 bg-white/40 rounded-xl border border-white/50 hover:bg-white/60 transition"
+                >
+                  <div
+                    class="w-12 h-12 rounded-lg bg-purple-100 text-purple-600 flex flex-col items-center justify-center text-xs font-bold mr-4 flex-shrink-0"
+                  >
+                    <span>13:00</span>
+                  </div>
+                  <div class="flex-1 min-w-0">
+                    <h5 class="font-bold text-slate-800 text-sm truncate">
+                      Vật lý Đại cương 1
+                    </h5>
+                    <p class="text-xs text-slate-500 truncate">
+                      <i class="fa-solid fa-location-dot mr-1"></i> A4-401
+                    </p>
+                  </div>
+                  <span
+                    class="px-3 py-1 bg-slate-100 text-slate-500 text-[10px] font-bold rounded-full flex-shrink-0"
+                    >Chưa bắt đầu</span
+                  >
+                </div>
+              </div>
+            </div>
+          </div>
+
+          <!-- ================= STUDENT: COURSES ================= -->
+          <div id="courses_student" class="section-view space-y-6">
+            <div class="flex justify-between items-center">
+              <h3 class="text-xl font-bold text-slate-800">Môn học của tôi</h3>
+              <button
+                onclick="switchTab('student_register')"
+                class="px-4 py-2 rounded-xl bg-green-600 text-white text-sm font-bold shadow-lg hover:bg-green-700 flex items-center gap-2"
+              >
+                <i class="fa-solid fa-plus"></i> Đăng ký môn mới
+              </button>
+            </div>
+            <div class="grid grid-cols-1 xl:grid-cols-2 gap-6">
+              <div
+                class="glass-card p-6 rounded-[28px] flex flex-col md:flex-row gap-6 group hover:border-blue-300 transition-all relative overflow-hidden"
+              >
+                <div
+                  class="w-full md:w-32 h-32 rounded-2xl bg-blue-100 flex items-center justify-center text-4xl text-blue-500 shadow-inner flex-shrink-0"
+                >
+                  <i class="fa-solid fa-calculator"></i>
+                </div>
+                <div class="flex-1 min-w-0">
+                  <div class="flex justify-between items-start">
+                    <div class="min-w-0">
+                      <span
+                        class="text-[10px] font-bold bg-blue-50 text-blue-600 px-2 py-1 rounded uppercase"
+                        >CO1023</span
+                      >
+                      <h4
+                        class="text-xl font-bold text-slate-800 mt-1 truncate"
+                      >
+                        Giải tích 1
+                      </h4>
+                      <p class="text-sm text-slate-500 truncate">
+                        <i class="fa-solid fa-user-tie mr-1"></i> Tutor: Trần
+                        Văn B
+                      </p>
+                    </div>
+                    <button
+                      onclick="cancelCourse('Giải tích 1')"
+                      class="ml-2 px-3 py-1 rounded-lg bg-red-50 text-red-500 text-xs font-bold hover:bg-red-500 hover:text-white transition border border-red-100 flex-shrink-0"
+                    >
+                      <i class="fa-solid fa-ban mr-1"></i> Hủy môn
+                    </button>
+                  </div>
+                  <div class="mt-4">
+                    <div
+                      class="flex justify-between text-xs font-bold text-slate-400 mb-1"
+                    >
+                      <span>Tiến độ (Tuần 12/15)</span>
+                      <span>80%</span>
+                    </div>
+                    <div class="h-2 bg-slate-100 rounded-full overflow-hidden">
+                      <div
+                        class="h-full bg-blue-500 w-[80%] rounded-full"
+                      ></div>
+                    </div>
+                  </div>
+                  <div class="mt-4 flex gap-3 flex-wrap">
+                    <button
+                      onclick="openMaterialModal('Giải tích 1')"
+                      class="px-4 py-2 rounded-xl bg-white border border-slate-200 text-xs font-bold text-slate-600 hover:border-blue-400 transition flex items-center gap-2"
+                    >
+                      <i class="fa-solid fa-folder-open"></i> Tài liệu
+                    </button>
+                    <button
+                      class="px-4 py-2 rounded-xl bg-blue-600 text-white text-xs font-bold shadow-lg hover:bg-blue-700 transition"
+                    >
+                      Vào lớp
+                    </button>
+                  </div>
+                </div>
+              </div>
+            </div>
+          </div>
+
+          <!-- ================= STUDENT: REGISTER COURSE ================= -->
+          <div id="student_register" class="section-view space-y-6">
+            <div class="glass-card p-6 rounded-[28px]">
+              <h3 class="text-xl font-bold text-slate-800 mb-4">
+                Đăng ký môn học mới
+              </h3>
+              <div class="flex gap-4 mb-6">
+                <div class="flex-1 relative">
+                  <i
+                    class="fa-solid fa-magnifying-glass absolute left-4 top-3.5 text-slate-400"
+                  ></i>
+                  <input
+                    type="text"
+                    placeholder="Tìm kiếm môn học (VD: Vật lý, Hóa đại cương...)"
+                    class="w-full pl-10 p-3 rounded-xl bg-white border border-slate-200 focus:ring-2 focus:ring-blue-500 outline-none"
+                  />
+                </div>
+                <button
+                  class="px-6 py-3 rounded-xl bg-blue-600 text-white font-bold hover:bg-blue-700 transition"
+                >
+                  Tìm kiếm
+                </button>
+              </div>
+
+              <h4 class="font-bold text-slate-700 mb-4">Kết quả tìm kiếm:</h4>
+              <div class="grid grid-cols-1 gap-4">
+                <!-- Seed Data 1: Vật lý 1 -->
+                <div
+                  class="bg-white/50 border border-white rounded-2xl p-6 hover:border-blue-300 transition"
+                >
+                  <div
+                    class="flex flex-col md:flex-row justify-between items-start md:items-center gap-4"
+                  >
+                    <div>
+                      <div class="flex items-center gap-2 mb-1">
+                        <span
+                          class="bg-purple-100 text-purple-600 px-2 py-0.5 rounded text-[10px] font-bold uppercase"
+                          >PH1003</span
+                        >
+                        <h5 class="text-lg font-bold text-slate-800">
+                          Vật lý Đại cương 1
+                        </h5>
+                      </div>
+                      <p class="text-sm text-slate-500">
+                        4 Tín chỉ • Khoa Khoa học Ứng dụng
+                      </p>
+                    </div>
+                  </div>
+                  <div class="mt-4 space-y-3">
+                    <div
+                      class="flex items-center justify-between p-3 bg-white rounded-xl border border-slate-100"
+                    >
+                      <div class="flex items-center gap-4">
+                        <img
+                          src="https://ui-avatars.com/api/?name=Tran+Van+X&background=random"
+                          class="w-10 h-10 rounded-full"
+                        />
+                        <div>
+                          <p class="text-sm font-bold text-slate-800">
+                            Lớp L01 - Tutor: Trần Văn X
+                          </p>
+                          <p class="text-xs text-slate-500">
+                            <i class="fa-regular fa-clock mr-1"></i> T2
+                            (7:00-9:00) • Phòng H1-201
+                          </p>
+                        </div>
+                      </div>
+                      <button
+                        onclick="confirmRegistration('Vật lý ĐC 1 - L01')"
+                        class="px-4 py-2 bg-blue-50 text-blue-600 text-xs font-bold rounded-lg hover:bg-blue-600 hover:text-white transition"
+                      >
+                        Đăng ký
+                      </button>
+                    </div>
+                  </div>
+                </div>
+
+                <!-- Seed Data 2: Cấu trúc dữ liệu -->
+                <div
+                  class="bg-white/50 border border-white rounded-2xl p-6 hover:border-blue-300 transition"
+                >
+                  <div
+                    class="flex flex-col md:flex-row justify-between items-start md:items-center gap-4"
+                  >
+                    <div>
+                      <div class="flex items-center gap-2 mb-1">
+                        <span
+                          class="bg-indigo-100 text-indigo-600 px-2 py-0.5 rounded text-[10px] font-bold uppercase"
+                          >CO2003</span
+                        >
+                        <h5 class="text-lg font-bold text-slate-800">
+                          Cấu trúc Dữ liệu & Giải thuật
+                        </h5>
+                      </div>
+                      <p class="text-sm text-slate-500">
+                        4 Tín chỉ • Khoa KH&KT Máy tính
+                      </p>
+                    </div>
+                  </div>
+                  <div class="mt-4 space-y-3">
+                    <div
+                      class="flex items-center justify-between p-3 bg-white rounded-xl border border-slate-100"
+                    >
+                      <div class="flex items-center gap-4">
+                        <img
+                          src="https://ui-avatars.com/api/?name=Pham+Van+Z&background=random"
+                          class="w-10 h-10 rounded-full"
+                        />
+                        <div>
+                          <p class="text-sm font-bold text-slate-800">
+                            Lớp L01 - Tutor: Phạm Văn Z
+                          </p>
+                          <p class="text-xs text-slate-500">
+                            <i class="fa-regular fa-clock mr-1"></i> T4
+                            (9:00-11:00) • Phòng H6-101
+                          </p>
+                        </div>
+                      </div>
+                      <button
+                        onclick="confirmRegistration('CTDL & GT - L01')"
+                        class="px-4 py-2 bg-blue-50 text-blue-600 text-xs font-bold rounded-lg hover:bg-blue-600 hover:text-white transition"
+                      >
+                        Đăng ký
+                      </button>
+                    </div>
+                    <div
+                      class="flex items-center justify-between p-3 bg-white rounded-xl border border-slate-100"
+                    >
+                      <div class="flex items-center gap-4">
+                        <img
+                          src="https://ui-avatars.com/api/?name=Nguyen+Thi+K&background=random"
+                          class="w-10 h-10 rounded-full"
+                        />
+                        <div>
+                          <p class="text-sm font-bold text-slate-800">
+                            Lớp L02 - Tutor: Nguyễn Thị K
+                          </p>
+                          <p class="text-xs text-slate-500">
+                            <i class="fa-regular fa-clock mr-1"></i> T6
+                            (13:00-15:00) • Phòng H6-102
+                          </p>
+                        </div>
+                      </div>
+                      <button
+                        onclick="confirmRegistration('CTDL & GT - L02')"
+                        class="px-4 py-2 bg-blue-50 text-blue-600 text-xs font-bold rounded-lg hover:bg-blue-600 hover:text-white transition"
+                      >
+                        Đăng ký
+                      </button>
+                    </div>
+                  </div>
+                </div>
+
+                <!-- Seed Data 3: Vật lý 2 -->
+                <div
+                  class="bg-white/50 border border-white rounded-2xl p-6 hover:border-blue-300 transition"
+                >
+                  <div
+                    class="flex flex-col md:flex-row justify-between items-start md:items-center gap-4"
+                  >
+                    <div>
+                      <div class="flex items-center gap-2 mb-1">
+                        <span
+                          class="bg-purple-100 text-purple-600 px-2 py-0.5 rounded text-[10px] font-bold uppercase"
+                          >PH1005</span
+                        >
+                        <h5 class="text-lg font-bold text-slate-800">
+                          Vật lý Đại cương 2
+                        </h5>
+                      </div>
+                      <p class="text-sm text-slate-500">
+                        3 Tín chỉ • Khoa Khoa học Ứng dụng
+                      </p>
+                    </div>
+                  </div>
+                  <div class="mt-4 space-y-3">
+                    <div
+                      class="flex items-center justify-between p-3 bg-white rounded-xl border border-slate-100"
+                    >
+                      <div class="flex items-center gap-4">
+                        <img
+                          src="https://ui-avatars.com/api/?name=Le+Thi+M&background=random"
+                          class="w-10 h-10 rounded-full"
+                        />
+                        <div>
+                          <p class="text-sm font-bold text-slate-800">
+                            Lớp L03 - Tutor: Lê Thị M
+                          </p>
+                          <p class="text-xs text-slate-500">
+                            <i class="fa-regular fa-clock mr-1"></i> T5
+                            (7:00-9:00) • Phòng A4-401
+                          </p>
+                        </div>
+                      </div>
+                      <button
+                        onclick="confirmRegistration('Vật lý ĐC 2 - L03')"
+                        class="px-4 py-2 bg-blue-50 text-blue-600 text-xs font-bold rounded-lg hover:bg-blue-600 hover:text-white transition"
+                      >
+                        Đăng ký
+                      </button>
+                    </div>
+                  </div>
+                </div>
+
+                <!-- Seed Data 4: Hóa đại cương -->
+                <div
+                  class="bg-white/50 border border-white rounded-2xl p-6 hover:border-blue-300 transition"
+                >
+                  <div
+                    class="flex flex-col md:flex-row justify-between items-start md:items-center gap-4"
+                  >
+                    <div>
+                      <div class="flex items-center gap-2 mb-1">
+                        <span
+                          class="bg-green-100 text-green-600 px-2 py-0.5 rounded text-[10px] font-bold uppercase"
+                          >CH1003</span
+                        >
+                        <h5 class="text-lg font-bold text-slate-800">
+                          Hóa Đại cương
+                        </h5>
+                      </div>
+                      <p class="text-sm text-slate-500">
+                        3 Tín chỉ • Khoa Kỹ thuật Hóa học
+                      </p>
+                    </div>
+                  </div>
+                  <div class="mt-4 space-y-3">
+                    <div
+                      class="flex items-center justify-between p-3 bg-white rounded-xl border border-slate-100"
+                    >
+                      <div class="flex items-center gap-4">
+                        <img
+                          src="https://ui-avatars.com/api/?name=Ngo+Van+N&background=random"
+                          class="w-10 h-10 rounded-full"
+                        />
+                        <div>
+                          <p class="text-sm font-bold text-slate-800">
+                            Lớp L01 - Tutor: Ngô Văn N
+                          </p>
+                          <p class="text-xs text-slate-500">
+                            <i class="fa-regular fa-clock mr-1"></i> T7
+                            (8:00-11:00) • Phòng C4-101
+                          </p>
+                        </div>
+                      </div>
+                      <button
+                        onclick="confirmRegistration('Hóa ĐC - L01')"
+                        class="px-4 py-2 bg-blue-50 text-blue-600 text-xs font-bold rounded-lg hover:bg-blue-600 hover:text-white transition"
+                      >
+                        Đăng ký
+                      </button>
+                    </div>
+                  </div>
+                </div>
+              </div>
+            </div>
+          </div>
+
+          <!-- ================= STUDENT: FEEDBACK ================= -->
+          <div id="feedback_student" class="section-view">
+            <div class="glass-card p-10 rounded-[32px] max-w-2xl mx-auto">
+              <h3 class="text-2xl font-bold text-slate-800 mb-6 text-center">
+                Đánh giá môn học
+              </h3>
+              <div class="mb-8">
+                <label
+                  class="block text-xs font-bold text-slate-500 uppercase mb-2 ml-1"
+                  >Chọn môn học / Buổi học</label
+                >
+                <div class="relative">
+                  <select
+                    class="w-full p-4 rounded-xl bg-white border border-slate-200 font-bold text-slate-700 appearance-none focus:ring-2 focus:ring-blue-500 outline-none cursor-pointer hover:bg-slate-50"
+                  >
+                    <option value="" disabled selected>
+                      -- Chọn buổi học để đánh giá --
+                    </option>
+                    <option>Giải tích 1 (CO1023) - Buổi 12 (24/10)</option>
+                    <option>Lập trình Python (CO2011) - Lab 3 (26/10)</option>
+                  </select>
+                  <i
+                    class="fa-solid fa-chevron-down absolute right-4 top-5 text-slate-400 pointer-events-none"
+                  ></i>
+                </div>
+              </div>
+              <div class="text-center mb-8">
+                <div class="flex justify-center gap-3 text-4xl mb-2">
+                  <button
+                    onclick="setRating(1)"
+                    class="star-btn text-slate-200 hover:text-yellow-400 transition"
+                  >
+                    <i class="fa-solid fa-star"></i>
+                  </button>
+                  <button
+                    onclick="setRating(2)"
+                    class="star-btn text-slate-200 hover:text-yellow-400 transition"
+                  >
+                    <i class="fa-solid fa-star"></i>
+                  </button>
+                  <button
+                    onclick="setRating(3)"
+                    class="star-btn text-slate-200 hover:text-yellow-400 transition"
+                  >
+                    <i class="fa-solid fa-star"></i>
+                  </button>
+                  <button
+                    onclick="setRating(4)"
+                    class="star-btn text-slate-200 hover:text-yellow-400 transition"
+                  >
+                    <i class="fa-solid fa-star"></i>
+                  </button>
+                  <button
+                    onclick="setRating(5)"
+                    class="star-btn text-slate-200 hover:text-yellow-400 transition"
+                  >
+                    <i class="fa-solid fa-star"></i>
+                  </button>
+                </div>
+                <p id="rating-text" class="text-sm font-bold text-slate-400">
+                  Chưa chọn mức độ
+                </p>
+              </div>
+              <textarea
+                class="w-full p-4 rounded-xl bg-white border border-slate-200 h-32 outline-none focus:border-blue-500 mb-6 font-medium"
+                placeholder="Nhận xét chi tiết về giảng viên, tài liệu..."
+              ></textarea>
+              <button
+                onclick="alert('Cảm ơn phản hồi của bạn!')"
+                class="w-full py-4 rounded-xl bg-slate-800 text-white font-bold hover:bg-slate-900 transition shadow-xl"
+              >
+                Gửi đánh giá
+              </button>
+            </div>
+          </div>
+
+          <!-- ================= STUDENT: PROFILE ================= -->
+          <div id="profile_student" class="section-view">
+            <div
+              class="glass-card rounded-[32px] overflow-hidden p-1 bg-white/40"
+            >
+              <div
+                class="bg-white/50 rounded-[28px] overflow-hidden relative pb-10"
+              >
+                <div
+                  class="h-48 bg-gradient-to-r from-indigo-500 via-purple-500 to-pink-500"
+                ></div>
+                <div class="px-8 relative">
+                  <div
+                    class="flex flex-col md:flex-row justify-between items-end -mt-16 mb-6 gap-4"
+                  >
+                    <div class="relative">
+                      <img
+                        src="https://ui-avatars.com/api/?name=User&background=fff&color=2563eb&size=128"
+                        class="w-32 h-32 rounded-3xl border-4 border-white shadow-xl"
+                      />
+                      <div
+                        class="absolute bottom-1 right-1 w-5 h-5 bg-green-500 border-2 border-white rounded-full"
+                      ></div>
+                    </div>
+                    <button
+                      onclick="document.getElementById('student-edit-mode').classList.toggle('hidden')"
+                      class="px-6 py-3 bg-white/80 hover:bg-white text-slate-700 font-bold rounded-xl shadow-sm transition text-sm"
+                    >
+                      <i class="fa-solid fa-pen-to-square mr-2"></i> Chỉnh sửa
+                    </button>
+                  </div>
+
+                  <h1
+                    class="text-3xl font-black text-slate-800 user-name-display"
+                  >
+                    Nguyen Van A
+                  </h1>
+                  <p
+                    class="text-lg text-slate-500 font-medium mb-8 user-role-display"
+                  >
+                    Student
+                  </p>
+
+                  <div class="grid grid-cols-1 md:grid-cols-2 gap-6">
+                    <div
+                      class="glass-panel p-5 rounded-2xl flex items-center gap-4"
+                    >
+                      <div
+                        class="w-10 h-10 bg-blue-50 text-blue-600 rounded-lg flex items-center justify-center flex-shrink-0"
+                      >
+                        <i class="fa-solid fa-envelope"></i>
+                      </div>
+                      <div class="flex-1 min-w-0">
+                        <p class="text-xs font-bold text-slate-400 uppercase">
+                          Email
+                        </p>
+                        <p class="font-bold text-slate-700 truncate">
+                          student.hcmut@hcmut.edu.vn
+                        </p>
+                      </div>
+                    </div>
+                    <div
+                      class="glass-panel p-5 rounded-2xl flex items-center gap-4"
+                    >
+                      <div
+                        class="w-10 h-10 bg-purple-50 text-purple-600 rounded-lg flex items-center justify-center flex-shrink-0"
+                      >
+                        <i class="fa-solid fa-graduation-cap"></i>
+                      </div>
+                      <div>
+                        <p class="text-xs font-bold text-slate-400 uppercase">
+                          Niên khóa
+                        </p>
+                        <p class="font-bold text-slate-700">
+                          K2020 - Khoa KH&KT MT
+                        </p>
+                      </div>
+                    </div>
+                  </div>
+
+                  <form
+                    id="student-edit-mode"
+                    class="hidden space-y-6 animate-float mt-6"
+                    onsubmit="updateProfile(event)"
+                  >
+                    <div class="grid grid-cols-1 md:grid-cols-2 gap-6">
+                      <div class="space-y-2">
+                        <label
+                          class="text-xs font-bold text-slate-500 uppercase ml-1"
+                          >SĐT</label
+                        ><input
+                          type="text"
+                          value="0909 123 456"
+                          class="w-full p-4 rounded-xl bg-white/50 border-none font-bold text-slate-700"
+                        />
+                      </div>
+                    </div>
+                    <button
+                      class="px-8 py-3 rounded-xl bg-blue-600 text-white font-bold hover:bg-blue-700 shadow-lg transition"
+                    >
+                      Lưu
+                    </button>
+                  </form>
+                </div>
+              </div>
+            </div>
+          </div>
+
+          <!-- ================= TUTOR: DASHBOARD ================= -->
+          <div id="dashboard_tutor" class="section-view space-y-8">
+            <!-- Stats -->
+            <div class="grid grid-cols-1 md:grid-cols-3 gap-6">
+              <div
+                class="glass-card p-6 rounded-[24px] flex items-center justify-between border-b-4 border-blue-500"
+              >
+                <div class="min-w-0 flex-1">
+                  <p
+                    class="text-xs font-bold text-slate-400 uppercase truncate"
+                  >
+                    Tổng giờ dạy
+                  </p>
+                  <p class="text-3xl font-black text-slate-800 truncate">48h</p>
+                </div>
+                <i
+                  class="fa-solid fa-clock text-blue-200 text-4xl flex-shrink-0 ml-4"
+                ></i>
+              </div>
+              <div
+                class="glass-card p-6 rounded-[24px] flex items-center justify-between border-b-4 border-yellow-400"
+              >
+                <div class="min-w-0 flex-1">
+                  <p
+                    class="text-xs font-bold text-slate-400 uppercase truncate"
+                  >
+                    Rating TB
+                  </p>
+                  <p class="text-3xl font-black text-slate-800 truncate">4.9</p>
+                </div>
+                <i
+                  class="fa-solid fa-star text-yellow-200 text-4xl flex-shrink-0 ml-4"
+                ></i>
+              </div>
+              <div
+                class="glass-card p-6 rounded-[24px] flex items-center justify-between border-b-4 border-green-500"
+              >
+                <div class="min-w-0 flex-1">
+                  <p
+                    class="text-xs font-bold text-slate-400 uppercase truncate"
+                  >
+                    Học viên
+                  </p>
+                  <p class="text-3xl font-black text-slate-800 truncate">150</p>
+                </div>
+                <i
+                  class="fa-solid fa-users text-green-200 text-4xl flex-shrink-0 ml-4"
+                ></i>
+              </div>
+            </div>
+
+            <div class="grid grid-cols-1 lg:grid-cols-3 gap-8">
+              <div class="glass-card p-6 rounded-[28px] lg:col-span-2">
+                <h3 class="font-bold text-slate-800 mb-4 flex items-center">
+                  <i class="fa-solid fa-comments text-blue-500 mr-2"></i> Phản
+                  hồi gần đây
+                </h3>
+                <div class="space-y-4">
+                  <div class="p-4 bg-white/50 rounded-2xl border border-white">
+                    <div class="flex justify-between items-start mb-1">
+                      <div class="flex items-center gap-2">
+                        <div
+                          class="w-8 h-8 rounded-full bg-blue-100 text-blue-600 flex items-center justify-center text-xs font-bold flex-shrink-0"
+                        >
+                          SV
+                        </div>
+                        <span class="font-bold text-sm text-slate-700 truncate"
+                          >Nguyễn Văn A</span
+                        >
+                      </div>
+                      <span class="text-xs text-slate-400 flex-shrink-0"
+                        >Hôm qua</span
+                      >
+                    </div>
+                    <div class="flex text-yellow-400 text-[10px] mb-2 ml-10">
+                      <i class="fa-solid fa-star"></i
+                      ><i class="fa-solid fa-star"></i
+                      ><i class="fa-solid fa-star"></i
+                      ><i class="fa-solid fa-star"></i
+                      ><i class="fa-solid fa-star"></i>
+                    </div>
+                    <p class="text-sm text-slate-600 italic ml-10">
+                      "Thầy giảng rất nhiệt tình, dễ hiểu."
+                    </p>
+                  </div>
+                </div>
+              </div>
+              <!-- Tutor Profile in Dashboard removed to use dedicated tab -->
+              <div class="glass-card p-6 rounded-[28px]">
+                <h3 class="font-bold text-slate-800 mb-4">Tiến độ sinh viên</h3>
+                <canvas id="tutorStudentChart" height="180"></canvas>
+              </div>
+            </div>
+          </div>
+
+          <!-- ================= TUTOR: SCHEDULE & REGISTRATION ================= -->
+          <div id="tutor_schedule" class="section-view space-y-6">
+            <div class="flex justify-between items-center">
+              <h3 class="text-xl font-bold text-slate-800">
+                Lịch dạy & Đăng ký
+              </h3>
+              <button
+                onclick="document.getElementById('bonus-session-modal').classList.remove('hidden')"
+                class="px-4 py-2 rounded-xl bg-purple-600 text-white text-sm font-bold shadow-lg hover:bg-purple-700 flex items-center gap-2"
+              >
+                <i class="fa-solid fa-calendar-plus"></i> Tạo buổi bổ sung
+              </button>
+            </div>
+
+            <div class="glass-card p-6 rounded-[28px]">
+              <div class="flex justify-between items-center mb-4">
+                <h4 class="font-bold text-slate-700">
+                  Đăng ký lịch rảnh (Availability)
+                </h4>
+                <div class="text-xs flex gap-4">
+                  <span class="flex items-center gap-1"
+                    ><div class="w-3 h-3 bg-green-500 rounded"></div>
+                    Đã đăng ký</span
+                  >
+                  <span class="flex items-center gap-1"
+                    ><div
+                      class="w-3 h-3 bg-white border border-slate-300 rounded"
+                    ></div>
+                    Trống</span
+                  >
+                </div>
+              </div>
+              <div
+                class="grid grid-cols-8 gap-2 text-center text-xs font-bold text-slate-500 mb-2"
+              >
+                <div></div>
+                <div>Mon</div>
+                <div>Tue</div>
+                <div>Wed</div>
+                <div>Thu</div>
+                <div>Fri</div>
+                <div>Sat</div>
+                <div>Sun</div>
+              </div>
+              <div class="grid grid-cols-8 gap-2 text-center">
+                <div
+                  class="flex items-center justify-center font-bold text-slate-400 text-[10px]"
+                >
+                  Sáng (7-11h)
+                </div>
+                <button
+                  onclick="this.classList.toggle('bg-green-500');this.classList.toggle('text-white');"
+                  class="h-10 rounded bg-white border border-slate-200 hover:bg-green-100 transition"
+                ></button>
+                <button class="h-10 rounded bg-green-500 text-white shadow-sm">
+                  Dạy
+                </button>
+                <button
+                  onclick="this.classList.toggle('bg-green-500');this.classList.toggle('text-white');"
+                  class="h-10 rounded bg-white border border-slate-200 hover:bg-green-100 transition"
+                ></button>
+                <button
+                  onclick="this.classList.toggle('bg-green-500');this.classList.toggle('text-white');"
+                  class="h-10 rounded bg-white border border-slate-200 hover:bg-green-100 transition"
+                ></button>
+                <button class="h-10 rounded bg-green-500 text-white shadow-sm">
+                  Dạy
+                </button>
+                <button
+                  onclick="this.classList.toggle('bg-green-500');this.classList.toggle('text-white');"
+                  class="h-10 rounded bg-white border border-slate-200 hover:bg-green-100 transition"
+                ></button>
+                <button
+                  onclick="this.classList.toggle('bg-green-500');this.classList.toggle('text-white');"
+                  class="h-10 rounded bg-white border border-slate-200 hover:bg-green-100 transition"
+                ></button>
+
+                <div
+                  class="flex items-center justify-center font-bold text-slate-400 text-[10px]"
+                >
+                  Chiều (13-17h)
+                </div>
+                <button
+                  onclick="this.classList.toggle('bg-green-500');this.classList.toggle('text-white');"
+                  class="h-10 rounded bg-white border border-slate-200 hover:bg-green-100 transition"
+                ></button>
+                <button
+                  onclick="this.classList.toggle('bg-green-500');this.classList.toggle('text-white');"
+                  class="h-10 rounded bg-white border border-slate-200 hover:bg-green-100 transition"
+                ></button>
+                <button class="h-10 rounded bg-green-500 text-white shadow-sm">
+                  Dạy
+                </button>
+                <button
+                  onclick="this.classList.toggle('bg-green-500');this.classList.toggle('text-white');"
+                  class="h-10 rounded bg-white border border-slate-200 hover:bg-green-100 transition"
+                ></button>
+                <button
+                  onclick="this.classList.toggle('bg-green-500');this.classList.toggle('text-white');"
+                  class="h-10 rounded bg-white border border-slate-200 hover:bg-green-100 transition"
+                ></button>
+                <button
+                  onclick="this.classList.toggle('bg-green-500');this.classList.toggle('text-white');"
+                  class="h-10 rounded bg-white border border-slate-200 hover:bg-green-100 transition"
+                ></button>
+                <button
+                  onclick="this.classList.toggle('bg-green-500');this.classList.toggle('text-white');"
+                  class="h-10 rounded bg-white border border-slate-200 hover:bg-green-100 transition"
+                ></button>
+              </div>
+              <div class="mt-6 text-right">
+                <button
+                  onclick="alert('Lịch dạy đã được lưu!')"
+                  class="px-6 py-2 bg-slate-800 text-white text-sm font-bold rounded-lg hover:bg-black transition shadow-lg"
+                >
+                  Lưu lịch
+                </button>
+              </div>
+            </div>
+          </div>
+
+          <!-- ================= TUTOR: COURSES (Teaching Class) ================= -->
+          <div id="courses_tutor" class="section-view space-y-6">
+            <div class="flex justify-between items-center">
+              <h3 class="text-xl font-bold text-slate-800">Lớp tôi đang dạy</h3>
+            </div>
+            <div class="grid grid-cols-1 gap-6">
+              <div
+                class="glass-card p-6 rounded-[28px] group hover:border-green-300 transition-all"
+              >
+                <div class="flex flex-col md:flex-row gap-6 items-center mb-6">
+                  <div
+                    class="w-full md:w-24 h-24 rounded-2xl bg-green-100 flex items-center justify-center text-3xl text-green-600 shadow-inner flex-shrink-0"
+                  >
+                    <i class="fa-solid fa-chalkboard-user"></i>
+                  </div>
+                  <div class="flex-1 w-full min-w-0">
+                    <div class="flex justify-between items-start">
+                      <div class="min-w-0">
+                        <span
+                          class="text-[10px] font-bold bg-green-50 text-green-600 px-2 py-1 rounded uppercase"
+                          >CO1023</span
+                        >
+                        <h4
+                          class="text-xl font-bold text-slate-800 mt-1 truncate"
+                        >
+                          Giải tích 1 - Nhóm L01
+                        </h4>
+                        <p class="text-sm text-slate-500 mt-1 truncate">
+                          <i class="fa-solid fa-location-dot mr-1"></i> Phòng:
+                          H6-302
+                        </p>
+                      </div>
+                      <span
+                        class="px-3 py-1 rounded-full bg-blue-50 text-blue-600 text-xs font-bold flex-shrink-0 ml-2"
+                        >Đang diễn ra</span
+                      >
+                    </div>
+                    <div class="grid grid-cols-2 md:grid-cols-4 gap-4 mt-4">
+                      <div class="bg-slate-50 p-2 rounded-lg text-center">
+                        <p
+                          class="text-[10px] text-slate-400 uppercase font-bold"
+                        >
+                          Sĩ số
+                        </p>
+                        <p class="font-bold text-slate-800">45/50</p>
+                      </div>
+                      <div class="bg-slate-50 p-2 rounded-lg text-center">
+                        <p
+                          class="text-[10px] text-slate-400 uppercase font-bold"
+                        >
+                          Vắng
+                        </p>
+                        <p class="font-bold text-red-500">2</p>
+                      </div>
+                    </div>
+                  </div>
+                  <div
+                    class="flex flex-col gap-2 w-full md:w-auto flex-shrink-0"
+                  >
+                    <button
+                      class="px-6 py-3 rounded-xl bg-white border border-slate-200 text-xs font-bold text-slate-600 hover:border-green-400 transition flex items-center justify-center gap-2"
+                    >
+                      <i class="fa-solid fa-list-check"></i> Điểm danh
+                    </button>
+                    <button
+                      onclick="toggleClassDetails('class-details-1')"
+                      class="px-6 py-3 rounded-xl bg-green-600 text-white text-xs font-bold shadow-lg hover:bg-green-700 transition flex items-center justify-center gap-2"
+                    >
+                      <i class="fa-solid fa-folder-gear"></i> Quản lý lớp
+                    </button>
+                  </div>
+                </div>
+                <!-- Class details -->
+                <div
+                  id="class-details-1"
+                  class="hidden mt-6 pt-6 border-t border-slate-200/60 animate-fade-in-down"
+                >
+                  <div class="grid grid-cols-1 lg:grid-cols-2 gap-6">
+                    <div
+                      class="bg-white/40 rounded-xl p-4 border border-white/50"
+                    >
+                      <h5
+                        class="font-bold text-slate-700 mb-3 flex justify-between items-center text-sm"
+                      >
+                        Danh sách sinh viên
+                        <span
+                          class="bg-blue-100 text-blue-600 text-[10px] px-2 py-0.5 rounded-full"
+                          >10/45</span
+                        >
+                      </h5>
+                      <div
+                        class="space-y-2 max-h-60 overflow-y-auto custom-scroll pr-2"
+                      >
+                        <div
+                          class="flex items-center justify-between p-2 hover:bg-white/60 rounded-lg transition"
+                        >
+                          <div class="flex items-center gap-3">
+                            <img
+                              src="https://ui-avatars.com/api/?name=A+B&background=random"
+                              class="w-8 h-8 rounded-full"
+                            />
+                            <div>
+                              <p class="text-xs font-bold">Nguyễn Văn A</p>
+                              <p class="text-[10px] text-slate-500">2010001</p>
+                            </div>
+                          </div>
+                          <span
+                            class="text-[10px] font-bold text-green-600 bg-green-50 px-2 py-0.5 rounded"
+                            >Có mặt</span
+                          >
+                        </div>
+                        <!-- ... More students ... -->
+                      </div>
+                    </div>
+                    <div
+                      class="bg-white/40 rounded-xl p-4 border border-white/50"
+                    >
+                      <h5
+                        class="font-bold text-slate-700 mb-3 flex justify-between items-center text-sm"
+                      >
+                        Tài liệu môn học
+                        <button
+                          class="text-[10px] bg-blue-600 text-white px-2 py-1 rounded hover:bg-blue-700 transition flex items-center gap-1"
+                        >
+                          <i class="fa-solid fa-upload"></i> Upload
+                        </button>
+                      </h5>
+                      <div class="space-y-2">
+                        <div
+                          class="flex items-center justify-between p-2 border border-white/60 bg-white/30 rounded-lg"
+                        >
+                          <div class="flex items-center gap-2 min-w-0">
+                            <div
+                              class="w-8 h-8 bg-red-50 text-red-500 rounded flex items-center justify-center flex-shrink-0 text-sm"
+                            >
+                              <i class="fa-solid fa-file-pdf"></i>
+                            </div>
+                            <div class="min-w-0">
+                              <p
+                                class="text-xs font-bold text-slate-700 truncate"
+                              >
+                                Syllabus_GiaiTich1.pdf
+                              </p>
+                              <p class="text-[10px] text-slate-400">1.2 MB</p>
+                            </div>
+                          </div>
+                          <button
+                            class="text-slate-400 hover:text-red-500 transition"
+                          >
+                            <i class="fa-solid fa-trash text-xs"></i>
+                          </button>
+                        </div>
+                        <div
+                          class="flex items-center justify-between p-2 border border-white/60 bg-white/30 rounded-lg"
+                        >
+                          <div class="flex items-center gap-2 min-w-0">
+                            <div
+                              class="w-8 h-8 bg-blue-50 text-blue-500 rounded flex items-center justify-center flex-shrink-0 text-sm"
+                            >
+                              <i class="fa-solid fa-file-word"></i>
+                            </div>
+                            <div class="min-w-0">
+                              <p
+                                class="text-xs font-bold text-slate-700 truncate"
+                              >
+                                Bai_tap_Tuan_1.docx
+                              </p>
+                              <p class="text-[10px] text-slate-400">500 KB</p>
+                            </div>
+                          </div>
+                          <button
+                            class="text-slate-400 hover:text-red-500 transition"
+                          >
+                            <i class="fa-solid fa-trash text-xs"></i>
+                          </button>
+                        </div>
+                        <div
+                          class="flex items-center justify-between p-2 border border-white/60 bg-white/30 rounded-lg"
+                        >
+                          <div class="flex items-center gap-2 min-w-0">
+                            <div
+                              class="w-8 h-8 bg-orange-50 text-orange-500 rounded flex items-center justify-center flex-shrink-0 text-sm"
+                            >
+                              <i class="fa-solid fa-file-powerpoint"></i>
+                            </div>
+                            <div class="min-w-0">
+                              <p
+                                class="text-xs font-bold text-slate-700 truncate"
+                              >
+                                Slide_Bai_Giang_Ch1.pptx
+                              </p>
+                              <p class="text-[10px] text-slate-400">5.5 MB</p>
+                            </div>
+                          </div>
+                          <button
+                            class="text-slate-400 hover:text-red-500 transition"
+                          >
+                            <i class="fa-solid fa-trash text-xs"></i>
+                          </button>
+                        </div>
+                      </div>
+                    </div>
+                  </div>
+                </div>
+              </div>
+            </div>
+          </div>
+
+          <!-- ================= TUTOR: PROFILE (NEW & FIXED) ================= -->
+          <div id="profile_tutor" class="section-view">
+            <div
+              class="glass-card rounded-[32px] overflow-hidden p-1 bg-white/40"
+            >
+              <div
+                class="bg-white/50 rounded-[28px] overflow-hidden relative pb-10"
+              >
+                <div
+                  class="h-48 bg-gradient-to-r from-green-500 via-teal-500 to-blue-500"
+                ></div>
+                <div class="px-8 relative">
+                  <div
+                    class="flex flex-col md:flex-row justify-between items-end -mt-16 mb-6 gap-4"
+                  >
+                    <div class="relative">
+                      <img
+                        src="https://ui-avatars.com/api/?name=Tutor+A&background=fff&color=2563eb&size=128"
+                        class="w-32 h-32 rounded-3xl border-4 border-white shadow-xl"
+                      />
+                      <div
+                        class="absolute bottom-1 right-1 w-5 h-5 bg-blue-500 border-2 border-white rounded-full"
+                      ></div>
+                    </div>
+                    <button
+                      onclick="toggleTutorProfileEdit()"
+                      class="px-6 py-3 bg-white/80 hover:bg-white text-slate-700 font-bold rounded-xl shadow-sm transition text-sm"
+                    >
+                      <i class="fa-solid fa-pen-to-square mr-2"></i> Chỉnh sửa
+                    </button>
+                  </div>
+
+                  <!-- View Mode -->
+                  <div id="tutor-view-mode">
+                    <h1
+                      class="text-3xl font-black text-slate-800 user-name-display"
+                    >
+                      Tutor Nguyễn Văn A
+                    </h1>
+                    <p
+                      class="text-lg text-slate-500 font-medium mb-8 user-role-display"
+                    >
+                      Giảng viên
+                    </p>
+
+                    <div class="grid grid-cols-1 md:grid-cols-2 gap-6">
+                      <div
+                        class="glass-panel p-5 rounded-2xl flex items-center gap-4"
+                      >
+                        <div
+                          class="w-10 h-10 bg-blue-50 text-blue-600 rounded-lg flex items-center justify-center flex-shrink-0"
+                        >
+                          <i class="fa-solid fa-briefcase"></i>
+                        </div>
+                        <div class="flex-1 min-w-0">
+                          <p class="text-xs font-bold text-slate-400 uppercase">
+                            Kinh nghiệm
+                          </p>
+                          <p class="font-bold text-slate-700">
+                            5 Năm giảng dạy
+                          </p>
+                        </div>
+                      </div>
+                      <div
+                        class="glass-panel p-5 rounded-2xl flex items-center gap-4"
+                      >
+                        <div
+                          class="w-10 h-10 bg-purple-50 text-purple-600 rounded-lg flex items-center justify-center flex-shrink-0"
+                        >
+                          <i class="fa-solid fa-certificate"></i>
+                        </div>
+                        <div>
+                          <p class="text-xs font-bold text-slate-400 uppercase">
+                            Chứng chỉ
+                          </p>
+                          <p class="font-bold text-slate-700">
+                            Thạc sĩ Toán học
+                          </p>
+                        </div>
+                      </div>
+                    </div>
+                  </div>
+
+                  <!-- Edit Mode -->
+                  <form
+                    id="tutor-edit-mode"
+                    class="hidden space-y-6 animate-float mt-6"
+                    onsubmit="updateTutorProfile(event)"
+                  >
+                    <div class="grid grid-cols-1 md:grid-cols-2 gap-6">
+                      <div class="space-y-2">
+                        <label
+                          class="text-xs font-bold text-slate-500 uppercase ml-1"
+                          >Tên Tutor</label
+                        ><input
+                          type="text"
+                          value="Tutor Nguyễn Văn A"
+                          class="w-full p-4 rounded-xl bg-white/50 border-none font-bold text-slate-700"
+                        />
+                      </div>
+                      <div class="space-y-2">
+                        <label
+                          class="text-xs font-bold text-slate-500 uppercase ml-1"
+                          >Kinh nghiệm</label
+                        ><input
+                          type="text"
+                          value="5 Năm giảng dạy"
+                          class="w-full p-4 rounded-xl bg-white/50 border-none font-bold text-slate-700"
+                        />
+                      </div>
+                      <div class="space-y-2">
+                        <label
+                          class="text-xs font-bold text-slate-500 uppercase ml-1"
+                          >Chứng chỉ</label
+                        ><input
+                          type="text"
+                          value="Thạc sĩ Toán học"
+                          class="w-full p-4 rounded-xl bg-white/50 border-none font-bold text-slate-700"
+                        />
+                      </div>
+                    </div>
+                    <div class="flex gap-4">
+                      <button
+                        class="px-8 py-3 rounded-xl bg-blue-600 text-white font-bold hover:bg-blue-700 shadow-lg transition"
+                      >
+                        Lưu
+                      </button>
+                      <button
+                        type="button"
+                        onclick="toggleTutorProfileEdit()"
+                        class="px-8 py-3 rounded-xl bg-white text-slate-600 font-bold hover:bg-slate-100 transition"
+                      >
+                        Hủy
+                      </button>
+                    </div>
+                  </form>
+                </div>
+              </div>
+            </div>
+          </div>
+
+          <!-- ================= ADMIN: DASHBOARD ================= -->
+          <div id="dashboard_admin" class="section-view space-y-8">
+            <!-- Stats & Charts -->
+            <div class="grid grid-cols-1 md:grid-cols-4 gap-6">
+              <div
+                class="glass-card p-5 rounded-2xl flex items-center justify-between border-b-4 border-blue-600 bg-blue-50/50"
+              >
+                <div class="min-w-0 flex-1">
+                  <p
+                    class="text-[10px] font-bold text-slate-400 uppercase truncate"
+                  >
+                    Tổng Sinh viên
+                  </p>
+                  <p class="text-2xl font-black text-slate-800 truncate">
+                    10,200
+                  </p>
+                </div>
+                <i
+                  class="fa-solid fa-user-graduate text-blue-300 text-2xl flex-shrink-0 ml-3"
+                ></i>
+              </div>
+              <div
+                class="glass-card p-5 rounded-2xl flex items-center justify-between border-b-4 border-purple-500 bg-purple-50/50"
+              >
+                <div class="min-w-0 flex-1">
+                  <p
+                    class="text-[10px] font-bold text-slate-400 uppercase truncate"
+                  >
+                    Tổng Tutor
+                  </p>
+                  <p class="text-2xl font-black text-slate-800 truncate">450</p>
+                </div>
+                <i
+                  class="fa-solid fa-chalkboard-user text-purple-300 text-2xl flex-shrink-0 ml-3"
+                ></i>
+              </div>
+              <div
+                class="glass-card p-5 rounded-2xl flex items-center justify-between border-b-4 border-green-500 bg-green-50/50"
+              >
+                <div class="min-w-0 flex-1">
+                  <p
+                    class="text-[10px] font-bold text-slate-400 uppercase truncate"
+                  >
+                    Môn học Active
+                  </p>
+                  <p class="text-2xl font-black text-slate-800 truncate">340</p>
+                </div>
+                <i
+                  class="fa-solid fa-book-open text-green-300 text-2xl flex-shrink-0 ml-3"
+                ></i>
+              </div>
+              <div
+                class="glass-card p-5 rounded-2xl flex items-center justify-between border-b-4 border-yellow-500 bg-yellow-50/50"
+              >
+                <div class="min-w-0 flex-1">
+                  <p
+                    class="text-[10px] font-bold text-slate-400 uppercase truncate"
+                  >
+                    Đánh giá TB
+                  </p>
+                  <p class="text-2xl font-black text-slate-800 truncate">
+                    4.7/5
+                  </p>
+                </div>
+                <i
+                  class="fa-solid fa-star text-yellow-300 text-2xl flex-shrink-0 ml-3"
+                ></i>
+              </div>
+            </div>
+
+            <!-- Charts Area -->
+            <div class="grid grid-cols-1 lg:grid-cols-2 gap-6">
+              <div class="glass-card p-6 rounded-[24px]">
+                <h4 class="font-bold text-slate-700 mb-4">Thống kê truy cập</h4>
+                <canvas id="trafficChart" height="200"></canvas>
+              </div>
+              <div class="glass-card p-6 rounded-[24px]">
+                <h4 class="font-bold text-slate-700 mb-4">
+                  Phân bổ người dùng
+                </h4>
+                <canvas id="userChart" height="200"></canvas>
+              </div>
+            </div>
+
+            <!-- Course Performance Table -->
+            <div class="glass-card p-6 rounded-[24px] overflow-hidden">
+              <div class="flex justify-between items-center mb-4">
+                <h4 class="font-bold text-slate-800">
+                  Hiệu suất Môn học (Điểm trung bình)
+                </h4>
+                <button class="text-blue-600 text-xs font-bold hover:underline">
+                  Xem báo cáo chi tiết
+                </button>
+              </div>
+              <div class="overflow-x-auto">
+                <table class="w-full text-left text-sm">
+                  <thead
+                    class="bg-slate-50/50 text-xs font-bold text-slate-500 uppercase border-b border-slate-200"
+                  >
+                    <tr>
+                      <th class="p-4 rounded-tl-xl">Môn học</th>
+                      <th class="p-4">Mã MH</th>
+                      <th class="p-4">Số lượng Tutor</th>
+                      <th class="p-4">Số lượng SV</th>
+                      <th class="p-4 rounded-tr-xl text-right">
+                        Điểm Trung Bình
+                      </th>
+                    </tr>
+                  </thead>
+                  <tbody class="divide-y divide-slate-100">
+                    <tr class="hover:bg-white/40 transition">
+                      <td class="p-4 font-bold text-slate-700">Giải tích 1</td>
+                      <td class="p-4">
+                        <span
+                          class="bg-blue-100 text-blue-600 px-2 py-1 rounded text-[10px] font-bold"
+                          >CO1023</span
+                        >
+                      </td>
+                      <td class="p-4 text-slate-600">12</td>
+                      <td class="p-4 text-slate-600">450</td>
+                      <td class="p-4 text-right font-bold text-green-600">
+                        7.8
+                      </td>
+                    </tr>
+                    <tr class="hover:bg-white/40 transition">
+                      <td class="p-4 font-bold text-slate-700">
+                        Vật lý Đại cương 1
+                      </td>
+                      <td class="p-4">
+                        <span
+                          class="bg-purple-100 text-purple-600 px-2 py-1 rounded text-[10px] font-bold"
+                          >PH1003</span
+                        >
+                      </td>
+                      <td class="p-4 text-slate-600">8</td>
+                      <td class="p-4 text-slate-600">320</td>
+                      <td class="p-4 text-right font-bold text-yellow-600">
+                        6.5
+                      </td>
+                    </tr>
+                    <tr class="hover:bg-white/40 transition">
+                      <td class="p-4 font-bold text-slate-700">
+                        Nhập môn Lập trình (Python)
+                      </td>
+                      <td class="p-4">
+                        <span
+                          class="bg-indigo-100 text-indigo-600 px-2 py-1 rounded text-[10px] font-bold"
+                          >CO2011</span
+                        >
+                      </td>
+                      <td class="p-4 text-slate-600">15</td>
+                      <td class="p-4 text-slate-600">600</td>
+                      <td class="p-4 text-right font-bold text-green-600">
+                        8.2
+                      </td>
+                    </tr>
+                    <tr class="hover:bg-white/40 transition">
+                      <td class="p-4 font-bold text-slate-700">
+                        Hóa Đại cương
+                      </td>
+                      <td class="p-4">
+                        <span
+                          class="bg-green-100 text-green-600 px-2 py-1 rounded text-[10px] font-bold"
+                          >CH1003</span
+                        >
+                      </td>
+                      <td class="p-4 text-slate-600">5</td>
+                      <td class="p-4 text-slate-600">150</td>
+                      <td class="p-4 text-right font-bold text-slate-600">
+                        7.0
+                      </td>
+                    </tr>
+                    <tr class="hover:bg-white/40 transition">
+                      <td class="p-4 font-bold text-slate-700">
+                        Cấu trúc Dữ liệu
+                      </td>
+                      <td class="p-4">
+                        <span
+                          class="bg-red-100 text-red-600 px-2 py-1 rounded text-[10px] font-bold"
+                          >CO2003</span
+                        >
+                      </td>
+                      <td class="p-4 text-slate-600">10</td>
+                      <td class="p-4 text-slate-600">280</td>
+                      <td class="p-4 text-right font-bold text-red-500">5.9</td>
+                    </tr>
+                  </tbody>
+                </table>
+              </div>
+            </div>
+          </div>
+
+          <!-- ================= ADMIN: SYSTEM & LOGS (FIXED CONFIG) ================= -->
+          <div id="system_admin" class="section-view space-y-8">
+            <h3 class="text-xl font-bold text-slate-800">Cấu hình hệ thống</h3>
+            <div class="grid grid-cols-1 md:grid-cols-2 gap-6">
+              <div
+                class="glass-card p-6 rounded-[24px] flex items-center justify-between"
+              >
+                <div>
+                  <h4 class="font-bold text-slate-800">Chế độ bảo trì</h4>
+                  <p class="text-xs text-slate-500">Ngắt truy cập sinh viên</p>
+                </div>
+                <label class="relative inline-flex items-center cursor-pointer">
+                  <input type="checkbox" class="sr-only peer" />
+                  <div
+                    class="w-11 h-6 bg-slate-200 peer-focus:outline-none rounded-full peer peer-checked:after:translate-x-full peer-checked:after:border-white after:content-[''] after:absolute after:top-[2px] after:left-[2px] after:bg-white after:border-gray-300 after:border after:rounded-full after:h-5 after:w-5 after:transition-all peer-checked:bg-blue-600"
+                  ></div>
+                </label>
+              </div>
+              <div
+                class="glass-card p-6 rounded-[24px] flex items-center justify-between"
+              >
+                <div>
+                  <h4 class="font-bold text-slate-800">Debug Mode</h4>
+                  <p class="text-xs text-slate-500">Hiện chi tiết lỗi</p>
+                </div>
+                <label class="relative inline-flex items-center cursor-pointer">
+                  <input type="checkbox" class="sr-only peer" checked />
+                  <div
+                    class="w-11 h-6 bg-slate-200 peer-focus:outline-none rounded-full peer peer-checked:after:translate-x-full peer-checked:after:border-white after:content-[''] after:absolute after:top-[2px] after:left-[2px] after:bg-white after:border-gray-300 after:border after:rounded-full after:h-5 after:w-5 after:transition-all peer-checked:bg-purple-600"
+                  ></div>
+                </label>
+              </div>
+            </div>
+
+            <h3 class="text-xl font-bold text-slate-800 mt-6">
+              System Logs Console
+            </h3>
+            <div
+              class="glass-card p-0 rounded-[24px] overflow-hidden bg-[#1e293b] border border-slate-700 shadow-2xl"
+            >
+              <div
+                class="bg-[#0f172a] p-3 border-b border-slate-700 flex justify-between items-center"
+              >
+                <span class="text-xs font-mono text-slate-400"
+                  >admin@hcmut-server:~ system logs</span
+                >
+              </div>
+              <div
+                class="p-6 font-mono text-xs h-96 overflow-y-auto log-scroll space-y-2 text-slate-300"
+              >
+                <p>
+                  <span class="text-blue-400">[INFO]</span> [AuthService] User
+                  'nguyenvan.a' logged in.
+                </p>
+                <p class="animate-pulse text-slate-500">_</p>
+              </div>
+            </div>
+          </div>
+
+          <!-- Tutors also need schedule/bonus -->
+          <div id="tutor_schedule" class="section-view"><!-- ... --></div>
+        </div>
+      </main>
+    </div>
+
+    <!-- Modals ... -->
+    <!-- (Bonus Session Modal, Material Modal) -->
+    <div
+      id="bonus-session-modal"
+      class="fixed inset-0 z-[60] hidden flex items-center justify-center"
+    >
+      <div
+        class="absolute inset-0 bg-slate-900/20 backdrop-blur-sm"
+        onclick="document.getElementById('bonus-session-modal').classList.add('hidden')"
+      ></div>
+      <div
+        class="glass-panel w-full max-w-md p-8 rounded-[32px] shadow-2xl relative z-10 bg-white/80"
+      >
+        <h3 class="text-xl font-bold text-slate-800 mb-4">
+          Tạo buổi học bổ sung
+        </h3>
+        <form
+          class="space-y-4"
+          onsubmit="alert('Đã gửi yêu cầu!'); document.getElementById('bonus-session-modal').classList.add('hidden'); return false;"
+        >
+          <div>
+            <label class="text-xs font-bold text-slate-500 uppercase"
+              >Môn học</label
+            ><select
+              class="w-full p-3 rounded-xl border border-slate-200 bg-white"
+            >
+              <option>Giải tích 1</option>
+            </select>
+          </div>
+          <button
+            class="w-full py-3 bg-purple-600 text-white font-bold rounded-xl hover:bg-purple-700"
+          >
+            Xác nhận
+          </button>
+        </form>
+      </div>
+    </div>
+    <div
+      id="material-modal"
+      class="fixed inset-0 z-[60] hidden flex items-center justify-center"
+    >
+      <div
+        class="absolute inset-0 bg-slate-900/20 backdrop-blur-sm transition-opacity"
+        onclick="closeMaterialModal()"
+      ></div>
+      <div
+        class="glass-panel w-full max-w-lg p-0 rounded-[32px] shadow-2xl transform transition-all scale-100 relative z-10 overflow-hidden m-4"
+      >
+        <div
+          class="p-6 border-b border-white/40 flex justify-between items-center bg-white/20"
+        >
+          <h3
+            class="font-bold text-slate-800 text-lg tracking-tight"
+            id="material-title"
+          >
+            Tài liệu
+          </h3>
+          <button
+            onclick="closeMaterialModal()"
+            class="w-8 h-8 rounded-full bg-white/40 hover:bg-red-50 hover:text-red-500 flex items-center justify-center text-slate-500 transition-all"
+          >
+            <i class="fa-solid fa-times"></i>
+          </button>
+        </div>
+        <div class="p-6 space-y-3 bg-white/30">
+          <p class="text-sm text-slate-500">Danh sách tài liệu...</p>
+        </div>
+      </div>
+    </div>
+
+    <!-- LOGIC -->
+    <script src="js/main.js" defer></script>
+  </body>
+</html>
