@@ -173,7 +173,112 @@ document.addEventListener("partialsLoaded", () => {
 
       applyLoginState(savedUsername, savedRole);
   }
+
+  // INIT "SOUL" INTERACTIONS
+  initSoulInteractions();
 });
+
+function initSoulInteractions() {
+    // 1. Lenis Smooth Scroll
+    if (typeof Lenis !== 'undefined') {
+        const lenis = new Lenis({
+            duration: 1.2,
+            easing: (t) => Math.min(1, 1.001 - Math.pow(2, -10 * t)),
+            smooth: true
+        });
+        function raf(time) {
+            lenis.raf(time);
+            requestAnimationFrame(raf);
+        }
+        requestAnimationFrame(raf);
+
+        // Connect AOS to Lenis
+        // AOS.init is called later, but Lenis needs to drive it if we want full integration.
+        // For simplicity, standard AOS works well enough with Lenis.
+    }
+
+    // 2. AOS Scroll Reveal
+    if (typeof AOS !== 'undefined') {
+        AOS.init({
+            duration: 800,
+            easing: 'ease-out-cubic',
+            once: true,
+            offset: 50,
+            delay: 100,
+        });
+    }
+
+    // 3. Custom Cursor
+    const cursor = document.getElementById("cursor");
+    const follower = document.getElementById("cursor-follower");
+
+    if (cursor && follower) {
+        let posX = 0, posY = 0;
+        let mouseX = 0, mouseY = 0;
+
+        document.addEventListener("mousemove", (e) => {
+            mouseX = e.clientX;
+            mouseY = e.clientY;
+
+            // Immediate cursor update
+            cursor.style.transform = `translate3d(${mouseX - 8}px, ${mouseY - 8}px, 0)`;
+        });
+
+        // Smooth follower update
+        setInterval(() => {
+            posX += (mouseX - posX) / 9;
+            posY += (mouseY - posY) / 9;
+            follower.style.transform = `translate3d(${posX - 20}px, ${posY - 20}px, 0)`;
+        }, 10);
+
+        // Hover states
+        const interactiveElements = document.querySelectorAll("a, button, .interactive, input, select, .custom-select-trigger");
+
+        // Add listeners to existing and future elements via delegation or re-query
+        // Ideally use delegation for simplicity
+        document.body.addEventListener('mouseover', (e) => {
+            if (e.target.closest('a, button, .interactive, input, select, .custom-option, .glass-card')) {
+                cursor.classList.add("hovered");
+                follower.classList.add("hovered");
+            }
+        });
+        document.body.addEventListener('mouseout', (e) => {
+            if (e.target.closest('a, button, .interactive, input, select, .custom-option, .glass-card')) {
+                cursor.classList.remove("hovered");
+                follower.classList.remove("hovered");
+            }
+        });
+    }
+
+    // 4. Button Ripple Effect
+    document.addEventListener('click', function (e) {
+        const btn = e.target.closest('button, .btn-ripple');
+        if (btn) {
+            const rect = btn.getBoundingClientRect();
+            const x = e.clientX - rect.left;
+            const y = e.clientY - rect.top;
+
+            const circle = document.createElement('span');
+            circle.classList.add('ripple');
+            circle.style.left = `${x}px`;
+            circle.style.top = `${y}px`;
+
+            btn.appendChild(circle);
+
+            setTimeout(() => circle.remove(), 600);
+        }
+    });
+
+    // 5. Vanilla Tilt (Automatic for .glass-card if labeled data-tilt)
+    if (typeof VanillaTilt !== 'undefined') {
+        VanillaTilt.init(document.querySelectorAll("[data-tilt]"), {
+            max: 5,
+            speed: 400,
+            glare: true,
+            "max-glare": 0.2,
+        });
+    }
+}
 
 const roleMenus = {
   student: [
@@ -262,11 +367,45 @@ function generateSidebar(role) {
 }
 
 function switchTab(tabId) {
-  document
-    .querySelectorAll(".section-view")
-    .forEach((el) => el.classList.remove("active"));
+  // Fade out current active
+  const current = document.querySelector(".section-view.active");
+  if (current) {
+      current.classList.add("fade-out");
+      current.classList.remove("active");
+
+      setTimeout(() => {
+          current.classList.remove("fade-out");
+          current.style.display = "none";
+          activateNewTab(tabId);
+      }, 300); // Match CSS transition duration
+  } else {
+      activateNewTab(tabId);
+  }
+}
+
+function activateNewTab(tabId) {
   const target = document.getElementById(tabId);
-  if (target) target.classList.add("active");
+  if (target) {
+      target.style.display = "block";
+      // Trigger reflow
+      void target.offsetWidth;
+      target.classList.add("active");
+
+      // Re-init AOS for new content
+      if(typeof AOS !== 'undefined') {
+          setTimeout(() => AOS.refresh(), 100);
+      }
+
+      // Re-init Tilt for new content
+      if (typeof VanillaTilt !== 'undefined') {
+        VanillaTilt.init(target.querySelectorAll("[data-tilt]"), {
+            max: 5,
+            speed: 400,
+            glare: true,
+            "max-glare": 0.2,
+        });
+      }
+  }
 
   document.querySelectorAll(".nav-item").forEach((el) => {
     el.classList.toggle("active", el.dataset.target === tabId);

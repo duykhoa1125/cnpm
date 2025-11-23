@@ -9,17 +9,28 @@
       href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@300;400;500;600;700;800&display=swap"
       rel="stylesheet"
     />
+    <link href="https://api.fontshare.com/v2/css?f[]=satoshi@900,700,500,300,400&display=swap" rel="stylesheet">
     <link
       rel="stylesheet"
       href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css"
     />
+    <link href="https://unpkg.com/aos@2.3.1/dist/aos.css" rel="stylesheet">
     <link rel="stylesheet" href="css/styles.css" />
+
     <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+    <script src="https://cdn.jsdelivr.net/gh/studio-freight/lenis@1.0.29/bundled/lenis.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/vanilla-tilt/1.8.0/vanilla-tilt.min.js"></script>
+    <script type="module" src="https://unpkg.com/@splinetool/viewer@1.0.0/build/spline-viewer.js"></script>
+    <script src="https://unpkg.com/aos@2.3.1/dist/aos.js"></script>
+
     <script>
       tailwind.config = {
         theme: {
           extend: {
-            fontFamily: { sans: ['"Plus Jakarta Sans"', "sans-serif"] },
+            fontFamily: {
+              sans: ['"Satoshi"', '"Plus Jakarta Sans"', "sans-serif"],
+              display: ['"Satoshi"', "sans-serif"]
+            },
             colors: {
               primary: "#3b82f6",
               secondary: "#6366f1",
@@ -36,7 +47,19 @@
     </script>
     <script src="js/loader.js"></script>
   </head>
-  <body class="text-slate-600 antialiased h-screen flex overflow-hidden">
+  <body class="text-slate-600 antialiased h-screen flex overflow-hidden cursor-none">
+    <!-- NOISE OVERLAY -->
+    <div class="fixed inset-0 z-[0] pointer-events-none opacity-[0.03] mix-blend-overlay" style="background-image: url('https://grainy-gradients.vercel.app/noise.svg');"></div>
+
+    <!-- AMBIENT BLOBS -->
+    <div class="ambient-blob blob-1"></div>
+    <div class="ambient-blob blob-2"></div>
+    <div class="ambient-blob blob-3"></div>
+
+    <!-- CUSTOM CURSOR -->
+    <div id="cursor" class="fixed top-0 left-0 w-4 h-4 bg-blue-600 rounded-full pointer-events-none z-[10000] mix-blend-difference transition-transform duration-100 hidden md:block"></div>
+    <div id="cursor-follower" class="fixed top-0 left-0 w-10 h-10 border border-blue-600 rounded-full pointer-events-none z-[9999] transition-all duration-300 ease-out hidden md:block"></div>
+
     <!-- GLOBAL SPINNER -->
     <div id="global-loader" class="fixed inset-0 z-[9999] bg-white flex items-center justify-center transition-opacity duration-500">
       <div class="flex flex-col items-center gap-4">
