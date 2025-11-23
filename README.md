@@ -44,12 +44,6 @@ The application is built using standard HTML, CSS (Tailwind CSS), and Vanilla Ja
 *   **Notifications**: Toast notifications for user actions.
 *   **Responsive Design**: Mobile-friendly interface with a toggleable sidebar.
 
-## Documentation
-
-The codebase is fully documented using JSDoc.
-*   `js/loader.js`: Documentation for the partial loading mechanism.
-*   `js/main.js`: Documentation for application logic, including authentication, navigation, and UI helpers.
-
 ## How it Works
 
 The `index.html` file contains `div` elements with a `data-include` attribute. The `js/loader.js` script scans for these attributes and fetches the corresponding HTML file from the `partial/` directory, injecting it into the DOM. This allows for a clean separation of concerns and easier maintenance of UI components.
