@@ -1,0 +1,139 @@
+          <div id="profile_tutor" class="section-view">
+            <div
+              class="glass-card rounded-[32px] overflow-hidden p-1 bg-white/40"
+            >
+              <div
+                class="bg-white/50 rounded-[28px] overflow-hidden relative pb-10"
+              >
+                <div
+                  class="h-48 bg-gradient-to-r from-green-500 via-teal-500 to-blue-500"
+                ></div>
+                <div class="px-8 relative">
+                  <div
+                    class="flex flex-col md:flex-row justify-between items-end -mt-16 mb-6 gap-4"
+                  >
+                    <div class="relative">
+                      <img
+                        src="https://ui-avatars.com/api/?name=Tutor+A&background=fff&color=2563eb&size=128"
+                        class="w-32 h-32 rounded-3xl border-4 border-white shadow-xl"
+                      />
+                      <div
+                        class="absolute bottom-1 right-1 w-5 h-5 bg-blue-500 border-2 border-white rounded-full"
+                      ></div>
+                    </div>
+                    <button
+                      onclick="toggleTutorProfileEdit()"
+                      class="px-6 py-3 bg-white/80 hover:bg-white text-slate-700 font-bold rounded-xl shadow-sm transition text-sm"
+                    >
+                      <i class="fa-solid fa-pen-to-square mr-2"></i> Chỉnh sửa
+                    </button>
+                  </div>
+
+                  <!-- View Mode -->
+                  <div id="tutor-view-mode">
+                    <h1
+                      class="text-3xl font-black text-slate-800 user-name-display"
+                    >
+                      Tutor Nguyễn Văn A
+                    </h1>
+                    <p
+                      class="text-lg text-slate-500 font-medium mb-8 user-role-display"
+                    >
+                      Giảng viên
+                    </p>
+
+                    <div class="grid grid-cols-1 md:grid-cols-2 gap-6">
+                      <div
+                        class="glass-panel p-5 rounded-2xl flex items-center gap-4"
+                      >
+                        <div
+                          class="w-10 h-10 bg-blue-50 text-blue-600 rounded-lg flex items-center justify-center flex-shrink-0"
+                        >
+                          <i class="fa-solid fa-briefcase"></i>
+                        </div>
+                        <div class="flex-1 min-w-0">
+                          <p class="text-xs font-bold text-slate-400 uppercase">
+                            Kinh nghiệm
+                          </p>
+                          <p class="font-bold text-slate-700">
+                            5 Năm giảng dạy
+                          </p>
+                        </div>
+                      </div>
+                      <div
+                        class="glass-panel p-5 rounded-2xl flex items-center gap-4"
+                      >
+                        <div
+                          class="w-10 h-10 bg-purple-50 text-purple-600 rounded-lg flex items-center justify-center flex-shrink-0"
+                        >
+                          <i class="fa-solid fa-certificate"></i>
+                        </div>
+                        <div>
+                          <p class="text-xs font-bold text-slate-400 uppercase">
+                            Chứng chỉ
+                          </p>
+                          <p class="font-bold text-slate-700">
+                            Thạc sĩ Toán học
+                          </p>
+                        </div>
+                      </div>
+                    </div>
+                  </div>
+
+                  <!-- Edit Mode -->
+                  <form
+                    id="tutor-edit-mode"
+                    class="hidden space-y-6 animate-float mt-6"
+                    onsubmit="updateTutorProfile(event)"
+                  >
+                    <div class="grid grid-cols-1 md:grid-cols-2 gap-6">
+                      <div class="space-y-2">
+                        <label
+                          class="text-xs font-bold text-slate-500 uppercase ml-1"
+                          >Tên Tutor</label
+                        ><input
+                          type="text"
+                          value="Tutor Nguyễn Văn A"
+                          class="w-full p-4 rounded-xl bg-white/50 border-none font-bold text-slate-700"
+                        />
+                      </div>
+                      <div class="space-y-2">
+                        <label
+                          class="text-xs font-bold text-slate-500 uppercase ml-1"
+                          >Kinh nghiệm</label
+                        ><input
+                          type="text"
+                          value="5 Năm giảng dạy"
+                          class="w-full p-4 rounded-xl bg-white/50 border-none font-bold text-slate-700"
+                        />
+                      </div>
+                      <div class="space-y-2">
+                        <label
+                          class="text-xs font-bold text-slate-500 uppercase ml-1"
+                          >Chứng chỉ</label
+                        ><input
+                          type="text"
+                          value="Thạc sĩ Toán học"
+                          class="w-full p-4 rounded-xl bg-white/50 border-none font-bold text-slate-700"
+                        />
+                      </div>
+                    </div>
+                    <div class="flex gap-4">
+                      <button
+                        class="px-8 py-3 rounded-xl bg-blue-600 text-white font-bold hover:bg-blue-700 shadow-lg transition"
+                      >
+                        Lưu
+                      </button>
+                      <button
+                        type="button"
+                        onclick="toggleTutorProfileEdit()"
+                        class="px-8 py-3 rounded-xl bg-white text-slate-600 font-bold hover:bg-slate-100 transition"
+                      >
+                        Hủy
+                      </button>
+                    </div>
+                  </form>
+                </div>
+              </div>
+            </div>
+          </div>

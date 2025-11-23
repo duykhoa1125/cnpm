@@ -1,0 +1,67 @@
+    <div
+      id="bonus-session-modal"
+      class="fixed inset-0 z-[60] hidden flex items-center justify-center"
+    >
+      <div
+        class="absolute inset-0 bg-slate-900/20 backdrop-blur-sm"
+        onclick="document.getElementById('bonus-session-modal').classList.add('hidden')"
+      ></div>
+      <div
+        class="glass-panel w-full max-w-md p-8 rounded-[32px] shadow-2xl relative z-10 bg-white/80"
+      >
+        <h3 class="text-xl font-bold text-slate-800 mb-4">
+          Tạo buổi học bổ sung
+        </h3>
+        <form
+          class="space-y-4"
+          onsubmit="alert('Đã gửi yêu cầu!'); document.getElementById('bonus-session-modal').classList.add('hidden'); return false;"
+        >
+          <div>
+            <label class="text-xs font-bold text-slate-500 uppercase"
+              >Môn học</label
+            ><select
+              class="w-full p-3 rounded-xl border border-slate-200 bg-white"
+            >
+              <option>Giải tích 1</option>
+            </select>
+          </div>
+          <button
+            class="w-full py-3 bg-purple-600 text-white font-bold rounded-xl hover:bg-purple-700"
+          >
+            Xác nhận
+          </button>
+        </form>
+      </div>
+    </div>
+    <div
+      id="material-modal"
+      class="fixed inset-0 z-[60] hidden flex items-center justify-center"
+    >
+      <div
+        class="absolute inset-0 bg-slate-900/20 backdrop-blur-sm transition-opacity"
+        onclick="closeMaterialModal()"
+      ></div>
+      <div
+        class="glass-panel w-full max-w-lg p-0 rounded-[32px] shadow-2xl transform transition-all scale-100 relative z-10 overflow-hidden m-4"
+      >
+        <div
+          class="p-6 border-b border-white/40 flex justify-between items-center bg-white/20"
+        >
+          <h3
+            class="font-bold text-slate-800 text-lg tracking-tight"
+            id="material-title"
+          >
+            Tài liệu
+          </h3>
+          <button
+            onclick="closeMaterialModal()"
+            class="w-8 h-8 rounded-full bg-white/40 hover:bg-red-50 hover:text-red-500 flex items-center justify-center text-slate-500 transition-all"
+          >
+            <i class="fa-solid fa-times"></i>
+          </button>
+        </div>
+        <div class="p-6 space-y-3 bg-white/30">
+          <p class="text-sm text-slate-500">Danh sách tài liệu...</p>
+        </div>
+      </div>
+    </div>

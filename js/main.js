@@ -138,7 +138,7 @@ function setupCustomSelect(selectId, icons = {}) {
 }
 
 // Initialize Custom Selects
-document.addEventListener("DOMContentLoaded", () => {
+document.addEventListener("partialsLoaded", () => {
   // Login Role Select
   setupCustomSelect("role-select", {
     student: "fa-user-graduate",
@@ -286,6 +286,32 @@ function closeMaterialModal() {
 function toggleNotifications() {
   document.getElementById("notification-dropdown").classList.toggle("hidden");
 }
+
+function toggleSidebar() {
+  const sidebar = document.getElementById("sidebar");
+  const overlay = document.getElementById("sidebar-overlay");
+
+  if (!sidebar || !overlay) return;
+
+  const isClosed = sidebar.classList.contains("-translate-x-full");
+
+  if (isClosed) {
+    // Open sidebar
+    sidebar.classList.remove("-translate-x-full");
+    overlay.classList.remove("hidden");
+    // Trigger reflow for opacity transition
+    void overlay.offsetWidth;
+    overlay.classList.remove("opacity-0");
+  } else {
+    // Close sidebar
+    sidebar.classList.add("-translate-x-full");
+    overlay.classList.add("opacity-0");
+    setTimeout(() => {
+      overlay.classList.add("hidden");
+    }, 300); // Wait for transition
+  }
+}
+
 function toggleProfileEdit() {
   /* ... */
 }

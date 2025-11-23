@@ -1,0 +1,206 @@
+          <div id="courses_tutor" class="section-view space-y-6">
+            <div class="flex justify-between items-center">
+              <h3 class="text-xl font-bold text-slate-800">Lớp tôi đang dạy</h3>
+            </div>
+            <div class="grid grid-cols-1 gap-6">
+              <div
+                class="glass-card p-6 rounded-[28px] group hover:border-green-300 transition-all"
+              >
+                <div class="flex flex-col md:flex-row gap-6 items-center mb-6">
+                  <div
+                    class="w-full md:w-24 h-24 rounded-2xl bg-green-100 flex items-center justify-center text-3xl text-green-600 shadow-inner flex-shrink-0"
+                  >
+                    <i class="fa-solid fa-chalkboard-user"></i>
+                  </div>
+                  <div class="flex-1 w-full min-w-0">
+                    <div class="flex justify-between items-start">
+                      <div class="min-w-0">
+                        <span
+                          class="text-[10px] font-bold bg-green-50 text-green-600 px-2 py-1 rounded uppercase"
+                          >CO1023</span
+                        >
+                        <h4
+                          class="text-xl font-bold text-slate-800 mt-1 truncate"
+                        >
+                          Giải tích 1 - Nhóm L01
+                        </h4>
+                        <p class="text-sm text-slate-500 mt-1 truncate">
+                          <i class="fa-solid fa-location-dot mr-1"></i> Phòng:
+                          H6-302
+                        </p>
+                      </div>
+                      <span
+                        class="px-3 py-1 rounded-full bg-blue-50 text-blue-600 text-xs font-bold flex-shrink-0 ml-2"
+                        >Đang diễn ra</span
+                      >
+                    </div>
+                    <div class="grid grid-cols-2 md:grid-cols-4 gap-4 mt-4">
+                      <div class="bg-slate-50 p-2 rounded-lg text-center">
+                        <p
+                          class="text-[10px] text-slate-400 uppercase font-bold"
+                        >
+                          Sĩ số
+                        </p>
+                        <p class="font-bold text-slate-800">45/50</p>
+                      </div>
+                      <div class="bg-slate-50 p-2 rounded-lg text-center">
+                        <p
+                          class="text-[10px] text-slate-400 uppercase font-bold"
+                        >
+                          Vắng
+                        </p>
+                        <p class="font-bold text-red-500">2</p>
+                      </div>
+                    </div>
+                  </div>
+                  <div
+                    class="flex flex-col gap-2 w-full md:w-auto flex-shrink-0"
+                  >
+                    <button
+                      class="px-6 py-3 rounded-xl bg-white border border-slate-200 text-xs font-bold text-slate-600 hover:border-green-400 transition flex items-center justify-center gap-2"
+                    >
+                      <i class="fa-solid fa-list-check"></i> Điểm danh
+                    </button>
+                    <button
+                      onclick="toggleClassDetails('class-details-1')"
+                      class="px-6 py-3 rounded-xl bg-green-600 text-white text-xs font-bold shadow-lg hover:bg-green-700 transition flex items-center justify-center gap-2"
+                    >
+                      <i class="fa-solid fa-folder-gear"></i> Quản lý lớp
+                    </button>
+                  </div>
+                </div>
+                <!-- Class details -->
+                <div
+                  id="class-details-1"
+                  class="hidden mt-6 pt-6 border-t border-slate-200/60 animate-fade-in-down"
+                >
+                  <div class="grid grid-cols-1 lg:grid-cols-2 gap-6">
+                    <div
+                      class="bg-white/40 rounded-xl p-4 border border-white/50"
+                    >
+                      <h5
+                        class="font-bold text-slate-700 mb-3 flex justify-between items-center text-sm"
+                      >
+                        Danh sách sinh viên
+                        <span
+                          class="bg-blue-100 text-blue-600 text-[10px] px-2 py-0.5 rounded-full"
+                          >10/45</span
+                        >
+                      </h5>
+                      <div
+                        class="space-y-2 max-h-60 overflow-y-auto custom-scroll pr-2"
+                      >
+                        <div
+                          class="flex items-center justify-between p-2 hover:bg-white/60 rounded-lg transition"
+                        >
+                          <div class="flex items-center gap-3">
+                            <img
+                              src="https://ui-avatars.com/api/?name=A+B&background=random"
+                              class="w-8 h-8 rounded-full"
+                            />
+                            <div>
+                              <p class="text-xs font-bold">Nguyễn Văn A</p>
+                              <p class="text-[10px] text-slate-500">2010001</p>
+                            </div>
+                          </div>
+                          <span
+                            class="text-[10px] font-bold text-green-600 bg-green-50 px-2 py-0.5 rounded"
+                            >Có mặt</span
+                          >
+                        </div>
+                        <!-- ... More students ... -->
+                      </div>
+                    </div>
+                    <div
+                      class="bg-white/40 rounded-xl p-4 border border-white/50"
+                    >
+                      <h5
+                        class="font-bold text-slate-700 mb-3 flex justify-between items-center text-sm"
+                      >
+                        Tài liệu môn học
+                        <button
+                          class="text-[10px] bg-blue-600 text-white px-2 py-1 rounded hover:bg-blue-700 transition flex items-center gap-1"
+                        >
+                          <i class="fa-solid fa-upload"></i> Upload
+                        </button>
+                      </h5>
+                      <div class="space-y-2">
+                        <div
+                          class="flex items-center justify-between p-2 border border-white/60 bg-white/30 rounded-lg"
+                        >
+                          <div class="flex items-center gap-2 min-w-0">
+                            <div
+                              class="w-8 h-8 bg-red-50 text-red-500 rounded flex items-center justify-center flex-shrink-0 text-sm"
+                            >
+                              <i class="fa-solid fa-file-pdf"></i>
+                            </div>
+                            <div class="min-w-0">
+                              <p
+                                class="text-xs font-bold text-slate-700 truncate"
+                              >
+                                Syllabus_GiaiTich1.pdf
+                              </p>
+                              <p class="text-[10px] text-slate-400">1.2 MB</p>
+                            </div>
+                          </div>
+                          <button
+                            class="text-slate-400 hover:text-red-500 transition"
+                          >
+                            <i class="fa-solid fa-trash text-xs"></i>
+                          </button>
+                        </div>
+                        <div
+                          class="flex items-center justify-between p-2 border border-white/60 bg-white/30 rounded-lg"
+                        >
+                          <div class="flex items-center gap-2 min-w-0">
+                            <div
+                              class="w-8 h-8 bg-blue-50 text-blue-500 rounded flex items-center justify-center flex-shrink-0 text-sm"
+                            >
+                              <i class="fa-solid fa-file-word"></i>
+                            </div>
+                            <div class="min-w-0">
+                              <p
+                                class="text-xs font-bold text-slate-700 truncate"
+                              >
+                                Bai_tap_Tuan_1.docx
+                              </p>
+                              <p class="text-[10px] text-slate-400">500 KB</p>
+                            </div>
+                          </div>
+                          <button
+                            class="text-slate-400 hover:text-red-500 transition"
+                          >
+                            <i class="fa-solid fa-trash text-xs"></i>
+                          </button>
+                        </div>
+                        <div
+                          class="flex items-center justify-between p-2 border border-white/60 bg-white/30 rounded-lg"
+                        >
+                          <div class="flex items-center gap-2 min-w-0">
+                            <div
+                              class="w-8 h-8 bg-orange-50 text-orange-500 rounded flex items-center justify-center flex-shrink-0 text-sm"
+                            >
+                              <i class="fa-solid fa-file-powerpoint"></i>
+                            </div>
+                            <div class="min-w-0">
+                              <p
+                                class="text-xs font-bold text-slate-700 truncate"
+                              >
+                                Slide_Bai_Giang_Ch1.pptx
+                              </p>
+                              <p class="text-[10px] text-slate-400">5.5 MB</p>
+                            </div>
+                          </div>
+                          <button
+                            class="text-slate-400 hover:text-red-500 transition"
+                          >
+                            <i class="fa-solid fa-trash text-xs"></i>
+                          </button>
+                        </div>
+                      </div>
+                    </div>
+                  </div>
+                </div>
+              </div>
+            </div>
+          </div>
