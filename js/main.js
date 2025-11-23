@@ -313,11 +313,12 @@ function toggleSidebar() {
 }
 
 function toggleProfileEdit() {
-  /* ... */
+  document.getElementById("student-edit-mode").classList.toggle("hidden");
 }
 function updateProfile(e) {
   e.preventDefault();
   alert("Saved!");
+  toggleProfileEdit();
 }
 
 function toggleTutorProfileEdit() {
