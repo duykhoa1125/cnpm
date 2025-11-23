@@ -357,6 +357,56 @@ function registerCourse() {
 function cancelCourse(name) {
   if (confirm("Hủy môn?")) showToast("Đã hủy " + name, 'success');
 }
+function confirmRegistration(courseName) {
+  if (confirm(`Xác nhận đăng ký ${courseName}?`)) {
+    showToast(`Đã đăng ký thành công ${courseName}!`, 'success');
+  }
+}
+function viewAllSchedule() {
+  showToast('Chức năng xem tất cả lịch học sẽ được bổ sung trong phiên bản tiếp theo', 'info');
+}
+function enterClass(courseName) {
+  showToast(`Đang vào lớp học ${courseName || ''}...`, 'success');
+}
+function searchCourses() {
+  const searchInput = document.querySelector('#student_register input[type="text"]');
+  const searchValue = searchInput ? searchInput.value.trim() : '';
+  if (searchValue) {
+    showToast(`Đang tìm kiếm: ${searchValue}`, 'info');
+  } else {
+    showToast('Vui lòng nhập từ khóa tìm kiếm', 'error');
+  }
+}
+function viewDetailedReport() {
+  showToast('Đang tải báo cáo chi tiết...', 'info');
+}
+function submitFeedback(e) {
+  e.preventDefault();
+  showToast('Cảm ơn phản hồi của bạn!', 'success');
+  // Reset form
+  e.target.reset();
+  // Reset star rating
+  const stars = document.querySelectorAll(".star-btn");
+  stars.forEach((star) => {
+    star.classList.remove("text-yellow-400");
+    star.classList.add("text-slate-200");
+  });
+  const ratingText = document.getElementById("rating-text");
+  if (ratingText) {
+    ratingText.innerText = "Chưa chọn mức độ";
+    ratingText.classList.remove("text-slate-600");
+    ratingText.classList.add("text-slate-400");
+  }
+}
+function submitBonusSession(e) {
+  e.preventDefault();
+  showToast('Đã gửi yêu cầu tạo buổi học bổ sung!', 'success');
+  document.getElementById('bonus-session-modal').classList.add('hidden');
+  e.target.reset();
+}
+function saveTutorSchedule() {
+  showToast('Lịch dạy đã được lưu thành công!', 'success');
+}
 function toggleClassDetails(id) {
   document.getElementById(id).classList.toggle("hidden");
 }
