@@ -331,7 +331,24 @@ function updateTutorProfile(e) {
 }
 
 function setRating(n) {
-  /* ... */
+  const stars = document.querySelectorAll(".star-btn");
+  const ratingText = document.getElementById("rating-text");
+
+  stars.forEach((star, index) => {
+    if (index < n) {
+      star.classList.remove("text-slate-200");
+      star.classList.add("text-yellow-400");
+    } else {
+      star.classList.add("text-slate-200");
+      star.classList.remove("text-yellow-400");
+    }
+  });
+
+  if (ratingText) {
+    ratingText.innerText = `Đánh giá: ${n} sao`;
+    ratingText.classList.remove("text-slate-400");
+    ratingText.classList.add("text-slate-600");
+  }
 }
 
 function initAdminCharts() {
