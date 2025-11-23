@@ -344,8 +344,10 @@ function setRating(n) {
     }
   });
 
+  const ratingLabels = ["Rất tệ", "Tệ", "Bình thường", "Tốt", "Rất tốt"];
+
   if (ratingText) {
-    ratingText.innerText = `Đánh giá: ${n} sao`;
+    ratingText.innerText = `Đánh giá: ${ratingLabels[n - 1]}`;
     ratingText.classList.remove("text-slate-400");
     ratingText.classList.add("text-slate-600");
   }
