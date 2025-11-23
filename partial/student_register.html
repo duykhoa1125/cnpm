@@ -1,0 +1,256 @@
+          <div id="student_register" class="section-view space-y-6">
+            <div class="glass-card p-6 rounded-[28px]">
+              <h3 class="text-xl font-bold text-slate-800 mb-4">
+                Đăng ký môn học mới
+              </h3>
+              <div class="flex gap-4 mb-6">
+                <div class="flex-1 relative">
+                  <i
+                    class="fa-solid fa-magnifying-glass absolute left-4 top-3.5 text-slate-400"
+                  ></i>
+                  <input
+                    type="text"
+                    placeholder="Tìm kiếm môn học (VD: Vật lý, Hóa đại cương...)"
+                    class="w-full pl-10 p-3 rounded-xl bg-white border border-slate-200 focus:ring-2 focus:ring-blue-500 outline-none"
+                  />
+                </div>
+                <button
+                  class="px-6 py-3 rounded-xl bg-blue-600 text-white font-bold hover:bg-blue-700 transition"
+                >
+                  Tìm kiếm
+                </button>
+              </div>
+
+              <h4 class="font-bold text-slate-700 mb-4">Kết quả tìm kiếm:</h4>
+              <div class="grid grid-cols-1 gap-4">
+                <!-- Seed Data 1: Vật lý 1 -->
+                <div
+                  class="bg-white/50 border border-white rounded-2xl p-6 hover:border-blue-300 transition"
+                >
+                  <div
+                    class="flex flex-col md:flex-row justify-between items-start md:items-center gap-4"
+                  >
+                    <div>
+                      <div class="flex items-center gap-2 mb-1">
+                        <span
+                          class="bg-purple-100 text-purple-600 px-2 py-0.5 rounded text-[10px] font-bold uppercase"
+                          >PH1003</span
+                        >
+                        <h5 class="text-lg font-bold text-slate-800">
+                          Vật lý Đại cương 1
+                        </h5>
+                      </div>
+                      <p class="text-sm text-slate-500">
+                        4 Tín chỉ • Khoa Khoa học Ứng dụng
+                      </p>
+                    </div>
+                  </div>
+                  <div class="mt-4 space-y-3">
+                    <div
+                      class="flex items-center justify-between p-3 bg-white rounded-xl border border-slate-100"
+                    >
+                      <div class="flex items-center gap-4">
+                        <img
+                          src="https://ui-avatars.com/api/?name=Tran+Van+X&background=random"
+                          class="w-10 h-10 rounded-full"
+                        />
+                        <div>
+                          <p class="text-sm font-bold text-slate-800">
+                            Lớp L01 - Tutor: Trần Văn X
+                          </p>
+                          <p class="text-xs text-slate-500">
+                            <i class="fa-regular fa-clock mr-1"></i> T2
+                            (7:00-9:00) • Phòng H1-201
+                          </p>
+                        </div>
+                      </div>
+                      <button
+                        onclick="confirmRegistration('Vật lý ĐC 1 - L01')"
+                        class="px-4 py-2 bg-blue-50 text-blue-600 text-xs font-bold rounded-lg hover:bg-blue-600 hover:text-white transition"
+                      >
+                        Đăng ký
+                      </button>
+                    </div>
+                  </div>
+                </div>
+
+                <!-- Seed Data 2: Cấu trúc dữ liệu -->
+                <div
+                  class="bg-white/50 border border-white rounded-2xl p-6 hover:border-blue-300 transition"
+                >
+                  <div
+                    class="flex flex-col md:flex-row justify-between items-start md:items-center gap-4"
+                  >
+                    <div>
+                      <div class="flex items-center gap-2 mb-1">
+                        <span
+                          class="bg-indigo-100 text-indigo-600 px-2 py-0.5 rounded text-[10px] font-bold uppercase"
+                          >CO2003</span
+                        >
+                        <h5 class="text-lg font-bold text-slate-800">
+                          Cấu trúc Dữ liệu & Giải thuật
+                        </h5>
+                      </div>
+                      <p class="text-sm text-slate-500">
+                        4 Tín chỉ • Khoa KH&KT Máy tính
+                      </p>
+                    </div>
+                  </div>
+                  <div class="mt-4 space-y-3">
+                    <div
+                      class="flex items-center justify-between p-3 bg-white rounded-xl border border-slate-100"
+                    >
+                      <div class="flex items-center gap-4">
+                        <img
+                          src="https://ui-avatars.com/api/?name=Pham+Van+Z&background=random"
+                          class="w-10 h-10 rounded-full"
+                        />
+                        <div>
+                          <p class="text-sm font-bold text-slate-800">
+                            Lớp L01 - Tutor: Phạm Văn Z
+                          </p>
+                          <p class="text-xs text-slate-500">
+                            <i class="fa-regular fa-clock mr-1"></i> T4
+                            (9:00-11:00) • Phòng H6-101
+                          </p>
+                        </div>
+                      </div>
+                      <button
+                        onclick="confirmRegistration('CTDL & GT - L01')"
+                        class="px-4 py-2 bg-blue-50 text-blue-600 text-xs font-bold rounded-lg hover:bg-blue-600 hover:text-white transition"
+                      >
+                        Đăng ký
+                      </button>
+                    </div>
+                    <div
+                      class="flex items-center justify-between p-3 bg-white rounded-xl border border-slate-100"
+                    >
+                      <div class="flex items-center gap-4">
+                        <img
+                          src="https://ui-avatars.com/api/?name=Nguyen+Thi+K&background=random"
+                          class="w-10 h-10 rounded-full"
+                        />
+                        <div>
+                          <p class="text-sm font-bold text-slate-800">
+                            Lớp L02 - Tutor: Nguyễn Thị K
+                          </p>
+                          <p class="text-xs text-slate-500">
+                            <i class="fa-regular fa-clock mr-1"></i> T6
+                            (13:00-15:00) • Phòng H6-102
+                          </p>
+                        </div>
+                      </div>
+                      <button
+                        onclick="confirmRegistration('CTDL & GT - L02')"
+                        class="px-4 py-2 bg-blue-50 text-blue-600 text-xs font-bold rounded-lg hover:bg-blue-600 hover:text-white transition"
+                      >
+                        Đăng ký
+                      </button>
+                    </div>
+                  </div>
+                </div>
+
+                <!-- Seed Data 3: Vật lý 2 -->
+                <div
+                  class="bg-white/50 border border-white rounded-2xl p-6 hover:border-blue-300 transition"
+                >
+                  <div
+                    class="flex flex-col md:flex-row justify-between items-start md:items-center gap-4"
+                  >
+                    <div>
+                      <div class="flex items-center gap-2 mb-1">
+                        <span
+                          class="bg-purple-100 text-purple-600 px-2 py-0.5 rounded text-[10px] font-bold uppercase"
+                          >PH1005</span
+                        >
+                        <h5 class="text-lg font-bold text-slate-800">
+                          Vật lý Đại cương 2
+                        </h5>
+                      </div>
+                      <p class="text-sm text-slate-500">
+                        3 Tín chỉ • Khoa Khoa học Ứng dụng
+                      </p>
+                    </div>
+                  </div>
+                  <div class="mt-4 space-y-3">
+                    <div
+                      class="flex items-center justify-between p-3 bg-white rounded-xl border border-slate-100"
+                    >
+                      <div class="flex items-center gap-4">
+                        <img
+                          src="https://ui-avatars.com/api/?name=Le+Thi+M&background=random"
+                          class="w-10 h-10 rounded-full"
+                        />
+                        <div>
+                          <p class="text-sm font-bold text-slate-800">
+                            Lớp L03 - Tutor: Lê Thị M
+                          </p>
+                          <p class="text-xs text-slate-500">
+                            <i class="fa-regular fa-clock mr-1"></i> T5
+                            (7:00-9:00) • Phòng A4-401
+                          </p>
+                        </div>
+                      </div>
+                      <button
+                        onclick="confirmRegistration('Vật lý ĐC 2 - L03')"
+                        class="px-4 py-2 bg-blue-50 text-blue-600 text-xs font-bold rounded-lg hover:bg-blue-600 hover:text-white transition"
+                      >
+                        Đăng ký
+                      </button>
+                    </div>
+                  </div>
+                </div>
+
+                <!-- Seed Data 4: Hóa đại cương -->
+                <div
+                  class="bg-white/50 border border-white rounded-2xl p-6 hover:border-blue-300 transition"
+                >
+                  <div
+                    class="flex flex-col md:flex-row justify-between items-start md:items-center gap-4"
+                  >
+                    <div>
+                      <div class="flex items-center gap-2 mb-1">
+                        <span
+                          class="bg-green-100 text-green-600 px-2 py-0.5 rounded text-[10px] font-bold uppercase"
+                          >CH1003</span
+                        >
+                        <h5 class="text-lg font-bold text-slate-800">
+                          Hóa Đại cương
+                        </h5>
+                      </div>
+                      <p class="text-sm text-slate-500">
+                        3 Tín chỉ • Khoa Kỹ thuật Hóa học
+                      </p>
+                    </div>
+                  </div>
+                  <div class="mt-4 space-y-3">
+                    <div
+                      class="flex items-center justify-between p-3 bg-white rounded-xl border border-slate-100"
+                    >
+                      <div class="flex items-center gap-4">
+                        <img
+                          src="https://ui-avatars.com/api/?name=Ngo+Van+N&background=random"
+                          class="w-10 h-10 rounded-full"
+                        />
+                        <div>
+                          <p class="text-sm font-bold text-slate-800">
+                            Lớp L01 - Tutor: Ngô Văn N
+                          </p>
+                          <p class="text-xs text-slate-500">
+                            <i class="fa-regular fa-clock mr-1"></i> T7
+                            (8:00-11:00) • Phòng C4-101
+                          </p>
+                        </div>
+                      </div>
+                      <button
+                        onclick="confirmRegistration('Hóa ĐC - L01')"
+                        class="px-4 py-2 bg-blue-50 text-blue-600 text-xs font-bold rounded-lg hover:bg-blue-600 hover:text-white transition"
+                      >
+                        Đăng ký
+                      </button>
+                    </div>
+                  </div>
+                </div>
+              </div>
+            </div>
+          </div>

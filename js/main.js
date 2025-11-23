@@ -138,7 +138,7 @@ function setupCustomSelect(selectId, icons = {}) {
 }
 
 // Initialize Custom Selects
-document.addEventListener("DOMContentLoaded", () => {
+document.addEventListener("partialsLoaded", () => {
   // Login Role Select
   setupCustomSelect("role-select", {
     student: "fa-user-graduate",

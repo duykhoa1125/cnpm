@@ -1,0 +1,57 @@
+          <div id="system_admin" class="section-view space-y-8">
+            <h3 class="text-xl font-bold text-slate-800">Cấu hình hệ thống</h3>
+            <div class="grid grid-cols-1 md:grid-cols-2 gap-6">
+              <div
+                class="glass-card p-6 rounded-[24px] flex items-center justify-between"
+              >
+                <div>
+                  <h4 class="font-bold text-slate-800">Chế độ bảo trì</h4>
+                  <p class="text-xs text-slate-500">Ngắt truy cập sinh viên</p>
+                </div>
+                <label class="relative inline-flex items-center cursor-pointer">
+                  <input type="checkbox" class="sr-only peer" />
+                  <div
+                    class="w-11 h-6 bg-slate-200 peer-focus:outline-none rounded-full peer peer-checked:after:translate-x-full peer-checked:after:border-white after:content-[''] after:absolute after:top-[2px] after:left-[2px] after:bg-white after:border-gray-300 after:border after:rounded-full after:h-5 after:w-5 after:transition-all peer-checked:bg-blue-600"
+                  ></div>
+                </label>
+              </div>
+              <div
+                class="glass-card p-6 rounded-[24px] flex items-center justify-between"
+              >
+                <div>
+                  <h4 class="font-bold text-slate-800">Debug Mode</h4>
+                  <p class="text-xs text-slate-500">Hiện chi tiết lỗi</p>
+                </div>
+                <label class="relative inline-flex items-center cursor-pointer">
+                  <input type="checkbox" class="sr-only peer" checked />
+                  <div
+                    class="w-11 h-6 bg-slate-200 peer-focus:outline-none rounded-full peer peer-checked:after:translate-x-full peer-checked:after:border-white after:content-[''] after:absolute after:top-[2px] after:left-[2px] after:bg-white after:border-gray-300 after:border after:rounded-full after:h-5 after:w-5 after:transition-all peer-checked:bg-purple-600"
+                  ></div>
+                </label>
+              </div>
+            </div>
+
+            <h3 class="text-xl font-bold text-slate-800 mt-6">
+              System Logs Console
+            </h3>
+            <div
+              class="glass-card p-0 rounded-[24px] overflow-hidden bg-[#1e293b] border border-slate-700 shadow-2xl"
+            >
+              <div
+                class="bg-[#0f172a] p-3 border-b border-slate-700 flex justify-between items-center"
+              >
+                <span class="text-xs font-mono text-slate-400"
+                  >admin@hcmut-server:~ system logs</span
+                >
+              </div>
+              <div
+                class="p-6 font-mono text-xs h-96 overflow-y-auto log-scroll space-y-2 text-slate-300"
+              >
+                <p>
+                  <span class="text-blue-400">[INFO]</span> [AuthService] User
+                  'nguyenvan.a' logged in.
+                </p>
+                <p class="animate-pulse text-slate-500">_</p>
+              </div>
+            </div>
+          </div>
