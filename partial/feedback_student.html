@@ -3,72 +3,80 @@
               <h3 class="text-2xl font-bold text-slate-800 mb-6 text-center">
                 Đánh giá môn học
               </h3>
-              <div class="mb-8">
-                <label
-                  class="block text-xs font-bold text-slate-500 uppercase mb-2 ml-1"
-                  >Chọn môn học / Buổi học</label
+              <form onsubmit="submitFeedback(event)">
+                <div class="mb-8">
+                  <label
+                    class="block text-xs font-bold text-slate-500 uppercase mb-2 ml-1"
+                    >Chọn môn học / Buổi học</label
+                  >
+                  <div class="relative">
+                    <select
+                      class="w-full p-4 rounded-xl bg-white border border-slate-200 font-bold text-slate-700 appearance-none focus:ring-2 focus:ring-blue-500 outline-none cursor-pointer hover:bg-slate-50"
+                      required
+                    >
+                      <option value="" disabled selected>
+                        -- Chọn buổi học để đánh giá --
+                      </option>
+                      <option>Giải tích 1 (CO1023) - Buổi 12 (24/10)</option>
+                      <option>Lập trình Python (CO2011) - Lab 3 (26/10)</option>
+                    </select>
+                    <i
+                      class="fa-solid fa-chevron-down absolute right-4 top-5 text-slate-500 pointer-events-none"
+                    ></i>
+                  </div>
+                </div>
+                <div class="text-center mb-8">
+                  <div class="flex justify-center gap-3 text-4xl mb-2">
+                    <button
+                      type="button"
+                      onclick="setRating(1)"
+                      class="star-btn text-slate-200 hover:text-yellow-400 transition"
+                    >
+                      <i class="fa-solid fa-star"></i>
+                    </button>
+                    <button
+                      type="button"
+                      onclick="setRating(2)"
+                      class="star-btn text-slate-200 hover:text-yellow-400 transition"
+                    >
+                      <i class="fa-solid fa-star"></i>
+                    </button>
+                    <button
+                      type="button"
+                      onclick="setRating(3)"
+                      class="star-btn text-slate-200 hover:text-yellow-400 transition"
+                    >
+                      <i class="fa-solid fa-star"></i>
+                    </button>
+                    <button
+                      type="button"
+                      onclick="setRating(4)"
+                      class="star-btn text-slate-200 hover:text-yellow-400 transition"
+                    >
+                      <i class="fa-solid fa-star"></i>
+                    </button>
+                    <button
+                      type="button"
+                      onclick="setRating(5)"
+                      class="star-btn text-slate-200 hover:text-yellow-400 transition"
+                    >
+                      <i class="fa-solid fa-star"></i>
+                    </button>
+                  </div>
+                  <p id="rating-text" class="text-sm font-bold text-slate-500">
+                    Chưa chọn mức độ
+                  </p>
+                </div>
+                <textarea
+                  class="w-full p-4 rounded-xl bg-white border border-slate-200 h-32 outline-none focus:border-blue-500 mb-6 font-medium"
+                  placeholder="Nhận xét chi tiết về giảng viên, tài liệu..."
+                ></textarea>
+                <button
+                  type="submit"
+                  class="w-full py-4 rounded-xl bg-slate-800 text-white font-bold hover:bg-slate-900 transition shadow-xl"
                 >
-                <div class="relative">
-                  <select
-                    class="w-full p-4 rounded-xl bg-white border border-slate-200 font-bold text-slate-700 appearance-none focus:ring-2 focus:ring-blue-500 outline-none cursor-pointer hover:bg-slate-50"
-                  >
-                    <option value="" disabled selected>
-                      -- Chọn buổi học để đánh giá --
-                    </option>
-                    <option>Giải tích 1 (CO1023) - Buổi 12 (24/10)</option>
-                    <option>Lập trình Python (CO2011) - Lab 3 (26/10)</option>
-                  </select>
-                  <i
-                    class="fa-solid fa-chevron-down absolute right-4 top-5 text-slate-500 pointer-events-none"
-                  ></i>
-                </div>
-              </div>
-              <div class="text-center mb-8">
-                <div class="flex justify-center gap-3 text-4xl mb-2">
-                  <button
-                    onclick="setRating(1)"
-                    class="star-btn text-slate-200 hover:text-yellow-400 transition"
-                  >
-                    <i class="fa-solid fa-star"></i>
-                  </button>
-                  <button
-                    onclick="setRating(2)"
-                    class="star-btn text-slate-200 hover:text-yellow-400 transition"
-                  >
-                    <i class="fa-solid fa-star"></i>
-                  </button>
-                  <button
-                    onclick="setRating(3)"
-                    class="star-btn text-slate-200 hover:text-yellow-400 transition"
-                  >
-                    <i class="fa-solid fa-star"></i>
-                  </button>
-                  <button
-                    onclick="setRating(4)"
-                    class="star-btn text-slate-200 hover:text-yellow-400 transition"
-                  >
-                    <i class="fa-solid fa-star"></i>
-                  </button>
-                  <button
-                    onclick="setRating(5)"
-                    class="star-btn text-slate-200 hover:text-yellow-400 transition"
-                  >
-                    <i class="fa-solid fa-star"></i>
-                  </button>
-                </div>
-                <p id="rating-text" class="text-sm font-bold text-slate-500">
-                  Chưa chọn mức độ
-                </p>
-              </div>
-              <textarea
-                class="w-full p-4 rounded-xl bg-white border border-slate-200 h-32 outline-none focus:border-blue-500 mb-6 font-medium"
-                placeholder="Nhận xét chi tiết về giảng viên, tài liệu..."
-              ></textarea>
-              <button
-                onclick="alert('Cảm ơn phản hồi của bạn!')"
-                class="w-full py-4 rounded-xl bg-slate-800 text-white font-bold hover:bg-slate-900 transition shadow-xl"
-              >
-                Gửi đánh giá
-              </button>
+                  Gửi đánh giá
+                </button>
+              </form>
             </div>
           </div>

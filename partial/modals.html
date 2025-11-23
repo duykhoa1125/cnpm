@@ -14,18 +14,21 @@
         </h3>
         <form
           class="space-y-4"
-          onsubmit="alert('Đã gửi yêu cầu!'); document.getElementById('bonus-session-modal').classList.add('hidden'); return false;"
+          onsubmit="submitBonusSession(event)"
         >
           <div>
             <label class="text-xs font-bold text-slate-500 uppercase"
               >Môn học</label
             ><select
               class="w-full p-3 rounded-xl border border-slate-200 bg-white"
+              required
             >
+              <option value="">-- Chọn môn học --</option>
               <option>Giải tích 1</option>
             </select>
           </div>
           <button
+            type="submit"
             class="w-full py-3 bg-purple-600 text-white font-bold rounded-xl hover:bg-purple-700"
           >
             Xác nhận
