@@ -393,7 +393,7 @@ function submitFeedback(e) {
   });
   const ratingText = document.getElementById("rating-text");
   if (ratingText) {
-    ratingText.innerText = "Chọn số sao";
+    ratingText.innerText = "Chưa chọn mức độ";
     ratingText.classList.remove("text-slate-600");
     ratingText.classList.add("text-slate-400");
   }
