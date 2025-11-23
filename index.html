@@ -37,6 +37,14 @@
     <script src="js/loader.js"></script>
   </head>
   <body class="text-slate-600 antialiased h-screen flex overflow-hidden">
+    <!-- GLOBAL SPINNER -->
+    <div id="global-loader" class="fixed inset-0 z-[9999] bg-white flex items-center justify-center transition-opacity duration-500">
+      <div class="flex flex-col items-center gap-4">
+        <div class="w-12 h-12 border-4 border-blue-100 border-t-blue-600 rounded-full animate-spin"></div>
+        <p class="text-blue-600 font-bold text-sm tracking-widest uppercase animate-pulse">Loading...</p>
+      </div>
+    </div>
+
     <!-- LOGIN SCREEN -->
     <div data-include="partial/login.html"></div>
 

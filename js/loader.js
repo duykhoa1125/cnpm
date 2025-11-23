@@ -20,6 +20,13 @@ async function loadPartials() {
 
   // Dispatch an event to signal that partials are loaded
   document.dispatchEvent(new Event('partialsLoaded'));
+
+  // Hide global loader
+  const loader = document.getElementById('global-loader');
+  if (loader) {
+    loader.classList.add('opacity-0', 'pointer-events-none');
+    setTimeout(() => loader.remove(), 500);
+  }
 }
 
 document.addEventListener('DOMContentLoaded', loadPartials);

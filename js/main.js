@@ -159,6 +159,20 @@ document.addEventListener("partialsLoaded", () => {
     if (!bonusSelect.id) bonusSelect.id = "bonus-select-unique";
     setupCustomSelect(bonusSelect.id);
   }
+
+  // Check for existing session
+  const savedRole = localStorage.getItem("currentUserRole");
+  const savedUsername = localStorage.getItem("username");
+
+  if (savedRole && savedUsername) {
+      const roleSelect = document.getElementById("role-select");
+      if(roleSelect) roleSelect.value = savedRole;
+
+      const userInput = document.getElementById("login-username");
+      if(userInput) userInput.value = savedUsername;
+
+      applyLoginState(savedUsername, savedRole);
+  }
 });
 
 const roleMenus = {
@@ -189,31 +203,49 @@ const roleMenus = {
 };
 
 function handleLogin(e) {
-  e.preventDefault();
+  if (e) e.preventDefault();
   currentUserRole = document.getElementById("role-select").value;
   const username = document.getElementById("login-username").value;
 
+  // Save to local storage
+  localStorage.setItem("currentUserRole", currentUserRole);
+  localStorage.setItem("username", username);
+
+  applyLoginState(username, currentUserRole);
+}
+
+function applyLoginState(username, role) {
   document
     .querySelectorAll(".user-name-display")
     .forEach((el) => (el.innerText = username));
   document
     .querySelectorAll(".user-role-display")
-    .forEach((el) => (el.innerText = currentUserRole.toUpperCase()));
-  document.getElementById("portal-badge").innerText =
-    currentUserRole.toUpperCase();
+    .forEach((el) => (el.innerText = role.toUpperCase()));
 
-  generateSidebar(currentUserRole);
-  document.getElementById("login-screen").classList.add("hidden");
-  document.getElementById("main-app").classList.remove("hidden");
-  document.getElementById("main-app").classList.add("flex");
+  const portalBadge = document.getElementById("portal-badge");
+  if(portalBadge) portalBadge.innerText = role.toUpperCase();
 
+  generateSidebar(role);
+
+  const loginScreen = document.getElementById("login-screen");
+  if(loginScreen) loginScreen.classList.add("hidden");
+
+  const mainApp = document.getElementById("main-app");
+  if(mainApp) {
+      mainApp.classList.remove("hidden");
+      mainApp.classList.add("flex");
+  }
+
+  // Restore active tab or default
+  const savedTab = localStorage.getItem("activeTab");
   const dashboardId =
-    currentUserRole === "admin"
+    role === "admin"
       ? "dashboard_admin"
-      : currentUserRole === "tutor"
+      : role === "tutor"
       ? "dashboard_tutor"
       : "dashboard_student";
-  switchTab(dashboardId);
+
+  switchTab(savedTab || dashboardId);
 }
 
 function generateSidebar(role) {
@@ -242,9 +274,16 @@ function switchTab(tabId) {
 
   if (tabId === "dashboard_admin") initAdminCharts();
   if (tabId === "dashboard_tutor") initTutorCharts();
+
+  // Save active tab
+  localStorage.setItem("activeTab", tabId);
 }
 
 function logout() {
+  localStorage.removeItem("currentUserRole");
+  localStorage.removeItem("username");
+  localStorage.removeItem("activeTab");
+
   currentUserRole = "student";
   adminChartInited = false;
   tutorChartInited = false;
@@ -267,12 +306,56 @@ function logout() {
   document.getElementById("login-username").value = "hcmut_student";
 }
 
+// Toast Notification Logic
+function showToast(message, type = 'info') {
+    let container = document.getElementById('toast-container');
+    if (!container) {
+        container = document.createElement('div');
+        container.id = 'toast-container';
+        document.body.appendChild(container);
+    }
+
+    const toast = document.createElement('div');
+    toast.className = `toast toast-${type}`;
+
+    let iconClass = 'fa-info';
+    let title = 'Thông báo';
+
+    if (type === 'success') {
+        iconClass = 'fa-check';
+        title = 'Thành công';
+    } else if (type === 'error') {
+        iconClass = 'fa-xmark';
+        title = 'Lỗi';
+    }
+
+    toast.innerHTML = `
+        <div class="toast-icon">
+            <i class="fa-solid ${iconClass}"></i>
+        </div>
+        <div class="toast-content">
+            <div class="toast-title">${title}</div>
+            <div class="toast-message">${message}</div>
+        </div>
+    `;
+
+    container.appendChild(toast);
+
+    // Remove after 3s
+    setTimeout(() => {
+        toast.classList.add('hiding');
+        toast.addEventListener('animationend', () => {
+            toast.remove();
+        });
+    }, 3000);
+}
+
 // Helper functions (register, cancel, toggle, modal, charts...)
 function registerCourse() {
   switchTab("student_register");
 }
 function cancelCourse(name) {
-  if (confirm("Hủy môn?")) alert("Đã hủy " + name);
+  if (confirm("Hủy môn?")) showToast("Đã hủy " + name, 'success');
 }
 function toggleClassDetails(id) {
   document.getElementById(id).classList.toggle("hidden");
@@ -317,7 +400,7 @@ function toggleProfileEdit() {
 }
 function updateProfile(e) {
   e.preventDefault();
-  alert("Saved!");
+  showToast("Thông tin đã được lưu!", 'success');
   toggleProfileEdit();
 }
 
@@ -327,7 +410,7 @@ function toggleTutorProfileEdit() {
 }
 function updateTutorProfile(e) {
   e.preventDefault();
-  alert("Thông tin Tutor đã được cập nhật!");
+  showToast("Thông tin Tutor đã được cập nhật!", 'success');
   toggleTutorProfileEdit();
 }
 
@@ -358,6 +441,9 @@ function initAdminCharts() {
   if (trafficChart) trafficChart.destroy();
   if (userChart) userChart.destroy();
 
+  const primaryColor = getComputedStyle(document.documentElement).getPropertyValue('--color-primary') || '#3b82f6';
+  const secondaryColor = getComputedStyle(document.documentElement).getPropertyValue('--color-secondary') || '#6366f1';
+
   trafficChart = new Chart(document.getElementById("trafficChart"), {
     type: "line",
     data: {
@@ -366,10 +452,16 @@ function initAdminCharts() {
         {
           label: "Req",
           data: [10, 20, 15, 25, 30, 40, 50],
-          borderColor: "#3b82f6",
+          borderColor: primaryColor,
+          tension: 0.4
         },
       ],
     },
+    options: {
+        responsive: true,
+        plugins: { legend: { display: false } },
+        scales: { y: { beginAtZero: true, grid: { display: false } }, x: { grid: { display: false } } }
+    }
   });
   userChart = new Chart(document.getElementById("userChart"), {
     type: "bar",
@@ -379,10 +471,16 @@ function initAdminCharts() {
         {
           label: "Users",
           data: [50, 80, 120, 150],
-          backgroundColor: "#6366f1",
+          backgroundColor: secondaryColor,
+          borderRadius: 6
         },
       ],
     },
+    options: {
+        responsive: true,
+        plugins: { legend: { display: false } },
+        scales: { y: { beginAtZero: true, grid: { display: false } }, x: { grid: { display: false } } }
+    }
   });
   adminChartInited = true;
 }
