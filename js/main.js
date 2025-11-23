@@ -1,11 +1,54 @@
+/**
+ * @fileoverview Main JavaScript file handling the application logic, event handlers, and state management.
+ */
+
+/**
+ * Stores the current user's role.
+ * @type {string}
+ * @default "student"
+ */
 let currentUserRole = "student";
+
+/**
+ * Chart.js instance for the admin traffic chart.
+ * @type {Chart|null}
+ */
 let trafficChart = null;
+
+/**
+ * Chart.js instance for the admin user chart.
+ * @type {Chart|null}
+ */
 let userChart = null;
+
+/**
+ * Chart.js instance for the tutor-student chart.
+ * @type {Chart|null}
+ */
 let tutorStudentChart = null;
+
+/**
+ * Flag to check if admin charts have been initialized.
+ * @type {boolean}
+ */
 let adminChartInited = false;
+
+/**
+ * Flag to check if tutor charts have been initialized.
+ * @type {boolean}
+ */
 let tutorChartInited = false;
 
-// Custom Dropdown Logic
+/**
+ * Initializes a custom dropdown select element.
+ *
+ * Replaces a standard HTML select element with a custom-styled dropdown.
+ * Handles the display, selection, and interaction logic for the custom dropdown.
+ *
+ * @param {string} selectId - The ID of the HTML select element to replace.
+ * @param {Object} [icons={}] - An object mapping option values to FontAwesome icon class names.
+ * @returns {void}
+ */
 function setupCustomSelect(selectId, icons = {}) {
   const select = document.getElementById(selectId);
   if (!select) return;
@@ -175,6 +218,10 @@ document.addEventListener("partialsLoaded", () => {
   }
 });
 
+/**
+ * Defines the navigation menu items for each user role.
+ * @type {Object.<string, Array<{id: string, icon: string, text: string}>>}
+ */
 const roleMenus = {
   student: [
     { id: "dashboard_student", icon: "fa-chart-pie", text: "Tổng quan" },
@@ -202,6 +249,15 @@ const roleMenus = {
   ],
 };
 
+/**
+ * Handles the login process.
+ *
+ * Reads the username and selected role from the login form, saves them to
+ * localStorage, and transitions the UI to the logged-in state.
+ *
+ * @param {Event} e - The event object (e.g., from a form submission).
+ * @returns {void}
+ */
 function handleLogin(e) {
   if (e) e.preventDefault();
   currentUserRole = document.getElementById("role-select").value;
@@ -214,6 +270,16 @@ function handleLogin(e) {
   applyLoginState(username, currentUserRole);
 }
 
+/**
+ * Applies the logged-in state to the UI.
+ *
+ * Updates user display names, role badges, generates the sidebar, hides the
+ * login screen, shows the main application, and switches to the active tab.
+ *
+ * @param {string} username - The username of the logged-in user.
+ * @param {string} role - The role of the logged-in user.
+ * @returns {void}
+ */
 function applyLoginState(username, role) {
   document
     .querySelectorAll(".user-name-display")
@@ -248,6 +314,15 @@ function applyLoginState(username, role) {
   switchTab(savedTab || dashboardId);
 }
 
+/**
+ * Generates the sidebar navigation based on the user's role.
+ *
+ * Clears the existing sidebar and repopulates it with buttons corresponding
+ * to the menu items defined in `roleMenus` for the given role.
+ *
+ * @param {string} role - The user's role (e.g., 'student', 'tutor', 'admin').
+ * @returns {void}
+ */
 function generateSidebar(role) {
   const container = document.getElementById("sidebar-nav");
   container.innerHTML = "";
@@ -261,6 +336,15 @@ function generateSidebar(role) {
   });
 }
 
+/**
+ * Switches the main content view to the specified tab.
+ *
+ * Updates the visibility of content sections, highlights the active navigation
+ * item, initializes charts if necessary, and saves the active tab to localStorage.
+ *
+ * @param {string} tabId - The ID of the tab/section to display.
+ * @returns {void}
+ */
 function switchTab(tabId) {
   document
     .querySelectorAll(".section-view")
@@ -279,6 +363,14 @@ function switchTab(tabId) {
   localStorage.setItem("activeTab", tabId);
 }
 
+/**
+ * Logs the user out.
+ *
+ * Clears local storage, resets state variables, destroys charts, hides the
+ * main application, and shows the login screen.
+ *
+ * @returns {void}
+ */
 function logout() {
   localStorage.removeItem("currentUserRole");
   localStorage.removeItem("username");
@@ -306,7 +398,16 @@ function logout() {
   document.getElementById("login-username").value = "hcmut_student";
 }
 
-// Toast Notification Logic
+/**
+ * Displays a toast notification.
+ *
+ * Creates a toast element with the specified message and type, appends it to
+ * the toast container, and automatically removes it after a delay.
+ *
+ * @param {string} message - The message to display in the toast.
+ * @param {'info'|'success'|'error'} [type='info'] - The type of the toast (info, success, or error).
+ * @returns {void}
+ */
 function showToast(message, type = 'info') {
     let container = document.getElementById('toast-container');
     if (!container) {
@@ -351,23 +452,56 @@ function showToast(message, type = 'info') {
 }
 
 // Helper functions (register, cancel, toggle, modal, charts...)
+
+/**
+ * Switches the view to the student course registration tab.
+ * @returns {void}
+ */
 function registerCourse() {
   switchTab("student_register");
 }
+
+/**
+ * Cancels a course after confirmation.
+ * @param {string} name - The name of the course to cancel.
+ * @returns {void}
+ */
 function cancelCourse(name) {
   if (confirm("Hủy môn?")) showToast("Đã hủy " + name, 'success');
 }
+
+/**
+ * Confirms registration for a course.
+ * @param {string} courseName - The name of the course to register.
+ * @returns {void}
+ */
 function confirmRegistration(courseName) {
   if (confirm(`Xác nhận đăng ký ${courseName}?`)) {
     showToast(`Đã đăng ký thành công ${courseName}!`, 'success');
   }
 }
+
+/**
+ * Displays a message indicating that the full schedule view is not yet implemented.
+ * @returns {void}
+ */
 function viewAllSchedule() {
   showToast('Chức năng xem tất cả lịch học sẽ được bổ sung trong phiên bản tiếp theo', 'info');
 }
+
+/**
+ * Simulates entering a class.
+ * @param {string} courseName - The name of the course to enter.
+ * @returns {void}
+ */
 function enterClass(courseName) {
   showToast(`Đang vào lớp học ${courseName || ''}...`, 'success');
 }
+
+/**
+ * Simulates searching for courses.
+ * @returns {void}
+ */
 function searchCourses() {
   const searchInput = document.querySelector('#student_register input[type="text"]');
   const searchValue = searchInput ? searchInput.value.trim() : '';
@@ -377,9 +511,24 @@ function searchCourses() {
     showToast('Vui lòng nhập từ khóa tìm kiếm', 'error');
   }
 }
+
+/**
+ * Simulates viewing a detailed report.
+ * @returns {void}
+ */
 function viewDetailedReport() {
   showToast('Đang tải báo cáo chi tiết...', 'info');
 }
+
+/**
+ * Handles the submission of a feedback form.
+ *
+ * Prevents the default form submission, shows a success toast, resets the form,
+ * and resets the star rating UI.
+ *
+ * @param {Event} e - The form submission event.
+ * @returns {void}
+ */
 function submitFeedback(e) {
   e.preventDefault();
   showToast('Cảm ơn phản hồi của bạn!', 'success');
@@ -398,28 +547,70 @@ function submitFeedback(e) {
     ratingText.classList.add("text-slate-400");
   }
 }
+
+/**
+ * Handles the submission of a bonus session request.
+ *
+ * Prevents default submission, shows a success toast, hides the modal, and resets the form.
+ *
+ * @param {Event} e - The form submission event.
+ * @returns {void}
+ */
 function submitBonusSession(e) {
   e.preventDefault();
   showToast('Đã gửi yêu cầu tạo buổi học bổ sung!', 'success');
   document.getElementById('bonus-session-modal').classList.add('hidden');
   e.target.reset();
 }
+
+/**
+ * Simulates saving the tutor's schedule.
+ * @returns {void}
+ */
 function saveTutorSchedule() {
   showToast('Lịch dạy đã được lưu thành công!', 'success');
 }
+
+/**
+ * Toggles the visibility of class details.
+ * @param {string} id - The ID of the element containing class details.
+ * @returns {void}
+ */
 function toggleClassDetails(id) {
   document.getElementById(id).classList.toggle("hidden");
 }
+
+/**
+ * Opens the material modal.
+ * @param {string} name - The name of the material (unused in current implementation but kept for compatibility).
+ * @returns {void}
+ */
 function openMaterialModal(name) {
   document.getElementById("material-modal").classList.remove("hidden");
 }
+
+/**
+ * Closes the material modal.
+ * @returns {void}
+ */
 function closeMaterialModal() {
   document.getElementById("material-modal").classList.add("hidden");
 }
+
+/**
+ * Toggles the visibility of the notification dropdown.
+ * @returns {void}
+ */
 function toggleNotifications() {
   document.getElementById("notification-dropdown").classList.toggle("hidden");
 }
 
+/**
+ * Toggles the visibility of the sidebar (for mobile/responsive views).
+ *
+ * Also handles the overlay visibility and transitions.
+ * @returns {void}
+ */
 function toggleSidebar() {
   const sidebar = document.getElementById("sidebar");
   const overlay = document.getElementById("sidebar-overlay");
@@ -445,25 +636,53 @@ function toggleSidebar() {
   }
 }
 
+/**
+ * Toggles the visibility of the student profile edit mode.
+ * @returns {void}
+ */
 function toggleProfileEdit() {
   document.getElementById("student-edit-mode").classList.toggle("hidden");
 }
+
+/**
+ * Handles the update of student profile information.
+ * @param {Event} e - The form submission event.
+ * @returns {void}
+ */
 function updateProfile(e) {
   e.preventDefault();
   showToast("Thông tin đã được lưu!", 'success');
   toggleProfileEdit();
 }
 
+/**
+ * Toggles the visibility of the tutor profile edit mode.
+ * @returns {void}
+ */
 function toggleTutorProfileEdit() {
   document.getElementById("tutor-view-mode").classList.toggle("hidden");
   document.getElementById("tutor-edit-mode").classList.toggle("hidden");
 }
+
+/**
+ * Handles the update of tutor profile information.
+ * @param {Event} e - The form submission event.
+ * @returns {void}
+ */
 function updateTutorProfile(e) {
   e.preventDefault();
   showToast("Thông tin Tutor đã được cập nhật!", 'success');
   toggleTutorProfileEdit();
 }
 
+/**
+ * Sets the star rating visual state.
+ *
+ * Updates the color of star icons and the descriptive text based on the selected rating.
+ *
+ * @param {number} n - The rating value (1-5).
+ * @returns {void}
+ */
 function setRating(n) {
   const stars = document.querySelectorAll(".star-btn");
   const ratingText = document.getElementById("rating-text");
@@ -487,6 +706,14 @@ function setRating(n) {
   }
 }
 
+/**
+ * Initializes the admin dashboard charts (Traffic and User charts).
+ *
+ * Destroys existing charts before creating new ones to avoid canvas reuse errors.
+ * Uses CSS variables for color theming.
+ *
+ * @returns {void}
+ */
 function initAdminCharts() {
   if (trafficChart) trafficChart.destroy();
   if (userChart) userChart.destroy();
@@ -534,6 +761,14 @@ function initAdminCharts() {
   });
   adminChartInited = true;
 }
+
+/**
+ * Initializes the tutor dashboard charts.
+ *
+ * Destroys existing charts before creating new ones.
+ *
+ * @returns {void}
+ */
 function initTutorCharts() {
   if (tutorStudentChart) tutorStudentChart.destroy();
 

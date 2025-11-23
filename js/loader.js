@@ -1,3 +1,18 @@
+/**
+ * Asynchronously loads HTML partials into elements with the `data-include` attribute.
+ *
+ * This function scans the document for elements with the `data-include` attribute,
+ * fetches the content of the file specified in the attribute, and replaces the
+ * element with the fetched HTML content.
+ *
+ * After all partials are loaded:
+ * 1. Dispatches a custom 'partialsLoaded' event on the document.
+ * 2. Hides and removes the global loading overlay ('#global-loader').
+ *
+ * @async
+ * @function loadPartials
+ * @returns {Promise<void>} A promise that resolves when all partials have been loaded and processed.
+ */
 async function loadPartials() {
   const includes = document.querySelectorAll('[data-include]');
   const promises = [];
