@@ -357,6 +357,29 @@ function registerCourse() {
 function cancelCourse(name) {
   if (confirm("Hủy môn?")) showToast("Đã hủy " + name, 'success');
 }
+function confirmRegistration(courseName) {
+  if (confirm(`Xác nhận đăng ký ${courseName}?`)) {
+    showToast(`Đã đăng ký thành công ${courseName}!`, 'success');
+  }
+}
+function viewAllSchedule() {
+  showToast('Chức năng xem tất cả lịch học sẽ được bổ sung trong phiên bản tiếp theo', 'info');
+}
+function enterClass(courseName) {
+  showToast(`Đang vào lớp học ${courseName || ''}...`, 'success');
+}
+function searchCourses() {
+  const searchInput = document.querySelector('#student_register input[type="text"]');
+  const searchValue = searchInput ? searchInput.value.trim() : '';
+  if (searchValue) {
+    showToast(`Đang tìm kiếm: ${searchValue}`, 'info');
+  } else {
+    showToast('Vui lòng nhập từ khóa tìm kiếm', 'error');
+  }
+}
+function viewDetailedReport() {
+  showToast('Đang tải báo cáo chi tiết...', 'info');
+}
 function toggleClassDetails(id) {
   document.getElementById(id).classList.toggle("hidden");
 }
