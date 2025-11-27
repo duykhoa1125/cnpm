@@ -1,0 +1,428 @@
+<!doctype html>
+<html lang="vi">
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width,initial-scale=1" />
+  <title>Bonus Session - Tutor | LMS Portal</title>
+  <!-- FontAwesome (CDN) -->
+  <script src="https://kit.fontawesome.com/a2d9b6b2c6.js" crossorigin="anonymous"></script>
+  <!-- Tailwind CDN (light usage) -->
+  <script src="https://cdn.tailwindcss.com"></script>
+  <style>
+    /* --- Embedded style adapted from your styles.css (essential parts) --- */
+    body {
+      background-color: #f0f4f8;
+      background-image: radial-gradient(at 0% 0%, hsla(253,16%,7%,0) 0, hsla(253,16%,7%,0) 50%),
+                        radial-gradient(at 50% 0%, hsla(225,39%,30%,0) 0, hsla(225,39%,30%,0) 50%),
+                        radial-gradient(at 100% 0%, hsla(339,49%,30%,0) 0, hsla(339,49%,30%,0) 50%),
+                        linear-gradient(to bottom right, #eff6ff, #eef2ff);
+      background-attachment: fixed;
+      background-size: cover;
+      min-height:100vh;
+      font-family: Inter, ui-sans-serif, system-ui, -apple-system, "Segoe UI", Roboto, "Helvetica Neue", Arial;
+    }
+    .glass-panel {
+      background: rgba(255,255,255,0.5);
+      backdrop-filter: blur(20px);
+      -webkit-backdrop-filter: blur(20px);
+      border: 1px solid rgba(255,255,255,0.6);
+      box-shadow: 0 8px 32px 0 rgba(31,38,135,0.05);
+    }
+    .glass-card {
+      background: rgba(255,255,255,0.65);
+      backdrop-filter: blur(16px);
+      border: 1px solid rgba(255,255,255,0.5);
+      transition: all .3s ease;
+    }
+    .glass-card:hover { transform: translateY(-3px); box-shadow: 0 15px 30px -5px rgba(0,0,0,0.05); }
+    .section-view { display:none; animation: slideUp .4s cubic-bezier(.16,1,.3,1); }
+    .section-view.active { display:block; }
+    @keyframes slideUp { from{opacity:0; transform:translateY(15px)} to{opacity:1; transform:none} }
+
+    /* Toast */
+    #toast-container { position: fixed; top:24px; right:24px; z-index:9999; display:flex; flex-direction:column; gap:10px; }
+    .toast { display:flex; gap:12px; background: rgba(255,255,255,0.85); padding:12px 16px; border-radius:12px; min-width:300px; box-shadow:0 10px 30px -5px rgba(0,0,0,0.1); transform:translateX(100%); animation: slideInToast .4s cubic-bezier(.16,1,.3,1) forwards; }
+    .toast-success .toast-icon { background:#dcfce7; color:#16a34a; }
+    .toast-title { font-weight:700; color:#1e293b; font-size:14px; }
+    @keyframes slideInToast { from{transform:translateX(120%);opacity:0} to{transform:none;opacity:1} }
+
+    /* sidebar & header base styles */
+    header.h-20 { height:5rem; }
+    #sidebar { width:18rem; }
+    .nav-item { padding:10px 12px; display:flex; align-items:center; gap:10px; border-radius:10px; color:#475569; font-weight:600; cursor:pointer }
+    .nav-item:hover { background:#f1f5f9; color:#2563eb }
+    .nav-item.active { background: linear-gradient(to right, rgba(59,130,246,.1), transparent); color:#2563eb; border-right:3px solid #2563eb; }
+    .input, input, select, textarea { border:1px solid #e6eefc; padding:10px; border-radius:8px; width:100%; background:white; }
+    .label { font-weight:700; color:#0f172a; margin-bottom:6px; display:block; font-size:13px }
+  </style>
+</head>
+<body class="antialiased text-slate-700">
+
+  <!-- Toast container -->
+  <div id="toast-container"></div>
+
+  <!-- Overlay for mobile sidebar -->
+  <div id="sidebar-overlay" onclick="toggleSidebar()" class="hidden fixed inset-0 bg-black/50 z-20 md:hidden transition-opacity duration-300 opacity-0"></div>
+
+  <!-- SIDEBAR -->
+  <aside id="sidebar" class="fixed md:static inset-y-0 left-0 transform -translate-x-full md:translate-x-0 transition-transform duration-300 ease-in-out md:flex flex-col p-4 h-full z-30">
+    <div class="glass-panel h-full rounded-[24px] flex flex-col relative overflow-hidden bg-white/80 md:bg-white/50">
+      <div class="p-6 flex items-center justify-between gap-3">
+        <div class="flex items-center gap-3 min-w-0">
+          <div class="w-10 h-10 bg-blue-600 rounded-xl flex items-center justify-center text-white font-bold flex-shrink-0">BK</div>
+          <div class="min-w-0">
+            <h1 class="font-bold text-slate-800 text-lg truncate">LMS Portal</h1>
+            <span id="portal-badge" class="text-[10px] font-bold uppercase tracking-wider text-blue-500">TUTOR</span>
+          </div>
+        </div>
+        <button onclick="toggleSidebar()" class="md:hidden text-slate-500 hover:text-slate-600"><i class="fa-solid fa-xmark text-xl"></i></button>
+      </div>
+
+      <nav id="sidebar-nav" class="flex-1 px-4 space-y-1 overflow-y-auto py-4">
+        <div class="nav-item active" onclick="showSection('create')"><i class="fa-solid fa-calendar-plus"></i> Tạo buổi bổ sung</div>
+        <div class="nav-item" onclick="showSection('list')"><i class="fa-solid fa-list"></i> Danh sách buổi</div>
+        <div class="nav-item" onclick="showSection('rsvps')"><i class="fa-solid fa-check"></i> Danh sách RSVP</div>
+      </nav>
+
+      <div class="p-4 mt-auto">
+        <div class="glass-card p-3 rounded-xl flex items-center gap-3 mb-3">
+          <img src="https://ui-avatars.com/api/?name=Tutor&background=eff6ff&color=2563eb" class="w-10 h-10 rounded-full border-2 border-white user-avatar" />
+          <div class="overflow-hidden w-full min-w-0">
+            <p class="text-sm font-bold text-slate-700 truncate user-name-display">Nguyen Van B</p>
+            <p class="text-xs text-slate-500 truncate user-role-display">Tutor</p>
+          </div>
+        </div>
+        <button onclick="logout()" class="w-full py-3 rounded-xl text-sm font-bold text-red-500 hover:bg-red-50 transition flex items-center justify-center gap-2">
+          <i class="fa-solid fa-power-off"></i> Đăng xuất
+        </button>
+      </div>
+    </div>
+  </aside>
+
+  <!-- MAIN LAYOUT -->
+  <div class="md:pl-72 min-h-screen">
+    <!-- header -->
+    <header class="h-20 flex items-center justify-between px-4 md:px-8 lg:px-10">
+      <div class="flex items-center gap-3">
+        <button onclick="toggleSidebar()" aria-label="Toggle Sidebar" class="md:hidden w-12 h-12 bg-white/60 rounded-full flex items-center justify-center shadow-sm hover:bg-white transition text-slate-600">
+          <i class="fa-solid fa-bars text-lg"></i>
+        </button>
+        <h2 id="page-title" class="text-xl md:text-2xl font-bold text-slate-800">Tạo buổi bổ sung</h2>
+      </div>
+      <div class="flex items-center gap-4">
+        <button onclick="toggleNotifications()" class="w-10 h-10 bg-white/60 rounded-full flex items-center justify-center shadow-sm hover:bg-white transition relative">
+          <i class="fa-regular fa-bell text-slate-600"></i>
+          <span class="absolute top-2 right-2 w-2 h-2 bg-red-500 rounded-full"></span>
+        </button>
+        <div id="notification-dropdown" class="hidden absolute right-4 md:right-10 top-16 w-72 md:w-80 glass-panel rounded-2xl overflow-hidden z-50">
+          <div class="p-4 border-b border-white/50 font-bold text-sm">Thông báo</div>
+          <div class="p-2 space-y-1">
+            <div class="p-3 hover:bg-blue-50/50 rounded-xl cursor-pointer">
+              <p class="text-xs font-bold text-blue-600">Lớp học</p>
+              <p class="text-sm text-slate-700 font-medium">Thay đổi phòng học Giải tích 1</p>
+              <p class="text-xs text-slate-500">2 phút trước</p>
+            </div>
+          </div>
+        </div>
+      </div>
+    </header>
+
+    <!-- content -->
+    <main class="p-6 md:p-10">
+      <!-- CREATE SECTION -->
+      <section id="section-create" class="section-view active">
+        <div class="grid grid-cols-1 lg:grid-cols-3 gap-6">
+          <div class="lg:col-span-2 glass-card p-6 rounded-xl">
+            <h3 class="text-lg font-bold mb-4">Tạo Buổi Bổ Sung</h3>
+            <form id="bonus-form" onsubmit="handleCreate(event)">
+              <div class="grid grid-cols-1 md:grid-cols-2 gap-4">
+                <div>
+                  <label class="label">Tiêu đề</label>
+                  <input id="b_title" type="text" class="input" placeholder="Ví dụ: Ôn tập Giải tích 1" required>
+                </div>
+                <div>
+                  <label class="label">Môn</label>
+                  <select id="b_course" class="input">
+                    <option value="GI1">Giải tích 1</option>
+                    <option value="MH1">Toán rời rạc</option>
+                    <option value="LP1">Lập trình 1</option>
+                  </select>
+                </div>
+
+                <div class="md:col-span-2">
+                  <label class="label">Mô tả</label>
+                  <textarea id="b_desc" rows="3" class="input" placeholder="Nội dung buổi..."></textarea>
+                </div>
+
+                <div>
+                  <label class="label">Phạm vi</label>
+                  <select id="b_scope" class="input" onchange="onScopeChange()">
+                    <option value="CLASS">Toàn lớp</option>
+                    <option value="GROUP">Nhóm</option>
+                    <option value="INDIVIDUAL">Danh sách cá nhân</option>
+                  </select>
+                </div>
+
+                <div id="students-wrapper" class="hidden md:block">
+                  <label class="label">Danh sách sinh viên (chỉ dành cho INDIVIDUAL)</label>
+                  <select id="b_students" class="input" multiple>
+                    <option value="sv001">Nguyen Van A (sv001)</option>
+                    <option value="sv002">Tran Thi B (sv002)</option>
+                    <option value="sv003">Le Van C (sv003)</option>
+                    <option value="sv004">Pham Thi D (sv004)</option>
+                  </select>
+                </div>
+
+                <div>
+                  <label class="label">Ngày</label>
+                  <input id="b_date" type="date" class="input" required>
+                </div>
+                <div>
+                  <label class="label">Giờ bắt đầu</label>
+                  <input id="b_start" type="time" class="input" required>
+                </div>
+
+                <div>
+                  <label class="label">Thời lượng (phút)</label>
+                  <input id="b_duration" type="number" class="input" min="15" value="60" required>
+                </div>
+                <div>
+                  <label class="label">Hình thức</label>
+                  <select id="b_mode" class="input">
+                    <option value="ONLINE">Online</option>
+                    <option value="OFFLINE">Offline</option>
+                  </select>
+                </div>
+
+                <div>
+                  <label class="label">Địa điểm / Link meeting</label>
+                  <input id="b_location" type="text" class="input" placeholder="Zoom link hoặc phòng">
+                </div>
+
+                <div>
+                  <label class="label">Số lượng tối đa</label>
+                  <input id="b_max" type="number" class="input" min="1" value="30">
+                </div>
+
+                <div class="md:col-span-2 flex items-center gap-3">
+                  <input id="b_approval" type="checkbox" class="rounded" />
+                  <label class="font-semibold">Yêu cầu phê duyệt admin</label>
+                </div>
+              </div>
+
+              <div class="mt-4 flex items-center gap-3">
+                <button type="submit" class="px-5 py-3 rounded-xl bg-blue-600 text-white font-bold">Tạo</button>
+                <button type="button" onclick="resetForm()" class="px-5 py-3 rounded-xl bg-white border font-bold">Đặt lại</button>
+              </div>
+            </form>
+          </div>
+
+          <!-- Right column: preview + created list -->
+          <aside class="glass-card p-6 rounded-xl">
+            <h4 class="font-bold mb-3">Preview nhanh</h4>
+            <div id="preview" class="p-3 border rounded-lg text-sm text-slate-600">Các thông tin sẽ hiện tại đây khi nhập form.</div>
+
+            <hr class="my-4">
+
+            <h4 class="font-bold mb-3">Buổi đã tạo (Hard-coded + created)</h4>
+            <div id="created-list" class="space-y-3">
+              <!-- Some hard-coded example items -->
+              <div class="p-3 rounded-xl border glass-card">
+                <div class="flex items-start justify-between">
+                  <div>
+                    <div class="font-bold">Ôn tập Giải tích 1</div>
+                    <div class="text-xs text-slate-500">Tutor: Nguyen Van B • 2025-11-28 14:00 • Online • Trạng thái: Active</div>
+                  </div>
+                  <div class="text-sm text-slate-500">5/30</div>
+                </div>
+              </div>
+            </div>
+          </aside>
+        </div>
+      </section>
+
+      <!-- LIST SECTION -->
+      <section id="section-list" class="section-view">
+        <div class="glass-card p-6 rounded-xl">
+          <h3 class="text-lg font-bold mb-4">Danh sách buổi bổ sung</h3>
+          <div class="space-y-3" id="all-sessions">
+            <!-- will be populated by JS -->
+          </div>
+        </div>
+      </section>
+
+      <!-- RSVPS SECTION -->
+      <section id="section-rsvps" class="section-view">
+        <div class="glass-card p-6 rounded-xl">
+          <h3 class="text-lg font-bold mb-4">Danh sách RSVP</h3>
+          <div id="rsvp-list" class="space-y-3">
+            <!-- will be populated by JS -->
+          </div>
+        </div>
+      </section>
+    </main>
+  </div>
+
+  <script>
+    // Minimal UI utilities (toggle sidebar + notifications + toast)
+    function toggleSidebar() {
+      const sb = document.getElementById('sidebar');
+      sb.classList.toggle('-translate-x-full');
+      const overlay = document.getElementById('sidebar-overlay');
+      overlay.classList.toggle('hidden');
+    }
+    function toggleNotifications() {
+      const dd = document.getElementById('notification-dropdown');
+      dd.classList.toggle('hidden');
+    }
+    function logout() {
+      showToast('Đăng xuất thành công', 'success', 'Bạn đã đăng xuất.');
+      setTimeout(()=>{ /* redirect simulated */ }, 800);
+    }
+
+    function showToast(title, type='info', message='') {
+      const container = document.getElementById('toast-container');
+      const el = document.createElement('div');
+      el.className = `toast toast-${type}`;
+      el.innerHTML = `<div class="toast-icon ${type==='success'?'toast-success':''}">${ type==='success' ? '✓' : (type==='error'?'✖':'i') }</div>
+                      <div class="toast-content"><div class="toast-title">${title}</div><div class="toast-message">${message}</div></div>`;
+      container.appendChild(el);
+      setTimeout(()=>{ el.classList.add('hiding'); el.style.opacity=0; setTimeout(()=>el.remove(),350); }, 3000);
+    }
+
+    // Form logic: preview + create (hard-coded persistence in-memory)
+    const sessions = [
+      { id: 'S1', title: 'Ôn tập Giải tích 1', course:'GI1', date:'2025-11-28', start:'14:00', mode:'ONLINE', tutor:'Nguyen Van B', status:'ACTIVE', count:5, max:30 }
+    ];
+    const rsvps = [
+      { id:'R1', sessionId:'S1', student:'sv001', name:'Nguyen Van A', status:'ACCEPTED' }
+    ];
+
+    function updatePreview(){
+      const p = document.getElementById('preview');
+      const data = {
+        title: document.getElementById('b_title').value,
+        course: document.getElementById('b_course').value,
+        desc: document.getElementById('b_desc').value,
+        date: document.getElementById('b_date').value,
+        start: document.getElementById('b_start').value,
+        duration: document.getElementById('b_duration').value
+      };
+      p.textContent = data.title ? `${data.title} • ${data.course} • ${data.date} ${data.start} • ${data.duration} phút` : 'Các thông tin sẽ hiện tại đây khi nhập form.';
+    }
+
+    // wire preview
+    ['b_title','b_course','b_desc','b_date','b_start','b_duration'].forEach(id=>{
+      const el = document.getElementById(id);
+      if(el) el.addEventListener('input', updatePreview);
+    });
+
+    function onScopeChange(){
+      const scope = document.getElementById('b_scope').value;
+      const wrapper = document.getElementById('students-wrapper');
+      wrapper.classList.toggle('hidden', scope !== 'INDIVIDUAL');
+    }
+
+    function handleCreate(e){
+      e.preventDefault();
+      const payload = {
+        id: 'S' + (sessions.length + 1),
+        title: document.getElementById('b_title').value || 'Untitled',
+        course: document.getElementById('b_course').value,
+        desc: document.getElementById('b_desc').value,
+        scope: document.getElementById('b_scope').value,
+        students: Array.from(document.getElementById('b_students').selectedOptions||[]).map(o=>o.value),
+        date: document.getElementById('b_date').value,
+        start: document.getElementById('b_start').value,
+        duration: document.getElementById('b_duration').value,
+        mode: document.getElementById('b_mode').value,
+        location: document.getElementById('b_location').value,
+        max: document.getElementById('b_max').value,
+        approval: document.getElementById('b_approval').checked,
+        tutor: 'Nguyen Van B',
+        status: document.getElementById('b_approval').checked ? 'PENDING' : 'ACTIVE',
+        count: 0
+      };
+
+      // Basic validation
+      if(!payload.date || !payload.start){ showToast('Thiếu thông tin','error','Vui lòng nhập ngày và giờ bắt đầu.'); return; }
+      if(payload.duration <= 0){ showToast('Dữ liệu không hợp lệ','error','Thời lượng phải > 0.'); return; }
+
+      sessions.push(payload);
+      renderCreatedList();
+      renderAllSessions();
+      showToast('Tạo buổi thành công','success','Buổi đã được lưu. Thông báo sẽ được gửi. (Mô phỏng)');
+      document.getElementById('bonus-form').reset();
+      updatePreview();
+    }
+
+    function resetForm(){ document.getElementById('bonus-form').reset(); updatePreview(); onScopeChange(); }
+
+    function renderCreatedList(){
+      const container = document.getElementById('created-list');
+      container.innerHTML = '';
+      sessions.slice().reverse().forEach(s => {
+        const div = document.createElement('div');
+        div.className = 'p-3 rounded-xl border glass-card';
+        div.innerHTML = `<div class="flex items-start justify-between">
+            <div>
+              <div class="font-bold">${s.title}</div>
+              <div class="text-xs text-slate-500">Tutor: ${s.tutor} • ${s.date} ${s.start} • ${s.mode} • Trạng thái: ${s.status}</div>
+            </div>
+            <div class="text-sm text-slate-500">${s.count}/${s.max||'--'}</div>
+          </div>`;
+        container.appendChild(div);
+      });
+    }
+
+    function renderAllSessions(){
+      const el = document.getElementById('all-sessions');
+      el.innerHTML = '';
+      sessions.forEach(s=>{
+        const node = document.createElement('div');
+        node.className = 'p-3 border rounded-lg flex items-center justify-between';
+        node.innerHTML = `<div>
+            <div class="font-bold">${s.title}</div>
+            <div class="text-xs text-slate-500">${s.date} ${s.start} • ${s.mode} • ${s.tutor}</div>
+          </div>
+          <div>
+            <button class="px-3 py-1 rounded-lg bg-blue-600 text-white text-sm" onclick="simulateInvite('${s.id}')">Gửi thông báo</button>
+          </div>`;
+        el.appendChild(node);
+      });
+    }
+
+    function renderRsvps(){
+      const el = document.getElementById('rsvp-list');
+      el.innerHTML = '';
+      rsvps.forEach(r=>{
+        const d = document.createElement('div');
+        d.className = 'p-3 border rounded-lg flex items-center justify-between';
+        d.innerHTML = `<div><div class="font-bold">${r.name}</div><div class="text-xs text-slate-500">Buổi: ${r.sessionId} • Trạng thái: ${r.status}</div></div>
+                       <div><button class="px-3 py-1 rounded-lg bg-green-600 text-white text-sm" onclick="changeRsvp('${r.id}','DECLINED')">Từ chối</button></div>`;
+        el.appendChild(d);
+      });
+    }
+
+    function simulateInvite(sessionId){
+      showToast('Thông báo đã gửi','info','Thông báo mời tham gia buổi đã được gửi (mô phỏng).');
+    }
+
+    function changeRsvp(rid, status){
+      const item = rsvps.find(r=>r.id===rid);
+      if(item){ item.status = status; renderRsvps(); showToast('Cập nhật RSVP','success','Trạng thái RSVP đã được thay đổi.'); }
+    }
+
+    // section switching
+    function showSection(key){
+      document.querySelectorAll('.section-view').forEach(s=>s.classList.remove('active'));
+      document.getElementById('section-' + key).classList.add('active');
+      document.querySelectorAll('.nav-item').forEach(n=>n.classList.remove('active'));
+      event && event.currentTarget && event.currentTarget.classList && event.currentTarget.classList.add('active');
+    }
+
+    // init
+    renderCreatedList(); renderAllSessions(); renderRsvps();
+  </script>
+</body>
+</html>
