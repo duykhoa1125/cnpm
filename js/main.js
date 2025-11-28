@@ -2984,3 +2984,36 @@ function renderCancellationRules() {
   // No dynamic rendering needed here, but the function ensures the tab can be switched to.
   console.log("Rendering Cancellation Rules view.");
 }
+
+function exportProgressToCSV(sectionId) {
+  const section = document.getElementById(sectionId);
+  if (!section) { showToast('Không tìm thấy phần tiến độ', 'error'); return; }
+  const rows = section.querySelectorAll('.progress-row');
+  if (!rows || rows.length === 0) { showToast('Không có dữ liệu tiến độ để xuất', 'error'); return; }
+
+  const lines = [];
+  lines.push(['MSSV','Ho va ten','Tien do (%)'].join(','));
+
+  const escape = (s) => '"' + String(s).replace(/"/g, '""') + '"';
+
+  rows.forEach(r => {
+    const name = r.dataset.name || (r.querySelector('.text-xs') ? r.querySelector('.text-xs').textContent.trim() : '');
+    const mssv = r.dataset.mssv || (r.querySelector('.text-[10px]') ? r.querySelector('.text-[10px]').textContent.replace('MSSV:','').trim() : '');
+    const percent = r.dataset.percent || (r.querySelector('.text-right') ? r.querySelector('.text-right').textContent.replace('%','').trim() : '');
+    lines.push([mssv, name, percent].map(escape).join(','));
+  });
+
+  const csv = lines.join('\r\n');
+  const blob = new Blob([csv], { type: 'text/csv;charset=utf-8;' });
+  const url = URL.createObjectURL(blob);
+  const a = document.createElement('a');
+  const now = new Date();
+  const date = now.toISOString().slice(0,10);
+  a.href = url;
+  a.download = `progress_${sectionId}_${date}.csv`;
+  document.body.appendChild(a);
+  a.click();
+  a.remove();
+  URL.revokeObjectURL(url);
+  showToast('Đã tải xuống file tiến độ', 'success');
+}
