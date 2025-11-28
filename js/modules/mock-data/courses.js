@@ -230,15 +230,39 @@ export const mockCourseDetails = {
         id: 1,
         title: "Hỏi về bài tập chương 2",
         author: "Nguyễn Văn A",
-        replies: 5,
+        replies: 2,
         last_post: "2025-10-05",
+        content:
+          "Chào thầy và các bạn, cho em hỏi bài tập 2.5 trong sách giáo trình làm như thế nào ạ? Em bị vướng ở bước biến đổi đạo hàm.",
+        repliesList: [
+          {
+            author: "Trần Văn B (GV)",
+            content: "Em xem lại công thức đạo hàm hợp nhé. U' = u'.v + v'.u",
+            date: "2025-10-05 08:30",
+          },
+          {
+            author: "Lê Thị C",
+            content: "Mình cũng bị vướng bài này, cảm ơn thầy ạ.",
+            date: "2025-10-05 09:15",
+          },
+        ],
       },
       {
         id: 2,
         title: "Xin tài liệu tham khảo thêm",
         author: "Lê Thị C",
-        replies: 2,
+        replies: 1,
         last_post: "2025-10-12",
+        content:
+          "Thầy ơi, thầy có thể chia sẻ thêm một số tài liệu về phần Tích phân không ạ? Em muốn luyện tập thêm.",
+        repliesList: [
+          {
+            author: "Trần Văn B (GV)",
+            content:
+              "Thầy đã upload thêm file bài tập nâng cao trong mục Tài liệu nhé.",
+            date: "2025-10-12 14:00",
+          },
+        ],
       },
     ],
     exams: [

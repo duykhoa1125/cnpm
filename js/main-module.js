@@ -113,6 +113,9 @@ import {
   saveTutorSchedule,
   openAssignmentModal,
   closeAssignmentModal,
+  openForumModal,
+  closeForumModal,
+  submitForumReply,
 } from "./modules/courses.js";
 
 import {
@@ -220,6 +223,9 @@ window.toggleClassDetails = toggleClassDetails;
 window.saveTutorSchedule = saveTutorSchedule;
 window.openAssignmentModal = openAssignmentModal;
 window.closeAssignmentModal = closeAssignmentModal;
+window.openForumModal = openForumModal;
+window.closeForumModal = closeForumModal;
+window.submitForumReply = submitForumReply;
 
 // Profile Functions
 window.toggleProfileEdit = toggleProfileEdit;

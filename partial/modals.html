@@ -503,3 +503,110 @@
     </div>
   </div>
 </div>
+
+<!-- Forum Discussion Modal -->
+<div
+  id="forum-modal"
+  class="fixed inset-0 z-[60] hidden flex items-center justify-center"
+>
+  <!-- Backdrop -->
+  <div
+    class="absolute inset-0 bg-slate-900/20 backdrop-blur-sm transition-opacity"
+    onclick="closeForumModal()"
+  ></div>
+
+  <!-- Modal Content -->
+  <div
+    class="glass-panel w-full max-w-3xl p-0 rounded-[32px] shadow-2xl transform transition-all scale-100 relative z-10 overflow-hidden m-4 bg-white/95 flex flex-col max-h-[90vh]"
+  >
+    <!-- Header -->
+    <div
+      class="p-6 border-b border-slate-100 flex justify-between items-start bg-white/50 backdrop-blur-md flex-shrink-0"
+    >
+      <div class="flex items-start gap-4">
+        <div
+          class="w-12 h-12 rounded-2xl bg-blue-50 text-blue-600 flex items-center justify-center text-xl shadow-sm border border-blue-100"
+        >
+          <i class="fa-solid fa-comments"></i>
+        </div>
+        <div>
+          <h3
+            id="forum-topic-title"
+            class="font-black text-slate-800 text-xl leading-tight"
+          >
+            --
+          </h3>
+          <div class="flex items-center gap-3 mt-2">
+            <span class="text-xs font-medium text-slate-400">
+              <i class="fa-solid fa-user mr-1"></i>
+              <span id="forum-topic-author" class="text-slate-600 font-bold"
+                >--</span
+              >
+            </span>
+            <span class="text-xs font-medium text-slate-400">
+              <i class="fa-regular fa-clock mr-1"></i>
+              <span id="forum-topic-date">--</span>
+            </span>
+          </div>
+        </div>
+      </div>
+      <button
+        onclick="closeForumModal()"
+        class="w-8 h-8 rounded-full bg-slate-50 hover:bg-red-50 hover:text-red-500 flex items-center justify-center text-slate-400 transition-all"
+      >
+        <i class="fa-solid fa-times"></i>
+      </button>
+    </div>
+
+    <!-- Body (Scrollable) -->
+    <div class="flex-1 overflow-y-auto custom-scroll p-6 space-y-6">
+      <!-- Main Post -->
+      <div class="bg-blue-50/50 p-5 rounded-2xl border border-blue-100">
+        <p
+          id="forum-topic-content"
+          class="text-slate-700 text-sm leading-relaxed"
+        >
+          --
+        </p>
+      </div>
+
+      <!-- Replies List -->
+      <div>
+        <h4 class="text-xs font-bold text-slate-500 uppercase mb-4">
+          Phản hồi (<span id="forum-reply-count">0</span>)
+        </h4>
+        <div id="forum-replies-list" class="space-y-4">
+          <!-- Replies injected here -->
+        </div>
+      </div>
+    </div>
+
+    <!-- Footer (Reply Form) -->
+    <div class="p-4 bg-white border-t border-slate-100 flex-shrink-0">
+      <form onsubmit="submitForumReply(event)" class="flex gap-3">
+        <div class="flex-1 relative">
+          <input
+            type="text"
+            id="forum-reply-input"
+            class="w-full pl-4 pr-10 py-3 rounded-xl border border-slate-200 bg-slate-50 focus:outline-none focus:bg-white focus:border-blue-500 transition text-sm"
+            placeholder="Viết bình luận của bạn..."
+            required
+            autocomplete="off"
+          />
+          <button
+            type="button"
+            class="absolute right-2 top-1/2 -translate-y-1/2 w-8 h-8 rounded-lg text-slate-400 hover:bg-slate-200 hover:text-slate-600 transition flex items-center justify-center"
+          >
+            <i class="fa-solid fa-paperclip"></i>
+          </button>
+        </div>
+        <button
+          type="submit"
+          class="px-5 py-3 rounded-xl bg-blue-600 text-white text-sm font-bold hover:bg-blue-700 shadow-lg shadow-blue-500/30 transition flex items-center gap-2"
+        >
+          <i class="fa-solid fa-paper-plane"></i> Gửi
+        </button>
+      </form>
+    </div>
+  </div>
+</div>

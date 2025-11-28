@@ -658,6 +658,7 @@ let currentCourseName = null;
 export function enterClass(courseId, courseName) {
   currentCourseId = courseId;
   currentCourseName = courseName;
+  console.log("Entering class:", courseName);
 
   const details = mockCourseDetails[courseName] || {
     tutor: "Unknown",
@@ -893,9 +894,11 @@ function renderCourseForum(list) {
   container.innerHTML = list
     .map(
       (f) => `
-        <div class="p-4 rounded-xl border border-slate-200 bg-white hover:shadow-md transition cursor-pointer">
+        <div onclick="window.openForumModal(${
+          f.id
+        })" class="p-4 rounded-xl border border-slate-200 bg-white hover:shadow-md transition cursor-pointer group hover:border-blue-300">
             <div class="flex justify-between items-start">
-                <h5 class="font-bold text-slate-800 hover:text-blue-600 transition">${
+                <h5 class="font-bold text-slate-800 group-hover:text-blue-600 transition">${
                   f.title
                 }</h5>
                 <span class="text-xs text-slate-400">${f.last_post}</span>
@@ -917,6 +920,132 @@ function renderCourseForum(list) {
     `
     )
     .join("");
+}
+
+// Open Forum Modal
+let currentForumId = null;
+
+export function openForumModal(forumId) {
+  // Fallback if currentCourseName is lost (e.g. after reload)
+  if (!currentCourseName) {
+    const nameEl = document.getElementById("detail-course-name");
+    if (nameEl) {
+      const text = nameEl.innerText;
+      if (text) {
+        // Extract name part (before " - ")
+        currentCourseName = text.split(" - ")[0].trim();
+        console.log("Recovered course name from DOM:", currentCourseName);
+      }
+    }
+  }
+
+  const details = mockCourseDetails[currentCourseName];
+  if (!details) {
+    console.error("Course details not found for:", currentCourseName);
+    return;
+  }
+
+  const topic = details.forum.find((f) => f.id == forumId);
+  if (!topic) return;
+
+  currentForumId = forumId;
+  console.log("Opening Forum Modal:", forumId);
+
+  const modal = document.getElementById("forum-modal");
+  const title = document.getElementById("forum-topic-title");
+  const author = document.getElementById("forum-topic-author");
+  const date = document.getElementById("forum-topic-date");
+  const content = document.getElementById("forum-topic-content");
+  const count = document.getElementById("forum-reply-count");
+  const list = document.getElementById("forum-replies-list");
+
+  title.innerText = topic.title;
+  author.innerText = topic.author;
+  date.innerText = topic.last_post;
+  content.innerText =
+    topic.content || "Nội dung bài viết đang được cập nhật...";
+  count.innerText = topic.repliesList ? topic.repliesList.length : 0;
+
+  // Render Replies
+  if (topic.repliesList && topic.repliesList.length > 0) {
+    list.innerHTML = topic.repliesList
+      .map(
+        (r) => `
+        <div class="flex gap-4">
+            <div class="w-8 h-8 rounded-full bg-slate-100 flex items-center justify-center text-xs font-bold text-slate-600 flex-shrink-0 border border-slate-200">
+                ${r.author.charAt(0)}
+            </div>
+            <div class="flex-1">
+                <div class="bg-slate-50 p-3 rounded-2xl rounded-tl-none border border-slate-100">
+                    <div class="flex justify-between items-center mb-1">
+                        <span class="text-xs font-bold text-slate-700">${
+                          r.author
+                        }</span>
+                        <span class="text-[10px] text-slate-400">${
+                          r.date
+                        }</span>
+                    </div>
+                    <p class="text-sm text-slate-600">${r.content}</p>
+                </div>
+            </div>
+        </div>
+    `
+      )
+      .join("");
+  } else {
+    list.innerHTML =
+      '<p class="text-slate-400 text-sm italic text-center py-4">Chưa có phản hồi nào. Hãy là người đầu tiên!</p>';
+  }
+
+  modal.classList.remove("hidden");
+}
+
+export function closeForumModal() {
+  document.getElementById("forum-modal").classList.add("hidden");
+}
+
+export function submitForumReply(e) {
+  e.preventDefault();
+  const input = document.getElementById("forum-reply-input");
+  const content = input.value.trim();
+  if (!content) return;
+
+  const btn = e.target.querySelector('button[type="submit"]');
+  setButtonLoading(btn, true);
+
+  // Simulate API call
+  setTimeout(() => {
+    const details = mockCourseDetails[currentCourseName];
+    const topic = details.forum.find((f) => f.id == currentForumId);
+
+    if (topic) {
+      if (!topic.repliesList) topic.repliesList = [];
+
+      // Add new reply
+      topic.repliesList.push({
+        author: "Bạn (SV)",
+        content: content,
+        date: new Date().toLocaleString("vi-VN", {
+          hour: "2-digit",
+          minute: "2-digit",
+          day: "2-digit",
+          month: "2-digit",
+          year: "numeric",
+        }),
+      });
+
+      topic.replies++;
+      topic.last_post = new Date().toISOString().split("T")[0];
+
+      // Refresh View
+      openForumModal(currentForumId);
+      renderCourseForum(details.forum);
+    }
+
+    input.value = "";
+    setButtonLoading(btn, false);
+    showToast("Đã gửi bình luận thành công!", "success");
+  }, 600);
 }
 
 function renderCourseExams(list) {
