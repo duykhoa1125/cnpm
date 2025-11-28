@@ -66,6 +66,18 @@
     >
       <i class="fa-solid fa-file-pen mr-2"></i>Lịch thi
     </button>
+    <button
+      class="course-tab-btn px-5 py-3 text-sm font-bold text-slate-500 hover:text-blue-600 transition whitespace-nowrap"
+      onclick="switchCourseTab(this, 'tab-materials')"
+    >
+      <i class="fa-solid fa-folder-open mr-2"></i>Tài liệu
+    </button>
+    <button
+      class="course-tab-btn px-5 py-3 text-sm font-bold text-slate-500 hover:text-blue-600 transition whitespace-nowrap"
+      onclick="switchCourseTab(this, 'tab-grades')"
+    >
+      <i class="fa-solid fa-chart-bar mr-2"></i>Điểm số
+    </button>
   </div>
 
   <!-- Content Areas -->
@@ -166,6 +178,50 @@
         </h4>
         <div id="course-exams-list" class="space-y-4">
           <!-- Content injected by JS -->
+        </div>
+      </div>
+    </div>
+
+    <!-- Materials Tab -->
+    <div
+      id="tab-materials"
+      class="course-tab-content hidden animate-fade-in-up"
+    >
+      <div class="glass-card p-6 rounded-2xl">
+        <h4 class="text-lg font-bold text-slate-800 mb-4">Tài liệu môn học</h4>
+        <div
+          id="course-materials-list"
+          class="grid grid-cols-1 md:grid-cols-2 gap-4"
+        >
+          <!-- Content injected by JS -->
+        </div>
+      </div>
+    </div>
+
+    <!-- Grades Tab -->
+    <div id="tab-grades" class="course-tab-content hidden animate-fade-in-up">
+      <div class="glass-card p-6 rounded-2xl">
+        <h4 class="text-lg font-bold text-slate-800 mb-4">
+          Bảng điểm chi tiết
+        </h4>
+        <div class="overflow-x-auto">
+          <table class="w-full text-left border-collapse">
+            <thead
+              class="bg-slate-50 text-xs text-slate-500 uppercase font-bold"
+            >
+              <tr>
+                <th class="p-3 rounded-l-lg">Thành phần</th>
+                <th class="p-3 text-center">Trọng số</th>
+                <th class="p-3 text-center rounded-r-lg">Điểm số</th>
+              </tr>
+            </thead>
+            <tbody
+              id="course-grades-list"
+              class="text-sm text-slate-700 divide-y divide-slate-100"
+            >
+              <!-- Content injected by JS -->
+            </tbody>
+          </table>
         </div>
       </div>
     </div>

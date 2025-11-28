@@ -780,6 +780,8 @@ export const mockCourseDetails = {
   "Giải tích 1": {
     tutor: "Trần Văn B",
     schedule: "Thứ 2 (07:00 - 10:00)",
+    room: "H6-302",
+    group: "L01",
     announcements: [
       {
         id: 1,
@@ -908,5 +910,145 @@ export const mockCourseDetails = {
         type: "Tự luận",
       },
     ],
+    materials: [
+      {
+        id: 1,
+        title: "Slide bài giảng Chương 1",
+        type: "pdf",
+        size: "2.5 MB",
+        date: "2025-09-05",
+      },
+      {
+        id: 2,
+        title: "Bài tập tự luyện tuần 1-5",
+        type: "doc",
+        size: "1.2 MB",
+        date: "2025-09-10",
+      },
+      {
+        id: 3,
+        title: "Đề thi mẫu giữa kỳ",
+        type: "pdf",
+        size: "3.0 MB",
+        date: "2025-10-01",
+      },
+    ],
+    grades: [
+      { item: "Quiz 1", weight: "10%", score: 9.0 },
+      { item: "Quiz 2", weight: "10%", score: 7.5 },
+      { item: "Bài tập lớn 1", weight: "20%", score: 8.5 },
+      { item: "Giữa kỳ", weight: "30%", score: 8.0 },
+      { item: "Cuối kỳ", weight: "30%", score: null },
+    ],
+  },
+  "Lập trình Web": {
+    tutor: "Nguyễn Văn A",
+    schedule: "Thứ 4 (13:00 - 16:00)",
+    room: "B1-205",
+    group: "L02",
+    announcements: [
+      {
+        id: 1,
+        title: "Cài đặt môi trường thực hành",
+        content:
+          "Các em cài đặt VS Code và Node.js phiên bản mới nhất để chuẩn bị cho buổi thực hành đầu tiên.",
+        date: "2025-09-01",
+        author: "Nguyễn Văn A",
+        type: "normal",
+      },
+    ],
+    scheduleList: [
+      {
+        week: 1,
+        content: "Tổng quan về Web & HTML",
+        time: "13:00 - 16:00",
+        room: "B1-205",
+        note: "",
+      },
+      {
+        week: 2,
+        content: "CSS & Layout",
+        time: "13:00 - 16:00",
+        room: "B1-205",
+        note: "",
+      },
+      {
+        week: 3,
+        content: "JavaScript cơ bản",
+        time: "13:00 - 16:00",
+        room: "B1-205",
+        note: "",
+      },
+      {
+        week: 4,
+        content: "DOM & Events",
+        time: "13:00 - 16:00",
+        room: "B1-205",
+        note: "",
+      },
+    ],
+    assignments: [
+      {
+        id: 1,
+        title: "Thiết kế Landing Page",
+        deadline: "2025-10-15",
+        status: "submitted",
+        score: 9.5,
+      },
+    ],
+    quizzes: [
+      {
+        id: 1,
+        title: "HTML/CSS Quiz",
+        deadline: "2025-09-25",
+        status: "completed",
+        score: 10.0,
+      },
+    ],
+    forum: [],
+    exams: [
+      {
+        name: "Thi Cuối Kỳ",
+        date: "2025-12-20",
+        time: "13:00",
+        room: "Phòng máy 1",
+        type: "Thực hành",
+      },
+    ],
+    materials: [
+      {
+        id: 1,
+        title: "Slide HTML5 & CSS3",
+        type: "ppt",
+        size: "15 MB",
+        date: "2025-09-01",
+      },
+      {
+        id: 2,
+        title: "Source code demo tuần 2",
+        type: "zip",
+        size: "500 KB",
+        date: "2025-09-15",
+      },
+    ],
+    grades: [
+      { item: "Quiz HTML/CSS", weight: "20%", score: 10.0 },
+      { item: "BTL Landing Page", weight: "30%", score: 9.5 },
+      { item: "Cuối kỳ", weight: "50%", score: null },
+    ],
+  },
+  "Cấu trúc dữ liệu": {
+    tutor: "Lê Thị C",
+    schedule: "Thứ 6 (07:00 - 10:00)",
+    room: "H6-401",
+    group: "L03",
+    announcements: [],
+    scheduleList: [],
+    assignments: [],
+    quizzes: [],
+    forum: [],
+    exams: [],
+    materials: [],
+    grades: [],
   },
 };

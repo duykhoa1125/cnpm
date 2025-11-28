@@ -548,16 +548,30 @@ export function enterClass(courseId, courseName) {
     quizzes: [],
     forum: [],
     exams: [],
+    materials: [],
+    grades: [],
   };
 
   // Populate Header
   const nameEl = document.getElementById("detail-course-name");
-  const tutorEl = document.getElementById("detail-tutor-name");
-  const scheduleEl = document.getElementById("detail-schedule");
+  const infoEl = document.getElementById("detail-course-info");
 
-  if (nameEl) nameEl.innerText = courseName;
-  if (tutorEl) tutorEl.innerText = details.tutor;
-  if (scheduleEl) scheduleEl.innerText = details.schedule;
+  if (nameEl) nameEl.innerText = `${courseName} - ${details.group || ""}`;
+  if (infoEl) {
+    infoEl.innerHTML = `
+        <i class="fa-solid fa-user-tie mr-1.5 text-blue-500"></i> ${
+          details.tutor
+        }
+        <span class="mx-2">•</span>
+        <i class="fa-solid fa-clock mr-1.5 text-orange-500"></i> ${
+          details.schedule
+        }
+        <span class="mx-2">•</span>
+        <i class="fa-solid fa-location-dot mr-1.5 text-red-500"></i> ${
+          details.room || "Chưa cập nhật"
+        }
+      `;
+  }
 
   // Render Announcements (Default Tab)
   renderCourseAnnouncements(details.announcements);
@@ -567,6 +581,8 @@ export function enterClass(courseId, courseName) {
   renderCourseAssignments(details.assignments, details.quizzes);
   renderCourseForum(details.forum);
   renderCourseExams(details.exams);
+  renderCourseMaterials(details.materials);
+  renderCourseGrades(details.grades);
 
   // Switch View
   switchTab("courses_student_detail");
@@ -809,6 +825,83 @@ function renderCourseExams(list) {
               e.type
             }</span>
         </div>
+    `
+    )
+    .join("");
+}
+
+function renderCourseMaterials(list) {
+  const container = document.getElementById("course-materials-list");
+  if (!container) return;
+  if (!list || list.length === 0) {
+    container.innerHTML =
+      '<p class="text-slate-400 text-center italic col-span-2">Chưa có tài liệu nào.</p>';
+    return;
+  }
+  container.innerHTML = list
+    .map(
+      (m) => `
+        <div class="flex items-center justify-between p-4 border border-slate-200 rounded-xl bg-white hover:border-blue-400 transition group/file cursor-pointer">
+            <div class="flex items-center gap-4 overflow-hidden">
+                <div class="w-12 h-12 bg-${
+                  m.type === "pdf"
+                    ? "red"
+                    : m.type === "doc"
+                    ? "blue"
+                    : "orange"
+                }-50 text-${
+        m.type === "pdf" ? "red" : m.type === "doc" ? "blue" : "orange"
+      }-500 rounded-xl flex items-center justify-center text-xl flex-shrink-0">
+                    <i class="fa-solid fa-file-${
+                      m.type === "pdf"
+                        ? "pdf"
+                        : m.type === "doc"
+                        ? "word"
+                        : "file"
+                    }"></i>
+                </div>
+                <div class="min-w-0">
+                    <p class="text-sm font-bold text-slate-700 truncate group-hover/file:text-blue-600 transition">${
+                      m.title
+                    }</p>
+                    <p class="text-[10px] text-slate-500 mt-1">${m.size} • ${
+        m.date
+      }</p>
+                </div>
+            </div>
+            <button class="w-8 h-8 rounded-full hover:bg-slate-100 flex items-center justify-center text-slate-400 hover:text-blue-600 transition">
+                <i class="fa-solid fa-download"></i>
+            </button>
+        </div>
+    `
+    )
+    .join("");
+}
+
+function renderCourseGrades(list) {
+  const container = document.getElementById("course-grades-list");
+  if (!container) return;
+  if (!list || list.length === 0) {
+    container.innerHTML =
+      '<tr><td colspan="3" class="text-center p-4 text-slate-400">Chưa có bảng điểm.</td></tr>';
+    return;
+  }
+  container.innerHTML = list
+    .map(
+      (g) => `
+        <tr class="hover:bg-slate-50 transition">
+            <td class="p-3 font-bold text-slate-700">${g.item}</td>
+            <td class="p-3 text-center text-slate-500 font-mono text-xs">${
+              g.weight
+            }</td>
+            <td class="p-3 text-center">
+                ${
+                  g.score !== null
+                    ? `<span class="font-black text-blue-600">${g.score}</span>`
+                    : `<span class="text-slate-400 italic text-xs">--</span>`
+                }
+            </td>
+        </tr>
     `
     )
     .join("");

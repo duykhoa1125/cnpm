@@ -55,13 +55,137 @@
         </div>
         <div class="mt-4 flex gap-3 flex-wrap">
           <button
-            onclick="openMaterialModal('Giải tích 1')"
+            onclick="enterClass('CO1023', 'Giải tích 1')"
             class="px-4 py-2 rounded-xl bg-white border border-slate-200 text-xs font-bold text-slate-600 hover:border-blue-400 transition flex items-center gap-2"
           >
             <i class="fa-solid fa-folder-open"></i> Tài liệu
           </button>
           <button
             onclick="enterClass('CO1023', 'Giải tích 1')"
+            class="px-4 py-2 rounded-xl bg-blue-600 text-white text-xs font-bold shadow-lg hover:bg-blue-700 transition"
+          >
+            Vào lớp
+          </button>
+        </div>
+      </div>
+    </div>
+
+    <!-- Lập trình Web -->
+    <div
+      id="course-card-CO3005"
+      class="glass-card p-6 rounded-[28px] flex flex-col md:flex-row gap-6 group hover:border-blue-300 transition-all relative overflow-hidden"
+    >
+      <div
+        class="w-full md:w-32 h-32 rounded-2xl bg-purple-100 flex items-center justify-center text-4xl text-purple-500 shadow-inner flex-shrink-0"
+      >
+        <i class="fa-solid fa-code"></i>
+      </div>
+      <div class="flex-1 min-w-0">
+        <div class="flex justify-between items-start">
+          <div class="min-w-0">
+            <span
+              class="text-[10px] font-bold bg-purple-50 text-purple-600 px-2 py-1 rounded uppercase"
+              >CO3005</span
+            >
+            <h4 class="text-xl font-bold text-slate-800 mt-1 truncate">
+              Lập trình Web
+            </h4>
+            <p class="text-sm text-slate-500 truncate">
+              <i class="fa-solid fa-user-tie mr-1"></i> Tutor: Nguyễn Văn A
+            </p>
+            <p class="text-[10px] text-orange-500 font-bold mt-1">
+              <i class="fa-regular fa-clock mr-1"></i> Hạn hủy: 15/10/2025
+            </p>
+          </div>
+          <button
+            onclick="cancelCourse('CO3005', 'Lập trình Web')"
+            class="ml-2 px-3 py-1 rounded-lg bg-red-50 text-red-500 text-xs font-bold hover:bg-red-500 hover:text-white transition border border-red-100 flex-shrink-0"
+          >
+            <i class="fa-solid fa-ban mr-1"></i> Hủy môn
+          </button>
+        </div>
+        <div class="mt-4">
+          <div
+            class="flex justify-between text-xs font-bold text-slate-500 mb-1"
+          >
+            <span>Tiến độ (Tuần 5/15)</span>
+            <span>33%</span>
+          </div>
+          <div class="h-2 bg-slate-100 rounded-full overflow-hidden">
+            <div class="h-full bg-purple-500 w-[33%] rounded-full"></div>
+          </div>
+        </div>
+        <div class="mt-4 flex gap-3 flex-wrap">
+          <button
+            onclick="enterClass('CO3005', 'Lập trình Web')"
+            class="px-4 py-2 rounded-xl bg-white border border-slate-200 text-xs font-bold text-slate-600 hover:border-blue-400 transition flex items-center gap-2"
+          >
+            <i class="fa-solid fa-folder-open"></i> Tài liệu
+          </button>
+          <button
+            onclick="enterClass('CO3005', 'Lập trình Web')"
+            class="px-4 py-2 rounded-xl bg-blue-600 text-white text-xs font-bold shadow-lg hover:bg-blue-700 transition"
+          >
+            Vào lớp
+          </button>
+        </div>
+      </div>
+    </div>
+
+    <!-- Cấu trúc dữ liệu -->
+    <div
+      id="course-card-CO2003"
+      class="glass-card p-6 rounded-[28px] flex flex-col md:flex-row gap-6 group hover:border-blue-300 transition-all relative overflow-hidden"
+    >
+      <div
+        class="w-full md:w-32 h-32 rounded-2xl bg-orange-100 flex items-center justify-center text-4xl text-orange-500 shadow-inner flex-shrink-0"
+      >
+        <i class="fa-solid fa-layer-group"></i>
+      </div>
+      <div class="flex-1 min-w-0">
+        <div class="flex justify-between items-start">
+          <div class="min-w-0">
+            <span
+              class="text-[10px] font-bold bg-orange-50 text-orange-600 px-2 py-1 rounded uppercase"
+              >CO2003</span
+            >
+            <h4 class="text-xl font-bold text-slate-800 mt-1 truncate">
+              Cấu trúc dữ liệu
+            </h4>
+            <p class="text-sm text-slate-500 truncate">
+              <i class="fa-solid fa-user-tie mr-1"></i> Tutor: Lê Thị C
+            </p>
+            <p class="text-[10px] text-orange-500 font-bold mt-1">
+              <i class="fa-regular fa-clock mr-1"></i> Hạn hủy: 20/09/2025
+            </p>
+          </div>
+          <button
+            onclick="cancelCourse('CO2003', 'Cấu trúc dữ liệu')"
+            class="ml-2 px-3 py-1 rounded-lg bg-red-50 text-red-500 text-xs font-bold hover:bg-red-500 hover:text-white transition border border-red-100 flex-shrink-0"
+          >
+            <i class="fa-solid fa-ban mr-1"></i> Hủy môn
+          </button>
+        </div>
+        <div class="mt-4">
+          <div
+            class="flex justify-between text-xs font-bold text-slate-500 mb-1"
+          >
+            <span>Tiến độ (Tuần 1/15)</span>
+            <span>6%</span>
+          </div>
+          <div class="h-2 bg-slate-100 rounded-full overflow-hidden">
+            <div class="h-full bg-orange-500 w-[6%] rounded-full"></div>
+          </div>
+        </div>
+        <div class="mt-4 flex gap-3 flex-wrap">
+          <button
+            onclick="enterClass('CO2003', 'Cấu trúc dữ liệu')"
+            class="px-4 py-2 rounded-xl bg-white border border-slate-200 text-xs font-bold text-slate-600 hover:border-blue-400 transition flex items-center gap-2"
+          >
+            <i class="fa-solid fa-folder-open"></i> Tài liệu
+          </button>
+          <button
+            onclick="enterClass('CO2003', 'Cấu trúc dữ liệu')"
             class="px-4 py-2 rounded-xl bg-blue-600 text-white text-xs font-bold shadow-lg hover:bg-blue-700 transition"
           >
             Vào lớp
