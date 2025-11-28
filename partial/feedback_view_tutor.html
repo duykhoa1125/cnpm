@@ -64,28 +64,14 @@
   </div>
 
   <!-- List -->
-  <div class="glass-card p-6 rounded-[28px]">
-    <h3 class="font-bold text-slate-800 mb-6 flex items-center gap-2">
-      <i class="fa-solid fa-list-ul text-blue-500"></i> Danh sách phản hồi
-    </h3>
-    <div class="overflow-x-auto">
-      <table class="w-full text-left border-collapse">
-        <thead>
-          <tr class="text-slate-500 text-xs uppercase tracking-wider border-b border-slate-200/60">
-            <th class="pb-3 font-bold pl-4">Sinh viên</th>
-            <th class="pb-3 font-bold">Môn học</th>
-            <th class="pb-3 font-bold">Đánh giá</th>
-            <th class="pb-3 font-bold w-1/2">Nội dung</th>
-            <th class="pb-3 font-bold">Ngày</th>
-          </tr>
-        </thead>
-        <tbody id="tutor-feedback-list" class="text-sm text-slate-700">
-          <!-- JS will populate this -->
-        </tbody>
-      </table>
-    </div>
-    <div id="tutor-feedback-empty" class="hidden text-center py-8 text-slate-500 italic">
-      Không tìm thấy phản hồi nào phù hợp.
-    </div>
+  <div id="tutor-feedback-container" class="space-y-6">
+      <!-- JS will inject grouped feedback here -->
+  </div>
+
+  <div id="tutor-feedback-empty" class="hidden text-center py-12">
+      <div class="inline-flex items-center justify-center w-16 h-16 rounded-full bg-slate-100 mb-4">
+          <i class="fa-solid fa-comment-slash text-slate-400 text-2xl"></i>
+      </div>
+      <p class="text-slate-500 italic">Không tìm thấy phản hồi nào phù hợp.</p>
   </div>
 </div>

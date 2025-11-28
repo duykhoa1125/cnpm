@@ -1,282 +1,120 @@
-          <div id="courses_tutor" class="section-view space-y-6">
-            <div class="flex justify-between items-center">
-              <h3 class="text-xl font-bold text-slate-800">Lớp tôi đang dạy</h3>
+<div id="courses_tutor" class="section-view space-y-6">
+    <div class="flex justify-between items-center">
+        <div>
+            <h3 class="text-2xl font-black text-slate-800">Quản lý Lớp học</h3>
+            <p class="text-slate-500 text-sm">Danh sách các lớp bạn đang phụ trách giảng dạy</p>
+        </div>
+        <div class="flex gap-3">
+             <button class="px-4 py-2 rounded-xl bg-white border border-slate-200 text-slate-600 text-sm font-bold hover:bg-slate-50 transition shadow-sm">
+                <i class="fa-solid fa-filter mr-2"></i>Bộ lọc
+            </button>
+            <button class="px-4 py-2 rounded-xl bg-blue-600 text-white text-sm font-bold hover:bg-blue-700 transition shadow-lg shadow-blue-500/30">
+                <i class="fa-solid fa-plus mr-2"></i>Tạo lớp mới
+            </button>
+        </div>
+    </div>
+
+    <!-- Course List Container -->
+    <div id="tutor-courses-list" class="space-y-6">
+        <!-- JS will inject content here -->
+         <div class="text-center py-12">
+            <i class="fa-solid fa-circle-notch fa-spin text-3xl text-blue-500"></i>
+            <p class="mt-3 text-slate-500">Đang tải dữ liệu lớp học...</p>
+        </div>
+    </div>
+</div>
+
+<!-- Upload Modal (Hidden) -->
+<div id="upload-modal" class="hidden fixed inset-0 z-[60] flex items-center justify-center">
+    <div class="absolute inset-0 bg-slate-900/30 backdrop-blur-sm transition-opacity" onclick="closeUploadModal()"></div>
+    <div class="glass-panel w-full max-w-lg p-6 rounded-[28px] shadow-2xl relative z-10 bg-white transform transition-all scale-100">
+        <div class="flex justify-between items-center mb-4">
+            <h3 class="text-xl font-bold text-slate-800">Upload Tài liệu</h3>
+            <button onclick="closeUploadModal()" class="w-8 h-8 rounded-full bg-slate-100 hover:bg-slate-200 flex items-center justify-center transition">
+                <i class="fa-solid fa-xmark"></i>
+            </button>
+        </div>
+        
+        <input type="hidden" id="upload-course-id">
+        
+        <div class="border-2 border-dashed border-slate-300 rounded-2xl p-8 text-center hover:border-blue-500 hover:bg-blue-50 transition cursor-pointer mb-4" onclick="document.getElementById('file-input').click()">
+            <i class="fa-solid fa-cloud-arrow-up text-4xl text-blue-400 mb-3"></i>
+            <p class="font-bold text-slate-700">Kéo thả file vào đây hoặc nhấn để chọn</p>
+            <p class="text-xs text-slate-400 mt-1">Hỗ trợ PDF, PPTX, DOCX, MP4 (Max 50MB)</p>
+            <input type="file" id="file-input" class="hidden" multiple onchange="handleFileSelect(this)">
+        </div>
+
+        <div id="selected-files-preview" class="space-y-2 mb-6 max-h-40 overflow-y-auto custom-scroll">
+            <!-- File previews -->
+        </div>
+
+        <div class="flex justify-end gap-3">
+            <button onclick="closeUploadModal()" class="px-4 py-2 rounded-xl text-slate-500 font-bold hover:bg-slate-100 transition">Hủy</button>
+            <button onclick="submitUpload()" class="px-6 py-2 rounded-xl bg-blue-600 text-white font-bold shadow-lg hover:bg-blue-700 transition">Upload ngay</button>
+        </div>
+    </div>
+</div>
+
+<!-- Attendance Modal -->
+<div id="attendance-modal" class="hidden fixed inset-0 z-[60] flex items-center justify-center">
+    <div class="absolute inset-0 bg-slate-900/30 backdrop-blur-sm transition-opacity" onclick="closeAttendanceModal()"></div>
+    <div class="glass-panel w-full max-w-2xl p-6 rounded-[28px] shadow-2xl relative z-10 bg-white transform transition-all scale-100 max-h-[90vh] flex flex-col">
+        <div class="flex justify-between items-center mb-4 flex-shrink-0">
+            <div>
+                <h3 class="text-xl font-bold text-slate-800">Điểm danh</h3>
+                <p class="text-sm text-slate-500" id="attendance-course-name">Lớp học...</p>
             </div>
-            <div class="grid grid-cols-1 gap-6">
-              <div
-                class="glass-card p-6 rounded-[28px] group hover:border-green-300 transition-all"
-              >
-                <div class="flex flex-col md:flex-row gap-6 items-center mb-6">
-                  <div
-                    class="w-full md:w-24 h-24 rounded-2xl bg-green-100 flex items-center justify-center text-3xl text-green-600 shadow-inner flex-shrink-0"
-                  >
-                    <i class="fa-solid fa-chalkboard-user"></i>
-                  </div>
-                  <div class="flex-1 w-full min-w-0">
-                    <div class="flex justify-between items-start">
-                      <div class="min-w-0">
-                        <span
-                          class="text-[10px] font-bold bg-green-50 text-green-600 px-2 py-1 rounded uppercase"
-                          >CO1023</span
-                        >
-                        <h4
-                          class="text-xl font-bold text-slate-800 mt-1 truncate"
-                        >
-                          Giải tích 1 - Nhóm L01
-                        </h4>
-                        <p class="text-sm text-slate-500 mt-1 truncate">
-                          <i class="fa-solid fa-location-dot mr-1"></i> Phòng:
-                          H6-302
-                        </p>
-                      </div>
-                      <span
-                        class="px-3 py-1 rounded-full bg-blue-50 text-blue-600 text-xs font-bold flex-shrink-0 ml-2"
-                        >Đang diễn ra</span
-                      >
-                    </div>
-                    <div class="grid grid-cols-2 md:grid-cols-4 gap-4 mt-4">
-                      <div class="bg-slate-50 p-2 rounded-lg text-center">
-                        <p
-                          class="text-[10px] text-slate-500 uppercase font-bold"
-                        >
-                          Sĩ số
-                        </p>
-                        <p class="font-bold text-slate-800">45/50</p>
-                      </div>
-                      <div class="bg-slate-50 p-2 rounded-lg text-center">
-                        <p
-                          class="text-[10px] text-slate-500 uppercase font-bold"
-                        >
-                          Vắng
-                        </p>
-                        <p class="font-bold text-red-500">2</p>
-                      </div>
-                    </div>
-                  </div>
-                  <div
-                    class="flex flex-col gap-2 w-full md:w-auto flex-shrink-0"
-                  >
-                    <button
-                      class="px-6 py-3 rounded-xl bg-white border border-slate-200 text-xs font-bold text-slate-600 hover:border-green-400 transition flex items-center justify-center gap-2"
-                    >
-                      <i class="fa-solid fa-list-check"></i> Điểm danh
-                    </button>
-                    <button
-                      class="px-6 py-3 rounded-xl bg-green-600 text-white text-xs font-bold shadow-lg hover:bg-green-700 transition flex items-center justify-center gap-2"
-                    >
-                      <i class="fa-solid fa-folder-gear"></i> Quản lý lớp
-                    </button>
-                  </div>
-                </div>
-                <!-- Class details -->
-                <div
-                  id="class-details-1"
-                  class="mt-6 pt-6 border-t border-slate-200/60 animate-fade-in-down"
-                >
-                  <div class="grid grid-cols-1 lg:grid-cols-2 gap-6">
-                    <div
-                      class="bg-white/40 rounded-xl p-4 border border-white/50"
-                    >
-                      <h5
-                        class="font-bold text-slate-700 mb-3 flex justify-between items-center text-sm"
-                      >
-                        Danh sách sinh viên
-                        <span
-                          class="bg-blue-100 text-blue-600 text-[10px] px-2 py-0.5 rounded-full"
-                          >10/45</span
-                        >
-                      </h5>
-                      <div
-                        class="space-y-2 max-h-60 overflow-y-auto custom-scroll pr-2"
-                      >
-                        <div
-                          class="flex items-center justify-between p-2 hover:bg-white/60 rounded-lg transition"
-                        >
-                          <div class="flex items-center gap-3">
-                            <img
-                              src="https://ui-avatars.com/api/?name=A+B&background=random"
-                              class="w-8 h-8 rounded-full"
-                            />
-                            <div>
-                              <p class="text-xs font-bold">Nguyễn Văn A</p>
-                              <p class="text-[10px] text-slate-500">2010001</p>
-                            </div>
-                          </div>
-                          <span
-                            class="text-[10px] font-bold text-green-600 bg-green-50 px-2 py-0.5 rounded"
-                            >Có mặt</span
-                          >
-                        </div>
-                        <!-- ... More students ... -->
-                      </div>
-                    </div>
-                      <!-- Trương Lục Gia Bảo UC004 Progress section (5 sample students) -->
-                      <div class="mt-4 border-t pt-4">
-                        <div class="flex items-start justify-between">
-                          <h6 class="text-sm font-bold text-slate-700 mb-3">Tiến độ học tập</h6>
-                          <div class="ml-4">
-                            <button onclick="exportProgressToCSV('class-details-1')" class="px-3 py-1 text-xs bg-blue-600 text-white rounded hover:bg-blue-700">Xuất Excel</button>
-                          </div>
-                        </div>
-                        <div class="space-y-3">
-                          <div class="flex items-center justify-between progress-row" data-name="Nguyễn Văn A" data-mssv="2010001" data-percent="75">
-                            <div class="min-w-0 pr-4">
-                              <p class="text-xs font-bold truncate">Nguyễn Văn A</p>
-                              <p class="text-[10px] text-slate-500">MSSV: 2010001</p>
-                            </div>
-                            <div class="w-48">
-                              <div class="h-3 bg-slate-200 rounded overflow-hidden">
-                                <div class="h-3 bg-green-500" style="width:75%"></div>
-                              </div>
-                              <div class="text-[10px] text-right text-slate-500">75%</div>
-                            </div>
-                          </div>
+            <button onclick="closeAttendanceModal()" class="w-8 h-8 rounded-full bg-slate-100 hover:bg-slate-200 flex items-center justify-center transition">
+                <i class="fa-solid fa-xmark"></i>
+            </button>
+        </div>
+        
+        <div class="flex justify-between items-center mb-4 flex-shrink-0">
+            <p class="text-sm font-bold text-slate-600">Danh sách sinh viên (<span id="attendance-count">0</span>)</p>
+            <button onclick="toggleAllAttendance()" class="text-xs font-bold text-blue-600 hover:underline">Chọn tất cả</button>
+        </div>
 
-                          <div class="flex items-center justify-between progress-row" data-name="Trần Thị B" data-mssv="2010023" data-percent="40">
-                            <div class="min-w-0 pr-4">
-                              <p class="text-xs font-bold truncate">Trần Thị B</p>
-                              <p class="text-[10px] text-slate-500">MSSV: 2010023</p>
-                            </div>
-                            <div class="w-48">
-                              <div class="h-3 bg-slate-200 rounded overflow-hidden">
-                                <div class="h-3 bg-yellow-400" style="width:40%"></div>
-                              </div>
-                              <div class="text-[10px] text-right text-slate-500">40%</div>
-                            </div>
-                          </div>
+        <div id="attendance-list" class="space-y-2 overflow-y-auto custom-scroll flex-1 pr-2">
+            <!-- Student rows injected here -->
+        </div>
 
-                          <div class="flex items-center justify-between progress-row" data-name="Lê Văn C" data-mssv="2010045" data-percent="90">
-                            <div class="min-w-0 pr-4">
-                              <p class="text-xs font-bold truncate">Lê Văn C</p>
-                              <p class="text-[10px] text-slate-500">MSSV: 2010045</p>
-                            </div>
-                            <div class="w-48">
-                              <div class="h-3 bg-slate-200 rounded overflow-hidden">
-                                <div class="h-3 bg-green-600" style="width:90%"></div>
-                              </div>
-                              <div class="text-[10px] text-right text-slate-500">90%</div>
-                            </div>
-                          </div>
+        <div class="flex justify-end gap-3 mt-6 flex-shrink-0 pt-4 border-t border-slate-100">
+            <button onclick="closeAttendanceModal()" class="px-4 py-2 rounded-xl text-slate-500 font-bold hover:bg-slate-100 transition">Hủy</button>
+            <button onclick="submitAttendance()" class="px-6 py-2 rounded-xl bg-blue-600 text-white font-bold shadow-lg hover:bg-blue-700 transition">Lưu điểm danh</button>
+        </div>
+    </div>
+</div>
 
-                          <div class="flex items-center justify-between progress-row" data-name="Phạm Thị D" data-mssv="2010067" data-percent="60">
-                            <div class="min-w-0 pr-4">
-                              <p class="text-xs font-bold truncate">Phạm Thị D</p>
-                              <p class="text-[10px] text-slate-500">MSSV: 2010067</p>
-                            </div>
-                            <div class="w-48">
-                              <div class="h-3 bg-slate-200 rounded overflow-hidden">
-                                <div class="h-3 bg-emerald-500" style="width:60%"></div>
-                              </div>
-                              <div class="text-[10px] text-right text-slate-500">60%</div>
-                            </div>
-                          </div>
-
-                          <div class="flex items-center justify-between progress-row" data-name="Hoàng E" data-mssv="2010099" data-percent="25">
-                            <div class="min-w-0 pr-4">
-                              <p class="text-xs font-bold truncate">Hoàng E</p>
-                              <p class="text-[10px] text-slate-500">MSSV: 2010099</p>
-                            </div>
-                            <div class="w-48">
-                              <div class="h-3 bg-slate-200 rounded overflow-hidden">
-                                <div class="h-3 bg-red-500" style="width:25%"></div>
-                              </div>
-                              <div class="text-[10px] text-right text-slate-500">25%</div>
-                            </div>
-                          </div>
-                        </div>
-                      </div> 
-                      <!-- End Progress section -->
-
-                    <div
-                      class="bg-white/40 rounded-xl p-4 border border-white/50"
-                    >
-                      <h5
-                        class="font-bold text-slate-700 mb-3 flex justify-between items-center text-sm"
-                      >
-                        Tài liệu môn học
-                        <button
-                          class="text-[10px] bg-blue-600 text-white px-2 py-1 rounded hover:bg-blue-700 transition flex items-center gap-1"
-                        >
-                          <i class="fa-solid fa-upload"></i> Upload
-                        </button>
-                      </h5>
-                      <div class="space-y-2">
-                        <div
-                          class="flex items-center justify-between p-2 border border-white/60 bg-white/30 rounded-lg"
-                        >
-                          <div class="flex items-center gap-2 min-w-0">
-                            <div
-                              class="w-8 h-8 bg-red-50 text-red-500 rounded flex items-center justify-center flex-shrink-0 text-sm"
-                            >
-                              <i class="fa-solid fa-file-pdf"></i>
-                            </div>
-                            <div class="min-w-0">
-                              <p
-                                class="text-xs font-bold text-slate-700 truncate"
-                              >
-                                Syllabus_GiaiTich1.pdf
-                              </p>
-                              <p class="text-[10px] text-slate-500">1.2 MB</p>
-                            </div>
-                          </div>
-                          <button
-                            class="text-slate-500 hover:text-red-500 transition"
-                          >
-                            <i class="fa-solid fa-trash text-xs"></i>
-                          </button>
-                        </div>
-                        <div
-                          class="flex items-center justify-between p-2 border border-white/60 bg-white/30 rounded-lg"
-                        >
-                          <div class="flex items-center gap-2 min-w-0">
-                            <div
-                              class="w-8 h-8 bg-blue-50 text-blue-500 rounded flex items-center justify-center flex-shrink-0 text-sm"
-                            >
-                              <i class="fa-solid fa-file-word"></i>
-                            </div>
-                            <div class="min-w-0">
-                              <p
-                                class="text-xs font-bold text-slate-700 truncate"
-                              >
-                                Bai_tap_Tuan_1.docx
-                              </p>
-                              <p class="text-[10px] text-slate-500">500 KB</p>
-                            </div>
-                          </div>
-                          <button
-                            class="text-slate-500 hover:text-red-500 transition"
-                          >
-                            <i class="fa-solid fa-trash text-xs"></i>
-                          </button>
-                        </div>
-                        <div
-                          class="flex items-center justify-between p-2 border border-white/60 bg-white/30 rounded-lg"
-                        >
-                          <div class="flex items-center gap-2 min-w-0">
-                            <div
-                              class="w-8 h-8 bg-orange-50 text-orange-500 rounded flex items-center justify-center flex-shrink-0 text-sm"
-                            >
-                              <i class="fa-solid fa-file-powerpoint"></i>
-                            </div>
-                            <div class="min-w-0">
-                              <p
-                                class="text-xs font-bold text-slate-700 truncate"
-                              >
-                                Slide_Bai_Giang_Ch1.pptx
-                              </p>
-                              <p class="text-[10px] text-slate-500">5.5 MB</p>
-                            </div>
-                          </div>
-                          <button
-                            class="text-slate-500 hover:text-red-500 transition"
-                          >
-                            <i class="fa-solid fa-trash text-xs"></i>
-                          </button>
-                        </div>
-                      </div>
-                    </div>
-                  </div>
-                </div>
-              </div>
+<!-- Email Modal -->
+<div id="email-modal" class="hidden fixed inset-0 z-[60] flex items-center justify-center">
+    <div class="absolute inset-0 bg-slate-900/30 backdrop-blur-sm transition-opacity" onclick="closeEmailModal()"></div>
+    <div class="glass-panel w-full max-w-lg p-6 rounded-[28px] shadow-2xl relative z-10 bg-white transform transition-all scale-100">
+        <div class="flex justify-between items-center mb-6">
+            <div>
+                <h3 class="text-xl font-bold text-slate-800">Gửi thông báo</h3>
+                <p class="text-sm text-slate-500" id="email-course-name">Đến lớp...</p>
             </div>
-          </div>
+            <button onclick="closeEmailModal()" class="w-8 h-8 rounded-full bg-slate-100 hover:bg-slate-200 flex items-center justify-center transition">
+                <i class="fa-solid fa-xmark"></i>
+            </button>
+        </div>
+        
+        <form id="email-form" onsubmit="submitEmail(event)" class="space-y-4">
+            <div>
+                <label class="block text-xs font-bold text-slate-500 uppercase mb-1">Tiêu đề</label>
+                <input type="text" required placeholder="Nhập tiêu đề email..." class="w-full px-4 py-2 bg-slate-50 border border-slate-200 rounded-xl focus:outline-none focus:ring-2 focus:ring-blue-500/50 font-medium text-slate-700">
+            </div>
+            <div>
+                <label class="block text-xs font-bold text-slate-500 uppercase mb-1">Nội dung</label>
+                <textarea required rows="5" placeholder="Nhập nội dung thông báo..." class="w-full px-4 py-2 bg-slate-50 border border-slate-200 rounded-xl focus:outline-none focus:ring-2 focus:ring-blue-500/50 font-medium text-slate-700 resize-none"></textarea>
+            </div>
+            
+            <div class="flex justify-end gap-3 pt-2">
+                <button type="button" onclick="closeEmailModal()" class="px-4 py-2 rounded-xl text-slate-500 font-bold hover:bg-slate-100 transition">Hủy</button>
+                <button type="submit" class="px-6 py-2 rounded-xl bg-blue-600 text-white font-bold shadow-lg hover:bg-blue-700 transition">
+                    <i class="fa-solid fa-paper-plane mr-2"></i>Gửi ngay
+                </button>
+            </div>
+        </form>
+    </div>
+</div>
