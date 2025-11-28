@@ -1,164 +1,396 @@
 <!-- Bonus Session Modal -->
-    <div
-      id="bonus-session-modal"
-      class="fixed inset-0 z-[60] hidden flex items-center justify-center"
-    >
-      <!-- Backdrop -->
-      <div
-        class="absolute inset-0 bg-slate-900/20 backdrop-blur-sm transition-opacity"
-        onclick="document.getElementById('bonus-session-modal').classList.add('hidden')"
-      ></div>
-      
-      <!-- Modal Content -->
-      <div
-        class="glass-panel w-full max-w-md p-8 rounded-[32px] shadow-2xl relative z-10 bg-white/80 transform transition-all scale-100"
-      >
-        <div class="text-center mb-6">
-            <div class="w-16 h-16 bg-purple-50 text-purple-600 rounded-full flex items-center justify-center text-2xl mx-auto mb-4 shadow-inner border border-purple-100">
-                <i class="fa-solid fa-calendar-plus"></i>
-            </div>
-            <h3 class="text-2xl font-black text-slate-800">
-              Tạo buổi học bổ sung
-            </h3>
-            <p class="text-slate-500 mt-2 text-sm font-medium">Lên lịch phụ đạo hoặc ôn tập cho sinh viên.</p>
-        </div>
+<div
+  id="bonus-session-modal"
+  class="fixed inset-0 z-[60] hidden flex items-center justify-center"
+>
+  <!-- Backdrop -->
+  <div
+    class="absolute inset-0 bg-slate-900/20 backdrop-blur-sm transition-opacity"
+    onclick="document.getElementById('bonus-session-modal').classList.add('hidden')"
+  ></div>
 
-        <form
-          class="space-y-5"
-          onsubmit="submitBonusSession(event)"
-        >
-          <div>
-            <label class="text-xs font-bold text-slate-500 uppercase ml-1 mb-1 block"
-              >Môn học</label
-            >
-            <!-- Native select styled or custom select hooks here -->
-            <select
-              class="w-full p-3 rounded-xl border border-slate-200 bg-white/50 focus:outline-none focus:border-purple-500 transition font-bold text-slate-700"
-              required
-            >
-              <option value="">-- Chọn môn học --</option>
-              <option value="CO1023">Giải tích 1 (CO1023)</option>
-              <option value="CO2003">Cấu trúc dữ liệu (CO2003)</option>
-            </select>
-          </div>
-          
-          <div class="grid grid-cols-2 gap-4">
-              <button
-                type="button"
-                onclick="document.getElementById('bonus-session-modal').classList.add('hidden')"
-                class="w-full py-3 bg-slate-100 text-slate-600 font-bold rounded-xl hover:bg-slate-200 transition text-sm"
-              >
-                Hủy bỏ
-              </button>
-              <button
-                type="submit"
-                class="w-full py-3 bg-purple-600 text-white font-bold rounded-xl hover:bg-purple-700 shadow-lg shadow-purple-500/30 transition text-sm"
-              >
-                Xác nhận
-              </button>
-          </div>
-        </form>
+  <!-- Modal Content -->
+  <div
+    class="glass-panel w-full max-w-2xl p-8 rounded-[32px] shadow-2xl relative z-10 bg-white/80 transform transition-all scale-100 m-4 max-h-[90vh] overflow-y-auto custom-scroll"
+  >
+    <div class="text-center mb-6">
+      <div
+        class="w-16 h-16 bg-purple-50 text-purple-600 rounded-full flex items-center justify-center text-2xl mx-auto mb-4 shadow-inner border border-purple-100"
+      >
+        <i class="fa-solid fa-calendar-plus"></i>
       </div>
+      <h3 class="text-2xl font-black text-slate-800">Tạo buổi học bổ sung</h3>
+      <p class="text-slate-500 mt-2 text-sm font-medium">
+        Lên lịch phụ đạo hoặc ôn tập cho sinh viên.
+      </p>
     </div>
 
-    <!-- Material Modal -->
-    <div
-      id="material-modal"
-      class="fixed inset-0 z-[60] hidden flex items-center justify-center"
+    <form
+      id="bonus-session-form"
+      class="space-y-5"
+      onsubmit="submitBonusSession(event)"
     >
-      <!-- Backdrop -->
-      <div
-        class="absolute inset-0 bg-slate-900/20 backdrop-blur-sm transition-opacity"
-        onclick="closeMaterialModal()"
-      ></div>
-      
-      <!-- Modal Content -->
-      <div
-        class="glass-panel w-full max-w-lg p-0 rounded-[32px] shadow-2xl transform transition-all scale-100 relative z-10 overflow-hidden m-4 bg-white/80"
-      >
-        <!-- Header -->
-        <div
-          class="p-6 border-b border-white/50 flex justify-between items-center bg-white/40 backdrop-blur-md"
-        >
-          <div class="flex items-center gap-3">
-              <div class="w-10 h-10 rounded-xl bg-blue-50 text-blue-600 flex items-center justify-center border border-blue-100">
-                  <i class="fa-solid fa-folder-open"></i>
-              </div>
-              <div>
-                  <h3
-                    class="font-black text-slate-800 text-lg leading-tight"
-                    id="material-title"
-                  >
-                    Tài liệu môn học
-                  </h3>
-                  <p class="text-[10px] font-bold text-slate-400 uppercase">Kho tài liệu số</p>
-              </div>
-          </div>
-          <button
-            onclick="closeMaterialModal()"
-            class="w-8 h-8 rounded-full bg-white/50 hover:bg-red-50 hover:text-red-500 flex items-center justify-center text-slate-400 transition-all border border-white"
+      <div class="grid grid-cols-1 md:grid-cols-2 gap-4">
+        <div>
+          <label
+            class="text-xs font-bold text-slate-500 uppercase ml-1 mb-1 block"
+            >Tiêu đề buổi học</label
           >
-            <i class="fa-solid fa-times"></i>
-          </button>
+          <input
+            type="text"
+            id="bonus-title"
+            class="w-full p-3 rounded-xl border border-slate-200 bg-white/50 focus:outline-none focus:border-purple-500 transition font-medium text-slate-700"
+            placeholder="Ví dụ: Ôn tập Giải tích 1"
+            required
+          />
         </div>
-
-        <!-- List -->
-        <div class="p-6 space-y-3 bg-white/30 max-h-[60vh] overflow-y-auto custom-scroll" id="material-list">
-          <!-- Item 1 -->
-          <div class="flex items-center p-4 bg-white/60 rounded-2xl border border-white/60 hover:bg-white/90 transition cursor-pointer group shadow-sm hover:shadow-md hover:-translate-y-0.5">
-            <div class="w-12 h-12 rounded-xl bg-red-50 text-red-500 flex items-center justify-center text-xl mr-4 flex-shrink-0 border border-red-100">
-              <i class="fa-solid fa-file-pdf"></i>
-            </div>
-            <div class="flex-1 min-w-0">
-              <h5 class="font-bold text-slate-800 text-sm truncate group-hover:text-blue-600 transition">Bài giảng tuần 1-5</h5>
-              <div class="flex items-center gap-2 mt-1">
-                  <span class="text-[10px] font-bold bg-slate-100 text-slate-500 px-1.5 py-0.5 rounded">PDF</span>
-                  <span class="text-[10px] font-medium text-slate-400">2.4 MB • 15/10/2025</span>
-              </div>
-            </div>
-            <button onclick="showToast('Đang tải xuống...', 'info')" class="w-9 h-9 rounded-xl bg-slate-50 text-slate-400 hover:bg-blue-600 hover:text-white transition flex items-center justify-center flex-shrink-0">
-              <i class="fa-solid fa-download"></i>
-            </button>
-          </div>
-
-          <!-- Item 2 -->
-          <div class="flex items-center p-4 bg-white/60 rounded-2xl border border-white/60 hover:bg-white/90 transition cursor-pointer group shadow-sm hover:shadow-md hover:-translate-y-0.5">
-            <div class="w-12 h-12 rounded-xl bg-orange-50 text-orange-500 flex items-center justify-center text-xl mr-4 flex-shrink-0 border border-orange-100">
-              <i class="fa-solid fa-file-powerpoint"></i>
-            </div>
-            <div class="flex-1 min-w-0">
-              <h5 class="font-bold text-slate-800 text-sm truncate group-hover:text-blue-600 transition">Slide bài giảng Chương 2</h5>
-              <div class="flex items-center gap-2 mt-1">
-                  <span class="text-[10px] font-bold bg-slate-100 text-slate-500 px-1.5 py-0.5 rounded">PPTX</span>
-                  <span class="text-[10px] font-medium text-slate-400">5.1 MB • 20/10/2025</span>
-              </div>
-            </div>
-            <button onclick="showToast('Đang tải xuống...', 'info')" class="w-9 h-9 rounded-xl bg-slate-50 text-slate-400 hover:bg-blue-600 hover:text-white transition flex items-center justify-center flex-shrink-0">
-              <i class="fa-solid fa-download"></i>
-            </button>
-          </div>
-
-          <!-- Item 3 -->
-          <div class="flex items-center p-4 bg-white/60 rounded-2xl border border-white/60 hover:bg-white/90 transition cursor-pointer group shadow-sm hover:shadow-md hover:-translate-y-0.5">
-            <div class="w-12 h-12 rounded-xl bg-blue-50 text-blue-500 flex items-center justify-center text-xl mr-4 flex-shrink-0 border border-blue-100">
-              <i class="fa-solid fa-file-word"></i>
-            </div>
-            <div class="flex-1 min-w-0">
-              <h5 class="font-bold text-slate-800 text-sm truncate group-hover:text-blue-600 transition">Đề cương môn học (Syllabus)</h5>
-              <div class="flex items-center gap-2 mt-1">
-                  <span class="text-[10px] font-bold bg-slate-100 text-slate-500 px-1.5 py-0.5 rounded">DOCX</span>
-                  <span class="text-[10px] font-medium text-slate-400">856 KB • 01/09/2025</span>
-              </div>
-            </div>
-            <button onclick="showToast('Đang tải xuống...', 'info')" class="w-9 h-9 rounded-xl bg-slate-50 text-slate-400 hover:bg-blue-600 hover:text-white transition flex items-center justify-center flex-shrink-0">
-              <i class="fa-solid fa-download"></i>
-            </button>
-          </div>
-        </div>
-        
-        <!-- Footer -->
-        <div class="p-4 bg-white/40 border-t border-white/50 text-center">
-            <button class="text-xs font-bold text-blue-600 hover:underline">Xem toàn bộ thư viện tài liệu</button>
+        <div>
+          <label
+            class="text-xs font-bold text-slate-500 uppercase ml-1 mb-1 block"
+            >Môn học</label
+          >
+          <select
+            id="bonus-course"
+            class="w-full p-3 rounded-xl border border-slate-200 bg-white/50 focus:outline-none focus:border-purple-500 transition font-bold text-slate-700"
+            required
+          >
+            <option value="">-- Chọn môn học --</option>
+            <option value="CO1023">Giải tích 1 (CO1023)</option>
+            <option value="CO2003">Cấu trúc dữ liệu (CO2003)</option>
+            <option value="CO2007">Lập trình Web (CO2007)</option>
+          </select>
         </div>
       </div>
+
+      <div>
+        <label
+          class="text-xs font-bold text-slate-500 uppercase ml-1 mb-1 block"
+          >Mô tả nội dung</label
+        >
+        <textarea
+          id="bonus-desc"
+          rows="3"
+          class="w-full p-3 rounded-xl border border-slate-200 bg-white/50 focus:outline-none focus:border-purple-500 transition font-medium text-slate-700"
+          placeholder="Nội dung buổi học bổ sung..."
+        ></textarea>
+      </div>
+
+      <div class="grid grid-cols-1 md:grid-cols-2 gap-4">
+        <div>
+          <label
+            class="text-xs font-bold text-slate-500 uppercase ml-1 mb-1 block"
+            >Phạm vi</label
+          >
+          <select
+            id="bonus-scope"
+            class="w-full p-3 rounded-xl border border-slate-200 bg-white/50 focus:outline-none focus:border-purple-500 transition font-bold text-slate-700"
+            onchange="onBonusScopeChange()"
+          >
+            <option value="CLASS">Toàn lớp</option>
+            <option value="GROUP">Nhóm</option>
+            <option value="INDIVIDUAL">Danh sách cá nhân</option>
+          </select>
+        </div>
+        <div id="bonus-students-wrapper" class="hidden">
+          <label
+            class="text-xs font-bold text-slate-500 uppercase ml-1 mb-1 block"
+            >Chọn sinh viên</label
+          >
+          <select
+            id="bonus-students"
+            class="w-full p-3 rounded-xl border border-slate-200 bg-white/50 focus:outline-none focus:border-purple-500 transition font-medium text-slate-700"
+            multiple
+          >
+            <option value="sv001">Nguyen Van A (sv001)</option>
+            <option value="sv002">Tran Thi B (sv002)</option>
+            <option value="sv003">Le Van C (sv003)</option>
+            <option value="sv004">Pham Thi D (sv004)</option>
+          </select>
+          <p class="text-[10px] text-slate-400 mt-1">
+            Giữ Ctrl để chọn nhiều sinh viên
+          </p>
+        </div>
+      </div>
+
+      <div class="grid grid-cols-1 md:grid-cols-3 gap-4">
+        <div>
+          <label
+            class="text-xs font-bold text-slate-500 uppercase ml-1 mb-1 block"
+            >Ngày</label
+          >
+          <input
+            type="date"
+            id="bonus-date"
+            class="w-full p-3 rounded-xl border border-slate-200 bg-white/50 focus:outline-none focus:border-purple-500 transition font-medium text-slate-700"
+            required
+          />
+        </div>
+        <div>
+          <label
+            class="text-xs font-bold text-slate-500 uppercase ml-1 mb-1 block"
+            >Giờ bắt đầu</label
+          >
+          <input
+            type="time"
+            id="bonus-start"
+            class="w-full p-3 rounded-xl border border-slate-200 bg-white/50 focus:outline-none focus:border-purple-500 transition font-medium text-slate-700"
+            required
+          />
+        </div>
+        <div>
+          <label
+            class="text-xs font-bold text-slate-500 uppercase ml-1 mb-1 block"
+            >Thời lượng (phút)</label
+          >
+          <input
+            type="number"
+            id="bonus-duration"
+            min="15"
+            value="60"
+            class="w-full p-3 rounded-xl border border-slate-200 bg-white/50 focus:outline-none focus:border-purple-500 transition font-medium text-slate-700"
+            required
+          />
+        </div>
+      </div>
+
+      <div class="grid grid-cols-1 md:grid-cols-3 gap-4">
+        <div>
+          <label
+            class="text-xs font-bold text-slate-500 uppercase ml-1 mb-1 block"
+            >Hình thức</label
+          >
+          <select
+            id="bonus-mode"
+            class="w-full p-3 rounded-xl border border-slate-200 bg-white/50 focus:outline-none focus:border-purple-500 transition font-bold text-slate-700"
+          >
+            <option value="ONLINE">Online</option>
+            <option value="OFFLINE">Offline</option>
+          </select>
+        </div>
+        <div>
+          <label
+            class="text-xs font-bold text-slate-500 uppercase ml-1 mb-1 block"
+            >Địa điểm / Link</label
+          >
+          <input
+            type="text"
+            id="bonus-location"
+            class="w-full p-3 rounded-xl border border-slate-200 bg-white/50 focus:outline-none focus:border-purple-500 transition font-medium text-slate-700"
+            placeholder="Zoom link hoặc phòng học"
+          />
+        </div>
+        <div>
+          <label
+            class="text-xs font-bold text-slate-500 uppercase ml-1 mb-1 block"
+            >Số lượng tối đa</label
+          >
+          <input
+            type="number"
+            id="bonus-max"
+            min="1"
+            value="30"
+            class="w-full p-3 rounded-xl border border-slate-200 bg-white/50 focus:outline-none focus:border-purple-500 transition font-medium text-slate-700"
+          />
+        </div>
+      </div>
+
+      <div
+        class="flex items-center gap-3 p-3 rounded-xl bg-amber-50/50 border border-amber-200"
+      >
+        <input
+          type="checkbox"
+          id="bonus-approval"
+          class="w-5 h-5 rounded border-slate-300 text-purple-600 focus:ring-purple-500"
+        />
+        <label for="bonus-approval" class="text-sm font-semibold text-slate-700"
+          >Yêu cầu phê duyệt từ Admin</label
+        >
+      </div>
+
+      <!-- Preview Section -->
+      <div class="p-4 rounded-xl bg-slate-50 border border-slate-200">
+        <h4 class="text-xs font-bold text-slate-500 uppercase mb-2">
+          Preview nhanh
+        </h4>
+        <p id="bonus-preview" class="text-sm text-slate-600">
+          Các thông tin sẽ hiện tại đây khi nhập form.
+        </p>
+      </div>
+
+      <div class="grid grid-cols-2 gap-4">
+        <button
+          type="button"
+          onclick="document.getElementById('bonus-session-modal').classList.add('hidden')"
+          class="w-full py-3 bg-slate-100 text-slate-600 font-bold rounded-xl hover:bg-slate-200 transition text-sm"
+        >
+          Hủy bỏ
+        </button>
+        <button
+          type="submit"
+          class="w-full py-3 bg-purple-600 text-white font-bold rounded-xl hover:bg-purple-700 shadow-lg shadow-purple-500/30 transition text-sm"
+        >
+          <i class="fa-solid fa-plus mr-1"></i> Tạo buổi học
+        </button>
+      </div>
+    </form>
+  </div>
+</div>
+
+<!-- Material Modal -->
+<div
+  id="material-modal"
+  class="fixed inset-0 z-[60] hidden flex items-center justify-center"
+>
+  <!-- Backdrop -->
+  <div
+    class="absolute inset-0 bg-slate-900/20 backdrop-blur-sm transition-opacity"
+    onclick="closeMaterialModal()"
+  ></div>
+
+  <!-- Modal Content -->
+  <div
+    class="glass-panel w-full max-w-lg p-0 rounded-[32px] shadow-2xl transform transition-all scale-100 relative z-10 overflow-hidden m-4 bg-white/80"
+  >
+    <!-- Header -->
+    <div
+      class="p-6 border-b border-white/50 flex justify-between items-center bg-white/40 backdrop-blur-md"
+    >
+      <div class="flex items-center gap-3">
+        <div
+          class="w-10 h-10 rounded-xl bg-blue-50 text-blue-600 flex items-center justify-center border border-blue-100"
+        >
+          <i class="fa-solid fa-folder-open"></i>
+        </div>
+        <div>
+          <h3
+            class="font-black text-slate-800 text-lg leading-tight"
+            id="material-title"
+          >
+            Tài liệu môn học
+          </h3>
+          <p class="text-[10px] font-bold text-slate-400 uppercase">
+            Kho tài liệu số
+          </p>
+        </div>
+      </div>
+      <button
+        onclick="closeMaterialModal()"
+        class="w-8 h-8 rounded-full bg-white/50 hover:bg-red-50 hover:text-red-500 flex items-center justify-center text-slate-400 transition-all border border-white"
+      >
+        <i class="fa-solid fa-times"></i>
+      </button>
     </div>
+
+    <!-- List -->
+    <div
+      class="p-6 space-y-3 bg-white/30 max-h-[60vh] overflow-y-auto custom-scroll"
+      id="material-list"
+    >
+      <!-- Item 1 -->
+      <div
+        class="flex items-center p-4 bg-white/60 rounded-2xl border border-white/60 hover:bg-white/90 transition cursor-pointer group shadow-sm hover:shadow-md hover:-translate-y-0.5"
+      >
+        <div
+          class="w-12 h-12 rounded-xl bg-red-50 text-red-500 flex items-center justify-center text-xl mr-4 flex-shrink-0 border border-red-100"
+        >
+          <i class="fa-solid fa-file-pdf"></i>
+        </div>
+        <div class="flex-1 min-w-0">
+          <h5
+            class="font-bold text-slate-800 text-sm truncate group-hover:text-blue-600 transition"
+          >
+            Bài giảng tuần 1-5
+          </h5>
+          <div class="flex items-center gap-2 mt-1">
+            <span
+              class="text-[10px] font-bold bg-slate-100 text-slate-500 px-1.5 py-0.5 rounded"
+              >PDF</span
+            >
+            <span class="text-[10px] font-medium text-slate-400"
+              >2.4 MB • 15/10/2025</span
+            >
+          </div>
+        </div>
+        <button
+          onclick="showToast('Đang tải xuống...', 'info')"
+          class="w-9 h-9 rounded-xl bg-slate-50 text-slate-400 hover:bg-blue-600 hover:text-white transition flex items-center justify-center flex-shrink-0"
+        >
+          <i class="fa-solid fa-download"></i>
+        </button>
+      </div>
+
+      <!-- Item 2 -->
+      <div
+        class="flex items-center p-4 bg-white/60 rounded-2xl border border-white/60 hover:bg-white/90 transition cursor-pointer group shadow-sm hover:shadow-md hover:-translate-y-0.5"
+      >
+        <div
+          class="w-12 h-12 rounded-xl bg-orange-50 text-orange-500 flex items-center justify-center text-xl mr-4 flex-shrink-0 border border-orange-100"
+        >
+          <i class="fa-solid fa-file-powerpoint"></i>
+        </div>
+        <div class="flex-1 min-w-0">
+          <h5
+            class="font-bold text-slate-800 text-sm truncate group-hover:text-blue-600 transition"
+          >
+            Slide bài giảng Chương 2
+          </h5>
+          <div class="flex items-center gap-2 mt-1">
+            <span
+              class="text-[10px] font-bold bg-slate-100 text-slate-500 px-1.5 py-0.5 rounded"
+              >PPTX</span
+            >
+            <span class="text-[10px] font-medium text-slate-400"
+              >5.1 MB • 20/10/2025</span
+            >
+          </div>
+        </div>
+        <button
+          onclick="showToast('Đang tải xuống...', 'info')"
+          class="w-9 h-9 rounded-xl bg-slate-50 text-slate-400 hover:bg-blue-600 hover:text-white transition flex items-center justify-center flex-shrink-0"
+        >
+          <i class="fa-solid fa-download"></i>
+        </button>
+      </div>
+
+      <!-- Item 3 -->
+      <div
+        class="flex items-center p-4 bg-white/60 rounded-2xl border border-white/60 hover:bg-white/90 transition cursor-pointer group shadow-sm hover:shadow-md hover:-translate-y-0.5"
+      >
+        <div
+          class="w-12 h-12 rounded-xl bg-blue-50 text-blue-500 flex items-center justify-center text-xl mr-4 flex-shrink-0 border border-blue-100"
+        >
+          <i class="fa-solid fa-file-word"></i>
+        </div>
+        <div class="flex-1 min-w-0">
+          <h5
+            class="font-bold text-slate-800 text-sm truncate group-hover:text-blue-600 transition"
+          >
+            Đề cương môn học (Syllabus)
+          </h5>
+          <div class="flex items-center gap-2 mt-1">
+            <span
+              class="text-[10px] font-bold bg-slate-100 text-slate-500 px-1.5 py-0.5 rounded"
+              >DOCX</span
+            >
+            <span class="text-[10px] font-medium text-slate-400"
+              >856 KB • 01/09/2025</span
+            >
+          </div>
+        </div>
+        <button
+          onclick="showToast('Đang tải xuống...', 'info')"
+          class="w-9 h-9 rounded-xl bg-slate-50 text-slate-400 hover:bg-blue-600 hover:text-white transition flex items-center justify-center flex-shrink-0"
+        >
+          <i class="fa-solid fa-download"></i>
+        </button>
+      </div>
+    </div>
+
+    <!-- Footer -->
+    <div class="p-4 bg-white/40 border-t border-white/50 text-center">
+      <button class="text-xs font-bold text-blue-600 hover:underline">
+        Xem toàn bộ thư viện tài liệu
+      </button>
+    </div>
+  </div>
+</div>
