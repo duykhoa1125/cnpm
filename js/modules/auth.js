@@ -33,6 +33,34 @@ export function handleLogin(e) {
   // Simulate API delay
   setTimeout(() => {
     try {
+      // Validate Credentials
+      const validPassword = "hcmut";
+      let validUsername = "hcmut_member";
+
+      switch (roleSelect.value) {
+        case "student":
+          validUsername = "hcmut_student";
+          break;
+        case "tutor":
+          validUsername = "hcmut_tutor";
+          break;
+        case "department":
+          validUsername = "hcmut_dept";
+          break;
+        case "academic":
+          validUsername = "hcmut_academic";
+          break;
+        case "admin":
+          validUsername = "hcmut_admin";
+          break;
+      }
+
+      if (password !== validPassword || username !== validUsername) {
+        showToast("Tên đăng nhập hoặc mật khẩu không đúng.", "error");
+        setButtonLoading(btn, false);
+        return;
+      }
+
       setCurrentUserRole(roleSelect.value);
       localStorage.setItem("currentUserRole", roleSelect.value);
       localStorage.setItem("username", username);
@@ -42,7 +70,17 @@ export function handleLogin(e) {
       console.error("Login error:", error);
       showToast("Có lỗi xảy ra khi đăng nhập. Vui lòng thử lại.", "error");
     } finally {
-      setButtonLoading(btn, false);
+      // Only stop loading if we haven't redirected/succeeded (though applyLoginState switches view)
+      // If success, we might not want to stop loading immediately to prevent flickering before view swap?
+      // But applyLoginState hides login screen.
+      // So if we failed (returned early), we stopped loading.
+      // If we succeeded, applyLoginState handles UI.
+      // But 'finally' runs always.
+      // If success, login screen is hidden, so button state doesn't matter much.
+      // But strictly speaking:
+      if (document.getElementById("login-screen") && !document.getElementById("login-screen").classList.contains("hidden")) {
+          setButtonLoading(btn, false);
+      }
     }
   }, 800);
 }
@@ -118,8 +156,17 @@ export function logout() {
 
   document.getElementById("main-app").classList.add("hidden");
   document.getElementById("main-app").classList.remove("flex");
-  document.getElementById("login-screen").classList.remove("hidden");
+  
+  const loginScreen = document.getElementById("login-screen");
+  loginScreen.classList.remove("hidden");
+  
   document.getElementById("login-username").value = "hcmut_student";
+  
+  // Reset button loading state if it was stuck
+  const btn = loginScreen.querySelector("button[type='submit']");
+  if (btn) {
+    setButtonLoading(btn, false, `Đăng nhập <i class="fa-solid fa-arrow-right ml-2"></i>`);
+  }
 }
 
 // Role Change Handler (for login form)

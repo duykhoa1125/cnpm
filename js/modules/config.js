@@ -604,6 +604,42 @@ export function setBonusRsvps(rsvps) {
   bonusRsvps = rsvps;
 }
 
+// Cancellation Rules Data
+export let mockCancellationRules = [
+  {
+    id: 1,
+    condition: "Hủy trước khi bắt đầu học kỳ",
+    consequence: "Không ghi nhận vào bảng điểm",
+    refund: 100,
+    violationLevel: "None",
+  },
+  {
+    id: 2,
+    condition: "Hủy trong 2 tuần đầu học kỳ",
+    consequence: "Ghi nhận điểm W (Rút môn học)",
+    refund: 70,
+    violationLevel: "None",
+  },
+  {
+    id: 3,
+    condition: "Hủy sau 2 tuần đầu nhưng trước thi giữa kỳ",
+    consequence: "Ghi nhận điểm W, tính vào số tín chỉ rút",
+    refund: 0,
+    violationLevel: "Warning",
+  },
+  {
+    id: 4,
+    condition: "Hủy sau khi thi giữa kỳ",
+    consequence: "Ghi nhận điểm F (Rớt môn)",
+    refund: 0,
+    violationLevel: "Serious",
+  },
+];
+
+export function setMockCancellationRules(rules) {
+  mockCancellationRules = rules;
+}
+
 // Role-based Menu Configuration
 export const roleMenus = {
   student: [

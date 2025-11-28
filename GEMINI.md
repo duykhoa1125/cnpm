@@ -1,3 +1,5 @@
+# do not need commit after change
+
 # Project Summary: HCMUT Learning Management System (LMS) Prototype
 
 This project is a high-fidelity, frontend-only prototype of a Learning Management System (LMS) for HCMUT. It's built with vanilla JavaScript, Tailwind CSS, and Chart.js, serving as a proof-of-concept to demonstrate the intended user experience for various roles.
