@@ -221,3 +221,25 @@ body {
     from { transform: translateX(0); opacity: 1; }
     to { transform: translateX(120%); opacity: 0; }
 }
+
+/* Staggered Animation */
+@keyframes fadeInUp {
+  from { opacity: 0; transform: translateY(20px); }
+  to { opacity: 1; transform: translateY(0); }
+}
+.animate-fade-in-up {
+  animation: fadeInUp 0.5s cubic-bezier(0.16, 1, 0.3, 1) forwards;
+}
+
+.stagger-group > * {
+  opacity: 0; /* Start hidden */
+  animation: fadeInUp 0.5s cubic-bezier(0.16, 1, 0.3, 1) forwards;
+}
+.stagger-group > *:nth-child(1) { animation-delay: 0.05s; }
+.stagger-group > *:nth-child(2) { animation-delay: 0.1s; }
+.stagger-group > *:nth-child(3) { animation-delay: 0.15s; }
+.stagger-group > *:nth-child(4) { animation-delay: 0.2s; }
+.stagger-group > *:nth-child(5) { animation-delay: 0.25s; }
+.stagger-group > *:nth-child(6) { animation-delay: 0.3s; }
+.stagger-group > *:nth-child(7) { animation-delay: 0.35s; }
+.stagger-group > *:nth-child(8) { animation-delay: 0.4s; }

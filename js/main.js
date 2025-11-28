@@ -1006,14 +1006,26 @@ function enterClass(courseName) {
   showToast(`Đang vào lớp học ${courseName || ""}...`, "success");
 }
 function searchCourses() {
-  const searchInput = document.querySelector(
-    '#student_register input[type="text"]'
-  );
-  const searchValue = searchInput ? searchInput.value.trim() : "";
-  if (searchValue) {
-    showToast(`Đang tìm kiếm: ${searchValue}`, "info");
-  } else {
-    showToast("Vui lòng nhập từ khóa tìm kiếm", "error");
+  const searchInput = document.querySelector('#student_register input[type="text"]');
+  const filter = searchInput ? searchInput.value.toLowerCase().trim() : "";
+  const courseCards = document.querySelectorAll('#student_register .grid > div');
+  let hasResults = false;
+
+  courseCards.forEach(card => {
+      const text = card.textContent.toLowerCase();
+      if (text.includes(filter)) {
+          card.classList.remove('hidden');
+          card.classList.add('animate-fade-in-up'); // Add animation for effect
+          hasResults = true;
+      } else {
+          card.classList.add('hidden');
+          card.classList.remove('animate-fade-in-up');
+      }
+  });
+
+  if (filter && !hasResults) {
+      // Optional: Show "No results" message logic here if container exists
+      // For now, we rely on the visual feedback of empty list
   }
 }
 function viewDetailedReport() {
@@ -1596,6 +1608,39 @@ let mockUsers = [
 function renderAdminSystem() {
   renderUserTable();
   renderSystemLogs();
+  startAutoLogs();
+}
+
+let autoLogInterval = null;
+function startAutoLogs() {
+    if (autoLogInterval) clearInterval(autoLogInterval);
+    
+    autoLogInterval = setInterval(() => {
+        // Only run if currently on System Admin tab
+        if (localStorage.getItem("activeTab") !== "system_admin") return;
+
+        const actors = ["AuthService", "PaymentGateway", "StudentPortal", "TutorService", "SystemMonitor"];
+        const actions = ["Health check OK", "User session refresh", "Cache invalidated", "API Request processed", "Database optimization"];
+        const levels = ["INFO", "INFO", "INFO", "WARN"]; // Mostly INFO
+
+        const randomActor = actors[Math.floor(Math.random() * actors.length)];
+        const randomAction = actions[Math.floor(Math.random() * actions.length)];
+        const randomLevel = levels[Math.floor(Math.random() * levels.length)];
+        const now = new Date().toISOString().slice(0, 19).replace("T", " ");
+
+        const newLog = {
+            ts: now,
+            level: randomLevel,
+            actor: randomActor,
+            action: randomAction,
+            details: `Latency: ${Math.floor(Math.random() * 200)}ms`
+        };
+
+        systemLogs.unshift(newLog);
+        if (systemLogs.length > 50) systemLogs.pop(); // Keep list size manageable
+        
+        renderSystemLogs();
+    }, 5000); // Add log every 5 seconds
 }
 
 // System Logs Data
