@@ -394,3 +394,112 @@
     </div>
   </div>
 </div>
+
+<!-- Assignment & Quiz Detail Modal -->
+<div
+  id="assignment-modal"
+  class="fixed inset-0 z-[60] hidden flex items-center justify-center"
+>
+  <!-- Backdrop -->
+  <div
+    class="absolute inset-0 bg-slate-900/20 backdrop-blur-sm transition-opacity"
+    onclick="closeAssignmentModal()"
+  ></div>
+
+  <!-- Modal Content -->
+  <div
+    class="glass-panel w-full max-w-2xl p-0 rounded-[32px] shadow-2xl transform transition-all scale-100 relative z-10 overflow-hidden m-4 bg-white/90"
+  >
+    <!-- Header -->
+    <div
+      class="p-6 border-b border-slate-100 flex justify-between items-start bg-white/50 backdrop-blur-md"
+    >
+      <div class="flex items-start gap-4">
+        <div
+          id="assign-icon"
+          class="w-12 h-12 rounded-2xl bg-purple-50 text-purple-600 flex items-center justify-center text-xl shadow-sm border border-purple-100"
+        >
+          <i class="fa-solid fa-file-code"></i>
+        </div>
+        <div>
+          <h3
+            id="assign-title"
+            class="font-black text-slate-800 text-xl leading-tight"
+          >
+            --
+          </h3>
+          <div class="flex items-center gap-3 mt-2">
+            <span
+              id="assign-status"
+              class="px-2.5 py-1 rounded-lg bg-slate-100 text-slate-500 text-xs font-bold"
+            >
+              --
+            </span>
+            <span class="text-xs font-medium text-slate-400">
+              <i class="fa-regular fa-clock mr-1"></i> Hạn nộp:
+              <span id="assign-deadline" class="text-slate-600 font-bold"
+                >--</span
+              >
+            </span>
+          </div>
+        </div>
+      </div>
+      <button
+        onclick="closeAssignmentModal()"
+        class="w-8 h-8 rounded-full bg-slate-50 hover:bg-red-50 hover:text-red-500 flex items-center justify-center text-slate-400 transition-all"
+      >
+        <i class="fa-solid fa-times"></i>
+      </button>
+    </div>
+
+    <!-- Body -->
+    <div class="p-6 space-y-6 max-h-[60vh] overflow-y-auto custom-scroll">
+      <!-- Description -->
+      <div>
+        <h4 class="text-xs font-bold text-slate-500 uppercase mb-2">
+          Mô tả / Yêu cầu
+        </h4>
+        <p
+          id="assign-desc"
+          class="text-sm text-slate-700 leading-relaxed bg-slate-50 p-4 rounded-xl border border-slate-100"
+        >
+          --
+        </p>
+      </div>
+
+      <!-- Files -->
+      <div>
+        <h4 class="text-xs font-bold text-slate-500 uppercase mb-2">
+          Tài liệu đính kèm
+        </h4>
+        <div id="assign-files" class="grid grid-cols-1 sm:grid-cols-2 gap-3">
+          <!-- Files injected here -->
+        </div>
+      </div>
+
+      <!-- Submission / Score -->
+      <div
+        id="assign-submission-area"
+        class="p-5 rounded-2xl bg-blue-50 border border-blue-100"
+      >
+        <!-- Content varies based on status -->
+      </div>
+    </div>
+
+    <!-- Footer -->
+    <div class="p-4 bg-white border-t border-slate-100 flex justify-end gap-3">
+      <button
+        onclick="closeAssignmentModal()"
+        class="px-5 py-2.5 rounded-xl bg-slate-100 text-slate-600 text-sm font-bold hover:bg-slate-200 transition"
+      >
+        Đóng
+      </button>
+      <button
+        id="assign-action-btn"
+        class="px-5 py-2.5 rounded-xl bg-blue-600 text-white text-sm font-bold hover:bg-blue-700 shadow-lg shadow-blue-500/30 transition hidden"
+      >
+        Nộp bài
+      </button>
+    </div>
+  </div>
+</div>

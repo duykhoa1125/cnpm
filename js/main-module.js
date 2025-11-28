@@ -111,6 +111,8 @@ import {
   viewDetailedReport,
   toggleClassDetails,
   saveTutorSchedule,
+  openAssignmentModal,
+  closeAssignmentModal,
 } from "./modules/courses.js";
 
 import {
@@ -216,6 +218,8 @@ window.searchCourses = searchCourses;
 window.viewDetailedReport = viewDetailedReport;
 window.toggleClassDetails = toggleClassDetails;
 window.saveTutorSchedule = saveTutorSchedule;
+window.openAssignmentModal = openAssignmentModal;
+window.closeAssignmentModal = closeAssignmentModal;
 
 // Profile Functions
 window.toggleProfileEdit = toggleProfileEdit;

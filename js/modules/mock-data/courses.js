@@ -175,6 +175,12 @@ export const mockCourseDetails = {
         deadline: "2025-10-30",
         status: "submitted",
         score: 8.5,
+        description:
+          "Áp dụng các kiến thức về đạo hàm để giải quyết bài toán tối ưu hóa trong thực tế. Yêu cầu trình bày rõ ràng, chi tiết.",
+        files: [
+          { name: "De_bai_BTL1.pdf", size: "1.2 MB" },
+          { name: "Mau_bao_cao.docx", size: "500 KB" },
+        ],
       },
       {
         id: 2,
@@ -182,6 +188,9 @@ export const mockCourseDetails = {
         deadline: "2025-12-15",
         status: "pending",
         score: null,
+        description:
+          "Tính diện tích hình phẳng và thể tích vật thể tròn xoay sử dụng tích phân xác định.",
+        files: [{ name: "De_bai_BTL2.pdf", size: "1.0 MB" }],
       },
     ],
     quizzes: [
@@ -191,6 +200,9 @@ export const mockCourseDetails = {
         deadline: "2025-09-20",
         status: "completed",
         score: 9.0,
+        description:
+          "Kiểm tra kiến thức về giới hạn và hàm số liên tục. Thời gian làm bài: 15 phút.",
+        files: [],
       },
       {
         id: 2,
@@ -198,6 +210,9 @@ export const mockCourseDetails = {
         deadline: "2025-10-10",
         status: "completed",
         score: 7.5,
+        description:
+          "Kiểm tra kiến thức về đạo hàm và vi phân. Thời gian làm bài: 20 phút.",
+        files: [],
       },
       {
         id: 3,
@@ -205,6 +220,9 @@ export const mockCourseDetails = {
         deadline: "2025-10-25",
         status: "completed",
         score: 8.0,
+        description:
+          "Nội dung bao gồm chương 1, 2 và 3. Hình thức: Tự luận + Trắc nghiệm.",
+        files: [{ name: "De_cuong_on_tap_GK.pdf", size: "2.5 MB" }],
       },
     ],
     forum: [

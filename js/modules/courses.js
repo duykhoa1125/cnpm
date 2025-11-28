@@ -533,11 +533,131 @@ export function viewAllSchedule() {
     "info"
   );
 }
-// Enter Class
+
+// Open Assignment/Quiz Modal
+export function openAssignmentModal(type, id) {
+  const details = mockCourseDetails[currentCourseName];
+  if (!details) return;
+
+  let item;
+  if (type === "assignment") {
+    item = details.assignments.find((a) => a.id == id);
+  } else {
+    item = details.quizzes.find((q) => q.id == id);
+  }
+
+  if (!item) return;
+
+  const modal = document.getElementById("assignment-modal");
+  const icon = document.getElementById("assign-icon");
+  const title = document.getElementById("assign-title");
+  const status = document.getElementById("assign-status");
+  const deadline = document.getElementById("assign-deadline");
+  const desc = document.getElementById("assign-desc");
+  const files = document.getElementById("assign-files");
+  const submissionArea = document.getElementById("assign-submission-area");
+  const actionBtn = document.getElementById("assign-action-btn");
+
+  // Reset
+  files.innerHTML = "";
+  submissionArea.innerHTML = "";
+  actionBtn.classList.add("hidden");
+
+  // Set Data
+  title.innerText = item.title;
+  deadline.innerText = item.deadline;
+  desc.innerText = item.description || "Không có mô tả.";
+
+  // Icon & Color
+  if (type === "assignment") {
+    icon.className =
+      "w-12 h-12 rounded-2xl bg-purple-50 text-purple-600 flex items-center justify-center text-xl shadow-sm border border-purple-100";
+    icon.innerHTML = '<i class="fa-solid fa-file-code"></i>';
+  } else {
+    icon.className =
+      "w-12 h-12 rounded-2xl bg-orange-50 text-orange-600 flex items-center justify-center text-xl shadow-sm border border-orange-100";
+    icon.innerHTML = '<i class="fa-solid fa-stopwatch"></i>';
+  }
+
+  // Status & Submission Area
+  if (
+    (type === "assignment" && item.status === "submitted") ||
+    (type === "quiz" && item.status === "completed")
+  ) {
+    status.className =
+      "px-2.5 py-1 rounded-lg bg-green-100 text-green-700 text-xs font-bold";
+    status.innerText = type === "assignment" ? "Đã nộp" : "Đã làm";
+
+    submissionArea.innerHTML = `
+            <div class="flex justify-between items-center">
+                <div>
+                    <p class="text-xs font-bold text-slate-500 uppercase">Điểm số</p>
+                    <p class="text-3xl font-black ${
+                      item.score >= 5 ? "text-green-600" : "text-red-500"
+                    }">${item.score !== null ? item.score : "--"}</p>
+                </div>
+                <div class="text-right">
+                    <p class="text-xs font-bold text-slate-500 uppercase">Ngày nộp</p>
+                    <p class="text-sm font-bold text-slate-700">20/10/2025</p>
+                </div>
+            </div>
+        `;
+  } else {
+    status.className =
+      "px-2.5 py-1 rounded-lg bg-slate-100 text-slate-500 text-xs font-bold";
+    status.innerText = "Chưa nộp";
+
+    submissionArea.innerHTML = `
+            <div class="text-center py-4">
+                <div class="w-12 h-12 bg-blue-50 text-blue-600 rounded-full flex items-center justify-center mx-auto mb-3 text-xl">
+                    <i class="fa-solid fa-cloud-arrow-up"></i>
+                </div>
+                <p class="text-sm font-bold text-slate-700">Nộp bài làm của bạn</p>
+                <p class="text-xs text-slate-500 mt-1">Hỗ trợ: PDF, DOCX, ZIP (Max 20MB)</p>
+            </div>
+        `;
+    actionBtn.classList.remove("hidden");
+    actionBtn.innerText = type === "assignment" ? "Nộp bài" : "Làm bài ngay";
+    actionBtn.onclick = () => {
+      showToast("Chức năng nộp bài đang được phát triển", "info");
+    };
+  }
+
+  // Files
+  if (item.files && item.files.length > 0) {
+    files.innerHTML = item.files
+      .map(
+        (f) => `
+        <div class="flex items-center p-3 bg-white border border-slate-200 rounded-xl hover:border-blue-400 transition cursor-pointer group">
+            <div class="w-8 h-8 rounded-lg bg-slate-100 text-slate-500 flex items-center justify-center mr-3">
+                <i class="fa-solid fa-file"></i>
+            </div>
+            <div class="min-w-0 flex-1">
+                <p class="text-xs font-bold text-slate-700 truncate group-hover:text-blue-600 transition">${f.name}</p>
+                <p class="text-[10px] text-slate-400">${f.size}</p>
+            </div>
+            <button class="text-slate-400 hover:text-blue-600 transition"><i class="fa-solid fa-download"></i></button>
+        </div>
+    `
+      )
+      .join("");
+  } else {
+    files.innerHTML =
+      '<p class="text-slate-400 text-xs italic col-span-2">Không có tài liệu đính kèm.</p>';
+  }
+
+  modal.classList.remove("hidden");
+}
+
+export function closeAssignmentModal() {
+  document.getElementById("assignment-modal").classList.add("hidden");
+}
 let currentCourseId = null;
+let currentCourseName = null;
 
 export function enterClass(courseId, courseName) {
   currentCourseId = courseId;
+  currentCourseName = courseName;
 
   const details = mockCourseDetails[courseName] || {
     tutor: "Unknown",
@@ -693,7 +813,9 @@ function renderCourseAssignments(assignments, quizzes) {
       assignContainer.innerHTML = assignments
         .map(
           (a) => `
-                <div class="p-3 rounded-xl border border-slate-200 bg-white flex justify-between items-center group hover:border-purple-300 transition">
+                <div onclick="openAssignmentModal('assignment', '${
+                  a.id
+                }')" class="cursor-pointer p-3 rounded-xl border border-slate-200 bg-white flex justify-between items-center group hover:border-purple-300 transition">
                     <div>
                         <p class="text-sm font-bold text-slate-800 group-hover:text-purple-700 transition">${
                           a.title
@@ -729,7 +851,9 @@ function renderCourseAssignments(assignments, quizzes) {
       quizContainer.innerHTML = quizzes
         .map(
           (q) => `
-                <div class="p-3 rounded-xl border border-slate-200 bg-white flex justify-between items-center group hover:border-orange-300 transition">
+                <div onclick="openAssignmentModal('quiz', '${
+                  q.id
+                }')" class="cursor-pointer p-3 rounded-xl border border-slate-200 bg-white flex justify-between items-center group hover:border-orange-300 transition">
                     <div>
                         <p class="text-sm font-bold text-slate-800 group-hover:text-orange-700 transition">${
                           q.title
