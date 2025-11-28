@@ -10,103 +10,100 @@
   </div>
 
   <div class="glass-card p-6 rounded-[28px]">
-    <div class="flex justify-between items-center mb-4">
-      <h4 class="font-bold text-slate-700">Đăng ký lịch rảnh (Availability)</h4>
-      <div class="text-xs flex gap-4">
-        <span class="flex items-center gap-1"
-          ><div class="w-3 h-3 bg-green-500 rounded"></div>
-          Đã đăng ký</span
-        >
-        <span class="flex items-center gap-1"
-          ><div class="w-3 h-3 bg-white border border-slate-300 rounded"></div>
-          Trống</span
-        >
-      </div>
+    <h4 class="font-bold text-slate-700 mb-4 flex items-center gap-2">
+        <i class="fa-solid fa-pen-to-square text-blue-500"></i> Đăng ký Giảng dạy
+    </h4>
+    
+    <!-- Step 1: Select Subjects -->
+    <div class="mb-6">
+        <p class="text-xs font-bold text-slate-500 uppercase mb-2">1. Môn học có thể dạy</p>
+        <div class="flex flex-wrap gap-3">
+            <label class="cursor-pointer select-none">
+                <input type="checkbox" class="peer sr-only" checked>
+                <span class="px-3 py-2 rounded-xl bg-slate-100 text-slate-500 text-sm font-bold border border-slate-200 peer-checked:bg-blue-500 peer-checked:text-white peer-checked:border-blue-500 transition flex items-center gap-2">
+                    <i class="fa-solid fa-check hidden peer-checked:inline-block"></i> Giải tích 1
+                </span>
+            </label>
+            <label class="cursor-pointer select-none">
+                <input type="checkbox" class="peer sr-only">
+                <span class="px-3 py-2 rounded-xl bg-slate-100 text-slate-500 text-sm font-bold border border-slate-200 peer-checked:bg-blue-500 peer-checked:text-white peer-checked:border-blue-500 transition flex items-center gap-2">
+                    <i class="fa-solid fa-check hidden peer-checked:inline-block"></i> Đại số tuyến tính
+                </span>
+            </label>
+            <label class="cursor-pointer select-none">
+                <input type="checkbox" class="peer sr-only" checked>
+                <span class="px-3 py-2 rounded-xl bg-slate-100 text-slate-500 text-sm font-bold border border-slate-200 peer-checked:bg-blue-500 peer-checked:text-white peer-checked:border-blue-500 transition flex items-center gap-2">
+                    <i class="fa-solid fa-check hidden peer-checked:inline-block"></i> Cấu trúc dữ liệu
+                </span>
+            </label>
+            <label class="cursor-pointer select-none">
+                <input type="checkbox" class="peer sr-only">
+                <span class="px-3 py-2 rounded-xl bg-slate-100 text-slate-500 text-sm font-bold border border-slate-200 peer-checked:bg-blue-500 peer-checked:text-white peer-checked:border-blue-500 transition flex items-center gap-2">
+                    <i class="fa-solid fa-check hidden peer-checked:inline-block"></i> Vật lý đại cương
+                </span>
+            </label>
+        </div>
     </div>
-    <div
-      class="grid grid-cols-8 gap-2 text-center text-xs font-bold text-slate-500 mb-2"
-    >
-      <div></div>
-      <div>Mon</div>
-      <div>Tue</div>
-      <div>Wed</div>
-      <div>Thu</div>
-      <div>Fri</div>
-      <div>Sat</div>
-      <div>Sun</div>
-    </div>
-    <div class="grid grid-cols-8 gap-2 text-center">
-      <div
-        class="flex items-center justify-center font-bold text-slate-500 text-[10px]"
-      >
-        Sáng (7-11h)
-      </div>
-      <button
-        onclick="this.classList.toggle('bg-green-500');this.classList.toggle('text-white');"
-        class="h-10 rounded bg-white border border-slate-200 hover:bg-green-100 transition"
-      ></button>
-      <button class="h-10 rounded bg-green-500 text-white shadow-sm">
-        Dạy
-      </button>
-      <button
-        onclick="this.classList.toggle('bg-green-500');this.classList.toggle('text-white');"
-        class="h-10 rounded bg-white border border-slate-200 hover:bg-green-100 transition"
-      ></button>
-      <button
-        onclick="this.classList.toggle('bg-green-500');this.classList.toggle('text-white');"
-        class="h-10 rounded bg-white border border-slate-200 hover:bg-green-100 transition"
-      ></button>
-      <button class="h-10 rounded bg-green-500 text-white shadow-sm">
-        Dạy
-      </button>
-      <button
-        onclick="this.classList.toggle('bg-green-500');this.classList.toggle('text-white');"
-        class="h-10 rounded bg-white border border-slate-200 hover:bg-green-100 transition"
-      ></button>
-      <button
-        onclick="this.classList.toggle('bg-green-500');this.classList.toggle('text-white');"
-        class="h-10 rounded bg-white border border-slate-200 hover:bg-green-100 transition"
-      ></button>
 
-      <div
-        class="flex items-center justify-center font-bold text-slate-500 text-[10px]"
-      >
-        Chiều (13-17h)
-      </div>
-      <button
-        onclick="this.classList.toggle('bg-green-500');this.classList.toggle('text-white');"
-        class="h-10 rounded bg-white border border-slate-200 hover:bg-green-100 transition"
-      ></button>
-      <button
-        onclick="this.classList.toggle('bg-green-500');this.classList.toggle('text-white');"
-        class="h-10 rounded bg-white border border-slate-200 hover:bg-green-100 transition"
-      ></button>
-      <button class="h-10 rounded bg-green-500 text-white shadow-sm">
-        Dạy
-      </button>
-      <button
-        onclick="this.classList.toggle('bg-green-500');this.classList.toggle('text-white');"
-        class="h-10 rounded bg-white border border-slate-200 hover:bg-green-100 transition"
-      ></button>
-      <button
-        onclick="this.classList.toggle('bg-green-500');this.classList.toggle('text-white');"
-        class="h-10 rounded bg-white border border-slate-200 hover:bg-green-100 transition"
-      ></button>
-      <button
-        onclick="this.classList.toggle('bg-green-500');this.classList.toggle('text-white');"
-        class="h-10 rounded bg-white border border-slate-200 hover:bg-green-100 transition"
-      ></button>
-      <button
-        onclick="this.classList.toggle('bg-green-500');this.classList.toggle('text-white');"
-        class="h-10 rounded bg-white border border-slate-200 hover:bg-green-100 transition"
-      ></button>
+    <!-- Step 2: Time Slots -->
+    <div class="mb-6">
+        <div class="flex justify-between items-end mb-2">
+            <p class="text-xs font-bold text-slate-500 uppercase">2. Khung giờ rảnh (Weekly)</p>
+            <div class="text-[10px] flex gap-3">
+                <span class="flex items-center gap-1"><div class="w-3 h-3 bg-white border border-slate-300 rounded"></div> Bận</span>
+                <span class="flex items-center gap-1"><div class="w-3 h-3 bg-green-500 rounded"></div> Rảnh</span>
+            </div>
+        </div>
+        
+        <div class="overflow-x-auto">
+            <div class="min-w-[600px]">
+                <div class="grid grid-cols-8 gap-2 text-center text-[10px] font-bold text-slate-400 mb-2">
+                    <div></div>
+                    <div>T2</div><div>T3</div><div>T4</div><div>T5</div><div>T6</div><div>T7</div><div>CN</div>
+                </div>
+                <!-- Morning -->
+                <div class="grid grid-cols-8 gap-2 mb-2">
+                    <div class="flex items-center justify-center font-bold text-slate-600 text-[10px] bg-slate-50 rounded-lg">Sáng<br>(7-11h)</div>
+                    <button onclick="this.classList.toggle('bg-green-500');this.classList.toggle('text-white');" class="h-10 rounded-lg bg-white border border-slate-200 hover:border-green-400 transition"></button>
+                    <button onclick="this.classList.toggle('bg-green-500');this.classList.toggle('text-white');" class="h-10 rounded-lg bg-white border border-slate-200 hover:border-green-400 transition bg-green-500 text-white"></button>
+                    <button onclick="this.classList.toggle('bg-green-500');this.classList.toggle('text-white');" class="h-10 rounded-lg bg-white border border-slate-200 hover:border-green-400 transition"></button>
+                    <button onclick="this.classList.toggle('bg-green-500');this.classList.toggle('text-white');" class="h-10 rounded-lg bg-white border border-slate-200 hover:border-green-400 transition"></button>
+                    <button onclick="this.classList.toggle('bg-green-500');this.classList.toggle('text-white');" class="h-10 rounded-lg bg-white border border-slate-200 hover:border-green-400 transition bg-green-500 text-white"></button>
+                    <button onclick="this.classList.toggle('bg-green-500');this.classList.toggle('text-white');" class="h-10 rounded-lg bg-white border border-slate-200 hover:border-green-400 transition"></button>
+                    <button onclick="this.classList.toggle('bg-green-500');this.classList.toggle('text-white');" class="h-10 rounded-lg bg-white border border-slate-200 hover:border-green-400 transition"></button>
+                </div>
+                <!-- Afternoon -->
+                <div class="grid grid-cols-8 gap-2 mb-2">
+                    <div class="flex items-center justify-center font-bold text-slate-600 text-[10px] bg-slate-50 rounded-lg">Chiều<br>(13-17h)</div>
+                    <button onclick="this.classList.toggle('bg-green-500');this.classList.toggle('text-white');" class="h-10 rounded-lg bg-white border border-slate-200 hover:border-green-400 transition"></button>
+                    <button onclick="this.classList.toggle('bg-green-500');this.classList.toggle('text-white');" class="h-10 rounded-lg bg-white border border-slate-200 hover:border-green-400 transition"></button>
+                    <button onclick="this.classList.toggle('bg-green-500');this.classList.toggle('text-white');" class="h-10 rounded-lg bg-white border border-slate-200 hover:border-green-400 transition bg-green-500 text-white"></button>
+                    <button onclick="this.classList.toggle('bg-green-500');this.classList.toggle('text-white');" class="h-10 rounded-lg bg-white border border-slate-200 hover:border-green-400 transition"></button>
+                    <button onclick="this.classList.toggle('bg-green-500');this.classList.toggle('text-white');" class="h-10 rounded-lg bg-white border border-slate-200 hover:border-green-400 transition"></button>
+                    <button onclick="this.classList.toggle('bg-green-500');this.classList.toggle('text-white');" class="h-10 rounded-lg bg-white border border-slate-200 hover:border-green-400 transition"></button>
+                    <button onclick="this.classList.toggle('bg-green-500');this.classList.toggle('text-white');" class="h-10 rounded-lg bg-white border border-slate-200 hover:border-green-400 transition"></button>
+                </div>
+                <!-- Evening -->
+                <div class="grid grid-cols-8 gap-2">
+                    <div class="flex items-center justify-center font-bold text-slate-600 text-[10px] bg-slate-50 rounded-lg">Tối<br>(18-21h)</div>
+                    <button onclick="this.classList.toggle('bg-green-500');this.classList.toggle('text-white');" class="h-10 rounded-lg bg-white border border-slate-200 hover:border-green-400 transition"></button>
+                    <button onclick="this.classList.toggle('bg-green-500');this.classList.toggle('text-white');" class="h-10 rounded-lg bg-white border border-slate-200 hover:border-green-400 transition"></button>
+                    <button onclick="this.classList.toggle('bg-green-500');this.classList.toggle('text-white');" class="h-10 rounded-lg bg-white border border-slate-200 hover:border-green-400 transition"></button>
+                    <button onclick="this.classList.toggle('bg-green-500');this.classList.toggle('text-white');" class="h-10 rounded-lg bg-white border border-slate-200 hover:border-green-400 transition"></button>
+                    <button onclick="this.classList.toggle('bg-green-500');this.classList.toggle('text-white');" class="h-10 rounded-lg bg-white border border-slate-200 hover:border-green-400 transition"></button>
+                    <button onclick="this.classList.toggle('bg-green-500');this.classList.toggle('text-white');" class="h-10 rounded-lg bg-white border border-slate-200 hover:border-green-400 transition"></button>
+                    <button onclick="this.classList.toggle('bg-green-500');this.classList.toggle('text-white');" class="h-10 rounded-lg bg-white border border-slate-200 hover:border-green-400 transition"></button>
+                </div>
+            </div>
+        </div>
     </div>
-    <div class="mt-6 text-right">
+
+    <div class="text-right">
       <button
         onclick="saveTutorSchedule()"
-        class="px-6 py-2 bg-slate-800 text-white text-sm font-bold rounded-lg hover:bg-black transition shadow-lg"
+        class="px-8 py-3 bg-blue-600 text-white text-sm font-bold rounded-xl hover:bg-blue-700 transition shadow-lg shadow-blue-500/30"
       >
-        Lưu lịch
+        <i class="fa-solid fa-floppy-disk mr-2"></i> Lưu cấu hình
       </button>
     </div>
   </div>
