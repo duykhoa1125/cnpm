@@ -366,8 +366,14 @@ function setupCustomSelect(selectId, icons = {}) {
 
   // Create Trigger
   const trigger = document.createElement("div");
+  
+  // Determine style based on original select classes
+  const isSmall = select.classList.contains("text-xs") || select.classList.contains("py-1");
+  const padding = isSmall ? "p-2" : "p-4";
+  const textSize = isSmall ? "text-xs" : "text-base";
+  
   trigger.className =
-    "custom-select-trigger w-full p-4 bg-white/50 border border-white rounded-xl cursor-pointer flex justify-between items-center text-slate-700 font-bold shadow-sm hover:bg-white/80 transition-all";
+    `custom-select-trigger w-full ${padding} bg-white/50 border border-white rounded-xl cursor-pointer flex justify-between items-center text-slate-700 font-bold shadow-sm hover:bg-white/80 transition-all ${textSize}`;
 
   // Get initial selected option
   const selectedOption =
@@ -382,10 +388,10 @@ function setupCustomSelect(selectId, icons = {}) {
   }
 
   trigger.innerHTML = `
-                <div class="flex items-center">${initialIcon}<span class="text-base">${
+                <div class="flex items-center gap-2 truncate">${initialIcon}<span class="${textSize} truncate">${
     selectedOption ? selectedOption.text : ""
   }</span></div>
-                <i class="fa-solid fa-chevron-down text-slate-400 transition-transform duration-300"></i>
+                <i class="fa-solid fa-chevron-down text-slate-400 transition-transform duration-300 text-[10px]"></i>
             `;
   wrapper.appendChild(trigger);
 
@@ -395,13 +401,13 @@ function setupCustomSelect(selectId, icons = {}) {
 
   Array.from(select.options).forEach((option) => {
     const optionDiv = document.createElement("div");
-    optionDiv.className = `custom-option ${option.selected ? "selected" : ""}`;
+    optionDiv.className = `custom-option ${option.selected ? "selected" : ""} ${textSize}`;
     const icon = icons[option.value]
       ? `<i class="fa-solid ${
           icons[option.value]
         } text-lg w-6 text-center"></i>`
       : "";
-    optionDiv.innerHTML = `${icon}<span class="flex-1">${option.text}</span>`;
+    optionDiv.innerHTML = `${icon}<span class="flex-1 truncate">${option.text}</span>`;
     if (option.selected) optionDiv.classList.add("bg-blue-50", "text-blue-600");
 
     optionDiv.addEventListener("click", () => {
@@ -415,8 +421,8 @@ function setupCustomSelect(selectId, icons = {}) {
           } mr-3 text-blue-600 text-lg"></i>`
         : "";
       trigger.innerHTML = `
-                        <div class="flex items-center">${newIcon}<span class="text-base">${option.text}</span></div>
-                        <i class="fa-solid fa-chevron-down text-slate-400 transition-transform duration-300"></i>
+                        <div class="flex items-center gap-2 truncate">${newIcon}<span class="${textSize} truncate">${option.text}</span></div>
+                        <i class="fa-solid fa-chevron-down text-slate-400 transition-transform duration-300 text-[10px]"></i>
                     `;
 
       // Update Selected State
@@ -870,9 +876,15 @@ function processCancellation() {
 // -------------------------------------
 
 function confirmRegistration(courseName) {
-  if (confirm(`Xác nhận đăng ký ${courseName}?`)) {
-    showToast(`Đã đăng ký thành công ${courseName}!`, "success");
-  }
+  confirmActionModal(
+      "Xác nhận Đăng ký",
+      `Bạn có chắc chắn muốn đăng ký môn học "${courseName}" không?`,
+      () => {
+          showToast(`Đã đăng ký thành công ${courseName}!`, "success");
+      },
+      "Đăng ký",
+      "bg-blue-600"
+  );
 }
 function viewAllSchedule() {
   showToast(
@@ -1571,10 +1583,17 @@ function simulateStatus() {
 }
 
 function clearSystemLogs() {
-  if (!confirm("Bạn có muốn xóa toàn bộ logs (mô phỏng)?")) return;
-  systemLogs = [];
-  renderSystemLogs();
-  showToast("Đã xóa logs thành công", "success");
+  confirmActionModal(
+      "Xóa toàn bộ Logs?",
+      "Tất cả lịch sử hoạt động hệ thống sẽ bị xóa. Bạn không thể khôi phục lại.",
+      () => {
+          systemLogs = [];
+          renderSystemLogs();
+          showToast("Đã xóa logs thành công", "success");
+      },
+      "Xóa Logs",
+      "bg-red-500"
+  );
 }
 
 function exportSystemLogs() {
@@ -1659,12 +1678,66 @@ function editUser(id) {
   }
 }
 
+function confirmActionModal(title, message, onConfirm, confirmText = "Xác nhận", confirmColor = "bg-red-500") {
+    let modal = document.getElementById('confirmation-modal');
+    if (!modal) {
+        const modalHtml = `
+        <div id="confirmation-modal" class="hidden fixed inset-0 z-[70] flex items-center justify-center">
+            <div class="absolute inset-0 bg-slate-900/30 backdrop-blur-sm transition-opacity" onclick="closeConfirmationModal()"></div>
+            <div class="glass-panel w-full max-w-sm p-6 rounded-[24px] shadow-2xl relative z-10 bg-white/90 transform transition-all scale-100 m-4">
+                <div class="text-center mb-5">
+                    <div class="w-14 h-14 bg-slate-100 text-slate-600 rounded-full flex items-center justify-center text-2xl mx-auto mb-3 shadow-inner">
+                        <i class="fa-solid fa-question"></i>
+                    </div>
+                    <h3 id="confirm-modal-title" class="text-xl font-bold text-slate-800">Xác nhận</h3>
+                    <p id="confirm-modal-message" class="text-slate-500 mt-2 text-sm leading-relaxed">Bạn có chắc chắn muốn thực hiện hành động này?</p>
+                </div>
+                <div class="grid grid-cols-2 gap-3">
+                    <button onclick="closeConfirmationModal()" class="py-2.5 rounded-xl font-bold text-slate-600 bg-slate-100 hover:bg-slate-200 transition text-sm">Hủy bỏ</button>
+                    <button id="confirm-modal-btn" class="py-2.5 rounded-xl text-white font-bold shadow-lg transition text-sm ${confirmColor}">Xác nhận</button>
+                </div>
+            </div>
+        </div>`;
+        document.body.insertAdjacentHTML('beforeend', modalHtml);
+        modal = document.getElementById('confirmation-modal');
+    }
+
+    document.getElementById('confirm-modal-title').innerText = title;
+    document.getElementById('confirm-modal-message').innerText = message;
+    
+    const confirmBtn = document.getElementById('confirm-modal-btn');
+    confirmBtn.innerText = confirmText;
+    confirmBtn.className = `py-2.5 rounded-xl text-white font-bold shadow-lg transition text-sm ${confirmColor} hover:brightness-110`;
+    
+    // Remove old event listeners to prevent stacking
+    const newBtn = confirmBtn.cloneNode(true);
+    confirmBtn.parentNode.replaceChild(newBtn, confirmBtn);
+    
+    newBtn.onclick = () => {
+        onConfirm();
+        closeConfirmationModal();
+    };
+
+    modal.classList.remove('hidden');
+}
+
+function closeConfirmationModal() {
+    const modal = document.getElementById('confirmation-modal');
+    if (modal) modal.classList.add('hidden');
+}
+
 function deleteUser(id) {
-  if (confirm("Bạn có chắc muốn xóa người dùng này?")) {
-    mockUsers = mockUsers.filter((u) => u.id !== id);
-    renderUserTable();
-    showToast("Đã xóa người dùng", "success");
-  }
+    confirmActionModal(
+        "Xóa người dùng?",
+        "Hành động này sẽ xóa vĩnh viễn người dùng khỏi hệ thống.",
+        () => {
+            mockUsers = mockUsers.filter(u => u.id !== id);
+            renderUserTable();
+            showToast("Đã xóa người dùng", "success");
+        },
+        "Xóa ngay",
+        "bg-red-500"
+    );
 }
 
 function triggerBackup() {
@@ -1675,14 +1748,18 @@ function triggerBackup() {
 }
 
 function restoreBackup() {
-  if (
-    confirm("CẢNH BÁO: Việc khôi phục sẽ ghi đè dữ liệu hiện tại. Tiếp tục?")
-  ) {
-    showToast("Đang khôi phục dữ liệu...", "info");
-    setTimeout(() => {
-      showToast("Khôi phục hệ thống thành công.", "success");
-    }, 3000);
-  }
+  confirmActionModal(
+      "Khôi phục Hệ thống?",
+      "CẢNH BÁO: Việc khôi phục sẽ ghi đè toàn bộ dữ liệu hiện tại bằng bản sao lưu. Dữ liệu mới hơn sẽ bị mất.",
+      () => {
+          showToast("Đang khôi phục dữ liệu...", "info");
+          setTimeout(() => {
+              showToast("Khôi phục hệ thống thành công.", "success");
+          }, 3000);
+      },
+      "Khôi phục",
+      "bg-orange-500"
+  );
 }
 
 function setRating(n) {
@@ -2565,11 +2642,17 @@ function markAllNotificationsRead() {
 }
 
 function deleteNotification(id) {
-  if (confirm("Bạn có chắc muốn xóa thông báo này?")) {
-    mockNotifications = mockNotifications.filter((n) => n.id !== id);
-    renderNotifications();
-    showToast("Đã xóa thông báo", "info");
-  }
+    confirmActionModal(
+        "Xóa thông báo?",
+        "Bạn có chắc muốn xóa thông báo này khỏi danh sách không?",
+        () => {
+            mockNotifications = mockNotifications.filter(n => n.id !== id);
+            renderNotifications();
+            showToast("Đã xóa thông báo", "info");
+        },
+        "Xóa",
+        "bg-red-500"
+    );
 }
 
 function viewNotificationDetail(id) {
