@@ -675,9 +675,76 @@ function switchTab(tabId) {
     renderBonusSessions();
     renderBonusRsvps();
   }
+  
+  updateBreadcrumbs(tabId);
 
   // Save active tab
   localStorage.setItem("activeTab", tabId);
+}
+
+const breadcrumbMap = {
+    dashboard_student: [{ label: "Trang chủ", icon: "fa-home" }],
+    courses_student: [{ label: "Trang chủ", icon: "fa-home" }, { label: "Môn học của tôi", icon: "fa-book-open" }],
+    student_register: [{ label: "Trang chủ", icon: "fa-home" }, { label: "Đăng ký môn mới", icon: "fa-plus" }],
+    library_view: [{ label: "Trang chủ", icon: "fa-home" }, { label: "Thư viện số", icon: "fa-book-bookmark" }],
+    feedback_student: [{ label: "Trang chủ", icon: "fa-home" }, { label: "Gửi Đánh giá", icon: "fa-comment-dots" }],
+    profile_student: [{ label: "Trang chủ", icon: "fa-home" }, { label: "Hồ sơ cá nhân", icon: "fa-user" }],
+
+    dashboard_tutor: [{ label: "Trang chủ", icon: "fa-home" }, { label: "Dashboard Tutor", icon: "fa-chart-line" }],
+    tutor_schedule: [{ label: "Trang chủ", icon: "fa-home" }, { label: "Lịch dạy & Đăng ký", icon: "fa-calendar-days" }],
+    courses_tutor: [{ label: "Trang chủ", icon: "fa-home" }, { label: "Lớp dạy", icon: "fa-chalkboard-user" }],
+    progress_tutor: [{ label: "Trang chủ", icon: "fa-home" }, { label: "Tiến độ Học tập", icon: "fa-chart-simple" }],
+    feedback_view_tutor: [{ label: "Trang chủ", icon: "fa-home" }, { label: "Xem Phản hồi", icon: "fa-comments" }],
+    profile_tutor: [{ label: "Trang chủ", icon: "fa-home" }, { label: "Hồ sơ Tutor", icon: "fa-user-tie" }],
+
+    dashboard_admin: [{ label: "Trang chủ", icon: "fa-home" }, { label: "Dashboard Admin", icon: "fa-gauge-high" }],
+    progress_admin: [{ label: "Trang chủ", icon: "fa-home" }, { label: "Báo cáo Đào tạo", icon: "fa-ranking-star" }],
+    feedback_view_admin: [{ label: "Trang chủ", icon: "fa-home" }, { label: "Quản lý Đánh giá", icon: "fa-star-half-stroke" }],
+    system_admin: [{ label: "Trang chủ", icon: "fa-home" }, { label: "Hệ thống & Logs", icon: "fa-gears" }],
+    
+    dashboard_department: [{ label: "Trang chủ", icon: "fa-home" }, { label: "Tổng quan Khoa", icon: "fa-building" }],
+    dashboard_academic: [{ label: "Trang chủ", icon: "fa-home" }, { label: "Tổng quan Đào tạo", icon: "fa-school" }],
+    course_cancellation_rules: [{ label: "Trang chủ", icon: "fa-home" }, { label: "Quy tắc Hủy khóa học", icon: "fa-ban" }],
+
+    notifications_view: [{ label: "Trang chủ", icon: "fa-home" }, { label: "Thông báo", icon: "fa-bell" }],
+};
+
+function updateBreadcrumbs(tabId) {
+    const container = document.getElementById("breadcrumb-container");
+    const breadcrumbList = document.getElementById("breadcrumb-list");
+    const pageTitle = document.getElementById("page-title");
+
+    if (!container || !breadcrumbList) return;
+
+    const path = breadcrumbMap[tabId];
+
+    if (path && path.length > 0) {
+        // Update Breadcrumbs UI
+        breadcrumbList.innerHTML = path.map((item, index) => {
+            const isLast = index === path.length - 1;
+            const navigateToId = item.id || tabId; 
+            
+            return `
+                <li class="flex items-center">
+                    <a href="#" onclick="${isLast ? 'event.preventDefault()' : `switchTab('${navigateToId}')`}" 
+                       class="${isLast ? 'text-slate-800 cursor-default font-bold' : 'text-slate-500 hover:text-blue-600'} flex items-center gap-1 transition text-xs">
+                        ${item.icon ? `<i class="fa-solid ${item.icon}"></i>` : ''}
+                        <span>${item.label}</span>
+                    </a>
+                    ${!isLast ? '<i class="fa-solid fa-chevron-right text-slate-300 text-[10px] mx-1"></i>' : ''}
+                </li>
+            `;
+        }).join('');
+        container.classList.remove("hidden");
+
+        // Update Page Title Header
+        if (pageTitle) {
+            const currentItem = path[path.length - 1];
+            pageTitle.innerText = currentItem.label;
+        }
+    } else {
+        container.classList.add("hidden");
+    }
 }
 
 function logout() {
