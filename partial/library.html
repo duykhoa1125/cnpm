@@ -1,0 +1,108 @@
+<div id="library_view" class="section-view space-y-8">
+  <!-- Header & Search Area -->
+  <div class="glass-card p-8 rounded-[32px] relative overflow-hidden">
+    <!-- Decorative Background Elements -->
+    <div class="absolute top-0 right-0 w-64 h-64 bg-blue-400/20 rounded-full blur-3xl -mr-16 -mt-16 pointer-events-none"></div>
+    <div class="absolute bottom-0 left-0 w-64 h-64 bg-purple-400/20 rounded-full blur-3xl -ml-16 -mb-16 pointer-events-none"></div>
+
+    <div class="relative z-10">
+      <h2 class="text-3xl font-black text-slate-800 mb-2">Thư viện Số HCMUT</h2>
+      <p class="text-slate-600 mb-8 max-w-2xl">Truy cập hàng ngàn tài liệu, giáo trình, bài giảng và đề thi cũ. Tìm kiếm tài liệu hỗ trợ cho môn học của bạn ngay tại đây.</p>
+
+      <div class="flex flex-col lg:flex-row gap-4">
+        <!-- Search Bar -->
+        <div class="flex-1 relative group">
+          <div class="absolute inset-y-0 left-0 pl-4 flex items-center pointer-events-none">
+            <i class="fa-solid fa-magnifying-glass text-slate-400 group-focus-within:text-blue-500 transition"></i>
+          </div>
+          <input type="text" id="library-search" onkeyup="filterLibrary()" 
+            class="block w-full pl-11 pr-4 py-4 bg-white/80 border border-white rounded-2xl text-slate-800 placeholder-slate-400 focus:ring-4 focus:ring-blue-500/20 focus:border-blue-500 focus:bg-white transition-all shadow-sm" 
+            placeholder="Tìm kiếm tên tài liệu, giáo trình, tác giả...">
+        </div>
+
+        <!-- Filters -->
+        <div class="flex gap-4">
+          <div class="w-full sm:w-48">
+            <select id="library-course-filter" onchange="filterLibrary()" class="w-full h-full px-4 py-4 bg-white/80 border border-white rounded-2xl text-slate-700 font-bold cursor-pointer hover:bg-white transition focus:ring-4 focus:ring-blue-500/20 focus:outline-none appearance-none">
+              <option value="all">Tất cả môn học</option>
+              <!-- JS Populated -->
+            </select>
+          </div>
+          <div class="w-full sm:w-40">
+            <select id="library-type-filter" onchange="filterLibrary()" class="w-full h-full px-4 py-4 bg-white/80 border border-white rounded-2xl text-slate-700 font-bold cursor-pointer hover:bg-white transition focus:ring-4 focus:ring-blue-500/20 focus:outline-none appearance-none">
+              <option value="all">Tất cả loại</option>
+              <option value="PDF">PDF / Ebook</option>
+              <option value="Slide">Slide bài giảng</option>
+              <option value="Exam">Đề thi cũ</option>
+              <option value="Video">Video record</option>
+            </select>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- Stats / Quick Categories -->
+  <div class="grid grid-cols-2 md:grid-cols-4 gap-4">
+    <button onclick="filterLibraryByType('PDF')" class="glass-card p-4 rounded-2xl flex items-center gap-3 hover:bg-white hover:scale-105 transition cursor-pointer group">
+      <div class="w-10 h-10 rounded-xl bg-red-100 text-red-500 flex items-center justify-center text-lg group-hover:bg-red-500 group-hover:text-white transition">
+        <i class="fa-solid fa-file-pdf"></i>
+      </div>
+      <div class="text-left">
+        <p class="text-xs text-slate-500 font-bold">Ebook</p>
+        <p class="text-sm font-black text-slate-800">1,204</p>
+      </div>
+    </button>
+    <button onclick="filterLibraryByType('Slide')" class="glass-card p-4 rounded-2xl flex items-center gap-3 hover:bg-white hover:scale-105 transition cursor-pointer group">
+      <div class="w-10 h-10 rounded-xl bg-orange-100 text-orange-500 flex items-center justify-center text-lg group-hover:bg-orange-500 group-hover:text-white transition">
+        <i class="fa-solid fa-layer-group"></i>
+      </div>
+      <div class="text-left">
+        <p class="text-xs text-slate-500 font-bold">Slides</p>
+        <p class="text-sm font-black text-slate-800">850</p>
+      </div>
+    </button>
+    <button onclick="filterLibraryByType('Exam')" class="glass-card p-4 rounded-2xl flex items-center gap-3 hover:bg-white hover:scale-105 transition cursor-pointer group">
+      <div class="w-10 h-10 rounded-xl bg-blue-100 text-blue-500 flex items-center justify-center text-lg group-hover:bg-blue-500 group-hover:text-white transition">
+        <i class="fa-solid fa-file-lines"></i>
+      </div>
+      <div class="text-left">
+        <p class="text-xs text-slate-500 font-bold">Đề thi</p>
+        <p class="text-sm font-black text-slate-800">420</p>
+      </div>
+    </button>
+    <button onclick="filterLibraryByType('Video')" class="glass-card p-4 rounded-2xl flex items-center gap-3 hover:bg-white hover:scale-105 transition cursor-pointer group">
+      <div class="w-10 h-10 rounded-xl bg-purple-100 text-purple-500 flex items-center justify-center text-lg group-hover:bg-purple-500 group-hover:text-white transition">
+        <i class="fa-solid fa-video"></i>
+      </div>
+      <div class="text-left">
+        <p class="text-xs text-slate-500 font-bold">Video</p>
+        <p class="text-sm font-black text-slate-800">150</p>
+      </div>
+    </button>
+  </div>
+
+  <!-- Results Grid -->
+  <div>
+    <div class="flex justify-between items-end mb-6">
+      <h3 class="font-bold text-slate-800 text-lg flex items-center gap-2">
+        <i class="fa-solid fa-book-open text-blue-500"></i> Tài liệu mới cập nhật
+      </h3>
+      <span class="text-xs font-bold text-slate-400" id="library-result-count">Hiện 0 tài liệu</span>
+    </div>
+
+    <div id="library-list" class="grid grid-cols-1 md:grid-cols-2 xl:grid-cols-3 gap-6">
+      <!-- JS Populated Cards -->
+    </div>
+    
+    <div id="library-empty" class="hidden text-center py-12">
+      <div class="w-24 h-24 bg-slate-100 rounded-full flex items-center justify-center mx-auto mb-4">
+        <i class="fa-solid fa-box-open text-4xl text-slate-300"></i>
+      </div>
+      <p class="text-slate-500 font-medium">Không tìm thấy tài liệu nào phù hợp.</p>
+      <button onclick="resetLibraryFilter()" class="mt-4 px-6 py-2 bg-blue-100 text-blue-600 rounded-xl font-bold hover:bg-blue-200 transition">
+        Xóa bộ lọc
+      </button>
+    </div>
+  </div>
+</div>

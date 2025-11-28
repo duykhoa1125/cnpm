@@ -33,7 +33,7 @@ body {
   transition: all 0.3s ease;
 }
 .glass-card:hover {
-  background: rgba(255, 255, 255, 0.85);
+  background: rgba(255, 255, 255, 0.7); /* Slightly more translucent on hover */
   transform: translateY(-3px);
   box-shadow: 0 15px 30px -5px rgba(0, 0, 0, 0.05);
 }
@@ -126,11 +126,11 @@ body {
   gap: 10px;
 }
 .custom-option:hover {
-  background: #eff6ff;
-  color: #2563eb;
+  background: rgba(239, 246, 255, 0.8); /* blue-50 with opacity */
+  color: #2563eb; /* blue-600 */
 }
 .custom-option.selected {
-  background: #eff6ff;
+  background: rgba(239, 246, 255, 1); /* blue-50 solid */
   color: #2563eb;
   font-weight: 700;
 }

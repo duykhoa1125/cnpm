@@ -9,20 +9,47 @@
                     class="block text-xs font-bold text-slate-500 uppercase mb-2 ml-1"
                     >Chọn môn học / Buổi học</label
                   >
-                  <div class="relative">
-                    <select
-                      class="w-full p-4 rounded-xl bg-white border border-slate-200 font-bold text-slate-700 appearance-none focus:ring-2 focus:ring-blue-500 outline-none cursor-pointer hover:bg-slate-50"
-                      required
-                    >
-                      <option value="" disabled selected>
-                        -- Chọn buổi học để đánh giá --
-                      </option>
-                      <option>Giải tích 1 (CO1023) - Buổi 12 (24/10)</option>
-                      <option>Lập trình Python (CO2011) - Lab 3 (26/10)</option>
-                    </select>
-                    <i
-                      class="fa-solid fa-chevron-down absolute right-4 top-5 text-slate-500 pointer-events-none"
-                    ></i>
+                  <input type="hidden" id="selected-feedback-course" name="course" required>
+                  <div id="course-feedback-list" class="grid grid-cols-1 gap-3">
+                    <!-- Option 1 -->
+                    <div onclick="selectFeedbackCourse(this, 'CO1023')" class="course-select-card p-4 rounded-2xl border border-slate-200 bg-white cursor-pointer transition-all duration-200 hover:shadow-md hover:border-blue-300 group flex items-center justify-between">
+                        <div>
+                            <p class="font-bold text-slate-800 text-sm group-hover:text-blue-600 transition">Giải tích 1 (CO1023)</p>
+                            <div class="flex items-center gap-2 mt-1">
+                                <span class="text-xs font-bold bg-slate-100 text-slate-500 px-2 py-0.5 rounded group-hover:bg-blue-50 group-hover:text-blue-500 transition">Buổi 12</span>
+                                <span class="text-xs text-slate-400"><i class="fa-regular fa-calendar mr-1"></i> 24/10</span>
+                            </div>
+                        </div>
+                        <div class="check-icon w-6 h-6 rounded-full border-2 border-slate-200 flex items-center justify-center text-transparent transition-all">
+                            <i class="fa-solid fa-check text-xs"></i>
+                        </div>
+                    </div>
+                    <!-- Option 2 -->
+                    <div onclick="selectFeedbackCourse(this, 'CO2011')" class="course-select-card p-4 rounded-2xl border border-slate-200 bg-white cursor-pointer transition-all duration-200 hover:shadow-md hover:border-blue-300 group flex items-center justify-between">
+                        <div>
+                            <p class="font-bold text-slate-800 text-sm group-hover:text-blue-600 transition">Lập trình Python (CO2011)</p>
+                            <div class="flex items-center gap-2 mt-1">
+                                <span class="text-xs font-bold bg-slate-100 text-slate-500 px-2 py-0.5 rounded group-hover:bg-blue-50 group-hover:text-blue-500 transition">Lab 3</span>
+                                <span class="text-xs text-slate-400"><i class="fa-regular fa-calendar mr-1"></i> 26/10</span>
+                            </div>
+                        </div>
+                        <div class="check-icon w-6 h-6 rounded-full border-2 border-slate-200 flex items-center justify-center text-transparent transition-all">
+                            <i class="fa-solid fa-check text-xs"></i>
+                        </div>
+                    </div>
+                    <!-- Option 3 -->
+                    <div onclick="selectFeedbackCourse(this, 'PH1003')" class="course-select-card p-4 rounded-2xl border border-slate-200 bg-white cursor-pointer transition-all duration-200 hover:shadow-md hover:border-blue-300 group flex items-center justify-between">
+                        <div>
+                            <p class="font-bold text-slate-800 text-sm group-hover:text-blue-600 transition">Vật lý Đại cương 1 (PH1003)</p>
+                            <div class="flex items-center gap-2 mt-1">
+                                <span class="text-xs font-bold bg-slate-100 text-slate-500 px-2 py-0.5 rounded group-hover:bg-blue-50 group-hover:text-blue-500 transition">Buổi 8</span>
+                                <span class="text-xs text-slate-400"><i class="fa-regular fa-calendar mr-1"></i> 28/10</span>
+                            </div>
+                        </div>
+                        <div class="check-icon w-6 h-6 rounded-full border-2 border-slate-200 flex items-center justify-center text-transparent transition-all">
+                            <i class="fa-solid fa-check text-xs"></i>
+                        </div>
+                    </div>
                   </div>
                 </div>
                 <div class="text-center mb-8">

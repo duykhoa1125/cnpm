@@ -1,0 +1,50 @@
+<div id="notifications_view" class="section-view space-y-6">
+  <!-- Header -->
+  <div class="flex flex-col md:flex-row items-start md:items-center justify-between gap-4">
+    <div>
+      <h2 class="text-2xl font-black text-slate-800">Thông báo</h2>
+      <p class="text-slate-500">Cập nhật mới nhất về lịch học và hệ thống</p>
+    </div>
+    <div class="flex gap-3">
+      <button onclick="markAllNotificationsRead()" class="px-4 py-2 bg-white/60 border border-white text-slate-600 rounded-xl font-bold text-sm hover:bg-white hover:text-blue-600 transition shadow-sm">
+        <i class="fa-solid fa-check-double mr-2"></i>Đánh dấu tất cả đã đọc
+      </button>
+    </div>
+  </div>
+
+  <!-- Filters & Search -->
+  <div class="flex flex-col sm:flex-row gap-4 items-center justify-between bg-white/40 p-2 rounded-2xl border border-white/60">
+    <div class="flex gap-1 bg-slate-100/50 p-1 rounded-xl w-full sm:w-auto">
+      <button onclick="filterNotifications('all')" id="filter-noti-all" class="noti-filter-btn flex-1 sm:flex-none px-4 py-2 rounded-lg text-sm font-bold bg-white shadow-sm text-blue-600">Tất cả</button>
+      <button onclick="filterNotifications('unread')" id="filter-noti-unread" class="noti-filter-btn flex-1 sm:flex-none px-4 py-2 rounded-lg text-sm font-bold text-slate-500 hover:bg-white/50 hover:text-slate-700">Chưa đọc</button>
+    </div>
+    <div class="relative w-full sm:w-64">
+       <i class="fa-solid fa-search absolute left-3 top-1/2 -translate-y-1/2 text-slate-400 text-xs"></i>
+       <input type="text" id="notification-search" onkeyup="renderNotifications()" placeholder="Tìm kiếm thông báo..." class="w-full pl-8 pr-4 py-2 bg-white/60 border border-transparent focus:border-blue-300 rounded-xl text-sm focus:outline-none transition">
+    </div>
+  </div>
+
+  <!-- Notification List -->
+  <div class="glass-card p-2 md:p-6 rounded-[28px] min-h-[400px]">
+    <div id="notification-list" class="space-y-3">
+      <!-- JS will populate this -->
+    </div>
+    
+    <!-- Empty State -->
+    <div id="notification-empty" class="hidden flex flex-col items-center justify-center py-12 text-center">
+        <div class="w-16 h-16 bg-slate-100 rounded-full flex items-center justify-center mb-4 text-slate-300 text-2xl">
+            <i class="fa-regular fa-bell-slash"></i>
+        </div>
+        <p class="text-slate-500 font-medium">Bạn không có thông báo nào ở mục này.</p>
+    </div>
+
+    <!-- Pagination (Simulation) -->
+    <div id="notification-pagination" class="flex justify-center items-center gap-2 mt-8 pt-4 border-t border-slate-100">
+        <button class="w-8 h-8 flex items-center justify-center rounded-lg text-slate-400 hover:bg-white hover:text-slate-600"><i class="fa-solid fa-chevron-left"></i></button>
+        <button class="w-8 h-8 flex items-center justify-center rounded-lg bg-blue-600 text-white font-bold shadow-lg shadow-blue-500/30">1</button>
+        <button class="w-8 h-8 flex items-center justify-center rounded-lg text-slate-500 hover:bg-white hover:text-blue-600">2</button>
+        <button class="w-8 h-8 flex items-center justify-center rounded-lg text-slate-500 hover:bg-white hover:text-blue-600">3</button>
+        <button class="w-8 h-8 flex items-center justify-center rounded-lg text-slate-400 hover:bg-white hover:text-slate-600"><i class="fa-solid fa-chevron-right"></i></button>
+    </div>
+  </div>
+</div>

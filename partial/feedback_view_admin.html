@@ -1,0 +1,83 @@
+<div id="feedback_view_admin" class="section-view space-y-8">
+  <!-- Header -->
+  <div class="flex flex-col md:flex-row gap-6 items-start md:items-center justify-between">
+    <div>
+      <h2 class="text-2xl font-black text-slate-800">Quản lý phản hồi đào tạo</h2>
+      <p class="text-slate-500">Theo dõi chất lượng giảng dạy toàn hệ thống</p>
+    </div>
+    <div class="flex gap-3">
+      <button onclick="exportFeedback('pdf')" class="px-4 py-2 bg-white/60 border border-white text-slate-600 rounded-xl font-bold hover:bg-white hover:text-blue-600 transition shadow-sm">
+        <i class="fa-solid fa-file-pdf mr-2"></i>Báo cáo PDF
+      </button>
+      <button onclick="exportFeedback('excel')" class="px-4 py-2 bg-white/60 border border-white text-slate-600 rounded-xl font-bold hover:bg-white hover:text-green-600 transition shadow-sm">
+        <i class="fa-solid fa-file-excel mr-2"></i>Xuất Excel
+      </button>
+    </div>
+  </div>
+
+  <!-- Stats Overview -->
+  <div class="grid grid-cols-1 md:grid-cols-4 gap-6">
+    <div class="glass-card p-5 rounded-[24px] border-l-4 border-blue-500">
+      <p class="text-xs font-bold text-slate-500 uppercase">Tổng Feedback</p>
+      <p class="text-2xl font-black text-slate-800" id="admin-total-feedback">0</p>
+    </div>
+    <div class="glass-card p-5 rounded-[24px] border-l-4 border-indigo-500">
+      <p class="text-xs font-bold text-slate-500 uppercase">Số lượng Tutor</p>
+      <p class="text-2xl font-black text-slate-800">12</p>
+    </div>
+    <div class="glass-card p-5 rounded-[24px] border-l-4 border-yellow-400">
+      <p class="text-xs font-bold text-slate-500 uppercase">Rating Hệ thống</p>
+      <p class="text-2xl font-black text-slate-800" id="admin-avg-rating">0.0</p>
+    </div>
+    <div class="glass-card p-5 rounded-[24px] border-l-4 border-red-400">
+      <p class="text-xs font-bold text-slate-500 uppercase">Cần cải thiện (< 3*)</p>
+      <p class="text-2xl font-black text-slate-800" id="admin-low-rating-count">0</p>
+    </div>
+  </div>
+
+  <!-- Filters -->
+  <div class="glass-card p-4 rounded-2xl flex flex-col lg:flex-row gap-4">
+    <div class="flex-1 relative">
+      <i class="fa-solid fa-search absolute left-4 top-1/2 -translate-y-1/2 text-slate-400"></i>
+      <input type="text" id="admin-feedback-search" onkeyup="filterAdminFeedback()" placeholder="Tìm Tutor, Sinh viên hoặc Môn học..." class="w-full pl-10 pr-4 py-3 bg-white/50 border border-white rounded-xl focus:outline-none focus:ring-2 focus:ring-blue-500/50 text-slate-700 font-medium placeholder:text-slate-400 transition">
+    </div>
+    <div class="w-full lg:w-48">
+      <select id="admin-rating-filter" onchange="filterAdminFeedback()" class="w-full p-3 bg-white/50 border border-white rounded-xl text-slate-700 font-bold focus:outline-none">
+        <option value="all">Tất cả đánh giá</option>
+        <option value="positive">Tích cực (4-5 sao)</option>
+        <option value="negative">Tiêu cực (1-3 sao)</option>
+      </select>
+    </div>
+  </div>
+
+  <!-- List -->
+  <div class="glass-card p-6 rounded-[28px]">
+    <div class="flex justify-between items-center mb-6">
+        <h3 class="font-bold text-slate-800 flex items-center gap-2">
+        <i class="fa-solid fa-table-list text-indigo-500"></i> Dữ liệu chi tiết
+        </h3>
+        <span class="text-xs font-bold bg-blue-100 text-blue-600 px-2 py-1 rounded-lg" id="admin-feedback-count-badge">0 bản ghi</span>
+    </div>
+    
+    <div class="overflow-x-auto">
+      <table class="w-full text-left border-collapse">
+        <thead>
+          <tr class="text-slate-500 text-xs uppercase tracking-wider border-b border-slate-200/60">
+            <th class="pb-3 font-bold pl-4">Tutor</th>
+            <th class="pb-3 font-bold">Sinh viên</th>
+            <th class="pb-3 font-bold">Môn học</th>
+            <th class="pb-3 font-bold text-center">Rating</th>
+            <th class="pb-3 font-bold w-1/3">Nội dung</th>
+            <th class="pb-3 font-bold">Ngày</th>
+          </tr>
+        </thead>
+        <tbody id="admin-feedback-list" class="text-sm text-slate-700">
+          <!-- JS will populate this -->
+        </tbody>
+      </table>
+    </div>
+    <div id="admin-feedback-empty" class="hidden text-center py-8 text-slate-500 italic">
+      Không tìm thấy dữ liệu.
+    </div>
+  </div>
+</div>

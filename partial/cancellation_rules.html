@@ -1,0 +1,57 @@
+<div id="cancellation_rules_view" class="section-view space-y-8">
+  <!-- Header -->
+  <div class="flex flex-col md:flex-row gap-6 items-start md:items-center justify-between">
+    <div>
+      <h2 class="text-2xl font-black text-slate-800">Quản lý Quy tắc Hủy khóa học</h2>
+      <p class="text-slate-500">Thiết lập và điều chỉnh các quy định về việc hủy môn học</p>
+    </div>
+    <button onclick="showToast('Mở form thêm quy tắc mới...', 'info')" class="px-4 py-2 bg-blue-600 text-white rounded-xl font-bold hover:bg-blue-700 transition shadow-lg shadow-blue-500/30">
+      <i class="fa-solid fa-plus mr-2"></i>Thêm Quy tắc mới
+    </button>
+  </div>
+
+  <!-- Rules List -->
+  <div class="glass-card p-6 rounded-[28px]">
+    <h3 class="font-bold text-slate-800 mb-6 flex items-center gap-2">
+      <i class="fa-solid fa-file-lines text-indigo-500"></i> Danh sách Quy tắc
+    </h3>
+    <div class="space-y-4" id="cancellation-rules-list">
+      <!-- Rule 1 -->
+      <div class="flex flex-col md:flex-row items-start md:items-center justify-between p-4 bg-white/50 rounded-2xl border border-white">
+        <div class="flex-1 mb-2 md:mb-0">
+          <p class="font-bold text-slate-800 text-lg">Hủy trong vòng 24h kể từ khi đăng ký</p>
+          <p class="text-slate-600 text-sm">Cho phép hủy khóa học mà không chịu bất kỳ hình phạt nào.</p>
+        </div>
+        <div class="flex gap-2">
+          <span class="px-3 py-1 bg-green-100 text-green-600 rounded-full text-xs font-bold">Không phạt</span>
+          <button onclick="showToast('Chỉnh sửa Quy tắc 1...', 'info')" class="w-8 h-8 rounded-full flex items-center justify-center hover:bg-slate-50 transition text-slate-400 hover:text-blue-600"><i class="fa-solid fa-pen"></i></button>
+          <button onclick="showToast('Xóa Quy tắc 1...', 'info')" class="w-8 h-8 rounded-full flex items-center justify-center hover:bg-slate-50 transition text-slate-400 hover:text-red-500"><i class="fa-solid fa-trash-can"></i></button>
+        </div>
+      </div>
+      <!-- Rule 2 -->
+      <div class="flex flex-col md:flex-row items-start md:items-center justify-between p-4 bg-white/50 rounded-2xl border border-white">
+        <div class="flex-1 mb-2 md:mb-0">
+          <p class="font-bold text-slate-800 text-lg">Hủy sau 24h kể từ khi đăng ký</p>
+          <p class="text-slate-600 text-sm">Ghi nhận vi phạm vào hồ sơ sinh viên, cấm đăng ký khóa học khác trong 7 ngày.</p>
+        </div>
+        <div class="flex gap-2">
+          <span class="px-3 py-1 bg-red-100 text-red-600 rounded-full text-xs font-bold">Vi phạm + Cấm 7 ngày</span>
+          <button onclick="showToast('Chỉnh sửa Quy tắc 2...', 'info')" class="w-8 h-8 rounded-full flex items-center justify-center hover:bg-slate-50 transition text-slate-400 hover:text-blue-600"><i class="fa-solid fa-pen"></i></button>
+          <button onclick="showToast('Xóa Quy tắc 2...', 'info')" class="w-8 h-8 rounded-full flex items-center justify-center hover:bg-slate-50 transition text-slate-400 hover:text-red-500"><i class="fa-solid fa-trash-can"></i></button>
+        </div>
+      </div>
+      <!-- Rule 3 -->
+      <div class="flex flex-col md:flex-row items-start md:items-center justify-between p-4 bg-white/50 rounded-2xl border border-white">
+        <div class="flex-1 mb-2 md:mb-0">
+          <p class="font-bold text-slate-800 text-lg">Hủy khi khóa học đã bắt đầu</p>
+          <p class="text-slate-600 text-sm">Ghi nhận vi phạm nặng, cảnh cáo học vụ, không hoàn học phí.</p>
+        </div>
+        <div class="flex gap-2">
+          <span class="px-3 py-1 bg-red-500 text-white rounded-full text-xs font-bold">Cảnh cáo + Mất phí</span>
+          <button onclick="showToast('Chỉnh sửa Quy tắc 3...', 'info')" class="w-8 h-8 rounded-full flex items-center justify-center hover:bg-slate-50 transition text-slate-400 hover:text-blue-600"><i class="fa-solid fa-pen"></i></button>
+          <button onclick="showToast('Xóa Quy tắc 3...', 'info')" class="w-8 h-8 rounded-full flex items-center justify-center hover:bg-slate-50 transition text-slate-400 hover:text-red-500"><i class="fa-solid fa-trash-can"></i></button>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>

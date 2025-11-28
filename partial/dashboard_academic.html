@@ -1,0 +1,111 @@
+<div id="dashboard_academic" class="section-view space-y-8">
+  <!-- Header -->
+  <div class="flex flex-col md:flex-row gap-6 items-start md:items-center justify-between">
+    <div>
+      <h2 class="text-2xl font-black text-slate-800">Phòng Đào tạo (AA)</h2>
+      <p class="text-slate-500">Giám sát hoạt động đào tạo & Tuân thủ quy chế</p>
+    </div>
+    <div class="flex gap-2">
+        <button class="px-4 py-2 bg-white border border-slate-200 text-slate-600 font-bold rounded-xl text-sm hover:bg-blue-50 transition">
+            <i class="fa-solid fa-download mr-2"></i>Báo cáo tuần
+        </button>
+        <button class="px-4 py-2 bg-blue-600 text-white font-bold rounded-xl text-sm hover:bg-blue-700 transition shadow-lg shadow-blue-500/30">
+            <i class="fa-solid fa-plus mr-2"></i>Tạo thông báo
+        </button>
+    </div>
+  </div>
+
+  <!-- Overview Cards -->
+  <div class="grid grid-cols-1 md:grid-cols-4 gap-4">
+    <div class="glass-card p-4 rounded-2xl bg-blue-500 text-white">
+        <p class="text-blue-100 text-xs font-bold uppercase mb-1">Tổng Sinh viên</p>
+        <p class="text-3xl font-black">14,502</p>
+        <p class="text-blue-100 text-xs mt-2"><i class="fa-solid fa-user-plus mr-1"></i> +1,200 khóa 2025</p>
+    </div>
+    <div class="glass-card p-4 rounded-2xl">
+        <p class="text-slate-400 text-xs font-bold uppercase mb-1">Lớp học phần</p>
+        <p class="text-3xl font-black text-slate-800">850</p>
+        <p class="text-slate-500 text-xs mt-2">Đang hoạt động HK251</p>
+    </div>
+    <div class="glass-card p-4 rounded-2xl">
+        <p class="text-slate-400 text-xs font-bold uppercase mb-1">Tỷ lệ Feedback</p>
+        <p class="text-3xl font-black text-slate-800">68%</p>
+        <p class="text-yellow-500 text-xs mt-2 font-bold"><i class="fa-solid fa-triangle-exclamation mr-1"></i> Thấp hơn kỳ trước</p>
+    </div>
+    <div class="glass-card p-4 rounded-2xl border border-red-100">
+        <p class="text-slate-400 text-xs font-bold uppercase mb-1">Vi phạm quy chế</p>
+        <p class="text-3xl font-black text-red-500">12</p>
+        <p class="text-red-400 text-xs mt-2">Sinh viên bị kỷ luật</p>
+    </div>
+  </div>
+
+  <div class="grid grid-cols-1 lg:grid-cols-3 gap-8">
+      <!-- Chart: Enrollment Trends -->
+      <div class="lg:col-span-2 glass-card p-6 rounded-[28px]">
+          <h3 class="font-bold text-slate-800 mb-4">Xu hướng Đăng ký môn học</h3>
+          <canvas id="academicEnrollmentChart" height="200"></canvas>
+      </div>
+
+      <!-- Compliance List -->
+      <div class="glass-card p-6 rounded-[28px]">
+          <h3 class="font-bold text-slate-800 mb-4">Tiến độ Nhập điểm</h3>
+          <div class="space-y-4">
+              <div class="flex justify-between items-center">
+                  <span class="text-sm font-bold text-slate-600">Khoa KHMT</span>
+                  <span class="text-xs font-bold bg-green-100 text-green-600 px-2 py-1 rounded">98%</span>
+              </div>
+              <div class="w-full bg-slate-100 h-2 rounded-full">
+                  <div class="bg-green-500 h-2 rounded-full" style="width: 98%"></div>
+              </div>
+
+              <div class="flex justify-between items-center mt-4">
+                  <span class="text-sm font-bold text-slate-600">Khoa Điện - ĐT</span>
+                  <span class="text-xs font-bold bg-blue-100 text-blue-600 px-2 py-1 rounded">85%</span>
+              </div>
+              <div class="w-full bg-slate-100 h-2 rounded-full">
+                  <div class="bg-blue-500 h-2 rounded-full" style="width: 85%"></div>
+              </div>
+
+              <div class="flex justify-between items-center mt-4">
+                  <span class="text-sm font-bold text-slate-600">Khoa Xây Dựng</span>
+                  <span class="text-xs font-bold bg-yellow-100 text-yellow-600 px-2 py-1 rounded">60%</span>
+              </div>
+              <div class="w-full bg-slate-100 h-2 rounded-full">
+                  <div class="bg-yellow-500 h-2 rounded-full" style="width: 60%"></div>
+              </div>
+          </div>
+          
+          <button class="mt-6 w-full py-2 border border-slate-200 rounded-xl text-sm font-bold text-slate-500 hover:bg-slate-50 transition">
+              Gửi nhắc nhở tự động
+          </button>
+      </div>
+  </div>
+
+  <!-- Recent Activity Log -->
+  <div class="glass-card p-6 rounded-[28px]">
+      <h3 class="font-bold text-slate-800 mb-4">Nhật ký Hệ thống Đào tạo</h3>
+      <div class="space-y-3 max-h-60 overflow-y-auto custom-scroll pr-2">
+          <div class="flex gap-3 pb-3 border-b border-slate-100">
+              <div class="w-8 h-8 rounded-full bg-blue-50 text-blue-500 flex items-center justify-center text-xs"><i class="fa-solid fa-upload"></i></div>
+              <div>
+                  <p class="text-sm font-bold text-slate-700">Cập nhật Lịch thi HK251</p>
+                  <p class="text-xs text-slate-500">Bởi Admin • 10 phút trước</p>
+              </div>
+          </div>
+          <div class="flex gap-3 pb-3 border-b border-slate-100">
+              <div class="w-8 h-8 rounded-full bg-green-50 text-green-500 flex items-center justify-center text-xs"><i class="fa-solid fa-check"></i></div>
+              <div>
+                  <p class="text-sm font-bold text-slate-700">Phê duyệt mở lớp bổ sung: Web Adv</p>
+                  <p class="text-xs text-slate-500">Bởi Trưởng phòng ĐT • 1 giờ trước</p>
+              </div>
+          </div>
+          <div class="flex gap-3 pb-3 border-b border-slate-100">
+              <div class="w-8 h-8 rounded-full bg-red-50 text-red-500 flex items-center justify-center text-xs"><i class="fa-solid fa-ban"></i></div>
+              <div>
+                  <p class="text-sm font-bold text-slate-700">Hủy lớp: Vật lý 2 (L09) - Không đủ sĩ số</p>
+                  <p class="text-xs text-slate-500">Hệ thống tự động • 3 giờ trước</p>
+              </div>
+          </div>
+      </div>
+  </div>
+</div>

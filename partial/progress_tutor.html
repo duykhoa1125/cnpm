@@ -1,0 +1,90 @@
+<div id="progress_tutor" class="section-view space-y-8">
+  <!-- Header -->
+  <div class="flex flex-col md:flex-row gap-6 items-start md:items-center justify-between">
+    <div>
+      <h2 class="text-2xl font-black text-slate-800">Theo dõi Tiến độ Học tập</h2>
+      <p class="text-slate-500">Quản lý điểm số và chuyên cần của sinh viên</p>
+    </div>
+    <div class="w-full md:w-64">
+      <select id="progress-course-select" onchange="renderTutorProgress()" class="w-full p-3 bg-white/60 border border-white rounded-xl text-slate-700 font-bold focus:outline-none shadow-sm">
+        <option value="Lập trình Web">Lập trình Web (L01)</option>
+        <option value="Cấu trúc dữ liệu">Cấu trúc dữ liệu (L02)</option>
+        <option value="Giải tích 1">Giải tích 1 (L03)</option>
+      </select>
+    </div>
+  </div>
+
+  <!-- Class Stats -->
+  <div class="grid grid-cols-1 md:grid-cols-3 gap-6">
+    <div class="glass-card p-6 rounded-[24px] border-b-4 border-blue-500">
+      <p class="text-xs font-bold text-slate-500 uppercase">Sĩ số lớp</p>
+      <div class="flex justify-between items-end">
+        <p class="text-3xl font-black text-slate-800" id="prog-class-size">0</p>
+        <span class="text-xs font-bold bg-blue-100 text-blue-600 px-2 py-1 rounded">Sinh viên</span>
+      </div>
+    </div>
+    <div class="glass-card p-6 rounded-[24px] border-b-4 border-green-500">
+      <p class="text-xs font-bold text-slate-500 uppercase">Điểm trung bình</p>
+      <div class="flex justify-between items-end">
+        <p class="text-3xl font-black text-slate-800" id="prog-class-avg">0.0</p>
+        <span class="text-xs font-bold bg-green-100 text-green-600 px-2 py-1 rounded">/ 10.0</span>
+      </div>
+    </div>
+    <div class="glass-card p-6 rounded-[24px] border-b-4 border-red-400">
+      <p class="text-xs font-bold text-slate-500 uppercase">Cảnh báo học vụ</p>
+      <div class="flex justify-between items-end">
+        <p class="text-3xl font-black text-slate-800" id="prog-class-risk">0</p>
+        <span class="text-xs font-bold bg-red-100 text-red-600 px-2 py-1 rounded">Nguy cơ rớt</span>
+      </div>
+    </div>
+  </div>
+
+  <div class="grid grid-cols-1 lg:grid-cols-3 gap-8">
+    <!-- Student List -->
+    <div class="lg:col-span-2 glass-card p-6 rounded-[28px]">
+      <div class="flex justify-between items-center mb-6">
+        <h3 class="font-bold text-slate-800 flex items-center gap-2">
+          <i class="fa-solid fa-user-graduate text-blue-500"></i> Danh sách sinh viên
+        </h3>
+        <div class="relative">
+          <input type="text" id="prog-student-search" onkeyup="filterProgressTable()" placeholder="Tìm tên hoặc MSSV..." class="pl-8 pr-3 py-2 bg-slate-100 rounded-lg text-sm focus:outline-none focus:ring-2 focus:ring-blue-500/50 w-48">
+          <i class="fa-solid fa-search absolute left-2.5 top-1/2 -translate-y-1/2 text-slate-400 text-xs"></i>
+        </div>
+      </div>
+      
+      <div class="overflow-x-auto">
+        <table class="w-full text-left border-collapse">
+          <thead>
+            <tr class="text-slate-500 text-xs uppercase tracking-wider border-b border-slate-200/60">
+              <th class="pb-3 pl-2 font-bold">MSSV</th>
+              <th class="pb-3 font-bold">Họ tên</th>
+              <th class="pb-3 font-bold text-center">Giữa kỳ</th>
+              <th class="pb-3 font-bold text-center">Cuối kỳ</th>
+              <th class="pb-3 font-bold text-center">Tổng kết</th>
+              <th class="pb-3 font-bold text-right pr-2">Trạng thái</th>
+            </tr>
+          </thead>
+          <tbody id="prog-student-list" class="text-sm text-slate-700">
+            <!-- JS Populated -->
+          </tbody>
+        </table>
+      </div>
+    </div>
+
+    <!-- Charts Area -->
+    <div class="flex flex-col gap-6">
+      <div class="glass-card p-6 rounded-[28px]">
+        <h3 class="font-bold text-slate-800 mb-4">Phổ điểm lớp học</h3>
+        <canvas id="classScoreChart" height="200"></canvas>
+      </div>
+      
+      <div class="glass-card p-6 rounded-[28px] bg-gradient-to-br from-blue-500 to-blue-600 text-white">
+        <h3 class="font-bold mb-2">Cập nhật điểm nhanh</h3>
+        <p class="text-blue-100 text-sm mb-4">Nhập file Excel để cập nhật điểm hàng loạt cho lớp học này.</p>
+        <button class="w-full py-3 bg-white text-blue-600 rounded-xl font-bold hover:bg-blue-50 transition flex items-center justify-center gap-2 shadow-lg">
+          <i class="fa-solid fa-upload"></i> Upload bảng điểm
+        </button>
+      </div>
+    </div>
+  </div>
+</div>
