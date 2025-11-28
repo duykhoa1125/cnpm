@@ -1,0 +1,217 @@
+<!doctype html>
+<html lang="vi">
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width,initial-scale=1" />
+  <title>System Admin | LMS Portal</title>
+  <script src="https://kit.fontawesome.com/a2d9b6b2c6.js" crossorigin="anonymous"></script>
+  <script src="https://cdn.tailwindcss.com"></script>
+  <style>
+    /* reuse same essential styles as other file for consistent look */
+    body{ background: linear-gradient(135deg,#eff6ff,#eef2ff); min-height:100vh; font-family:Inter,system-ui,Arial; color:#0f172a; }
+    .glass-panel{ background: rgba(255,255,255,0.5); backdrop-filter: blur(18px); border:1px solid rgba(255,255,255,.6); box-shadow:0 8px 32px rgba(31,38,135,0.03); }
+    .glass-card{ background: rgba(255,255,255,0.65); padding:16px; border-radius:12px; border:1px solid rgba(255,255,255,.5); }
+    header.h-20{ height:5rem;}
+    #sidebar{ width:18rem; }
+    .nav-item{ padding:10px 12px; display:flex; align-items:center; gap:10px; border-radius:10px; color:#475569; font-weight:600; cursor:pointer }
+    .nav-item:hover{ background:#f1f5f9; color:#2563eb }
+    .label{ font-weight:700; color:#0f172a; margin-bottom:6px; display:block; font-size:13px }
+    .input{ border:1px solid #e6eefc; padding:10px; border-radius:8px; width:100%; background:white }
+    #toast-container{ position:fixed; top:24px; right:24px; z-index:9999; display:flex; flex-direction:column; gap:10px; }
+    .toast{ display:flex; gap:12px; background: rgba(255,255,255,0.85); padding:12px 16px; border-radius:12px; min-width:300px; box-shadow:0 10px 30px -5px rgba(0,0,0,0.1); transform:translateX(100%); animation: slideInToast .4s forwards; }
+    @keyframes slideInToast { from{transform:translateX(120%);opacity:0} to{transform:none;opacity:1} }
+  </style>
+</head>
+<body class="antialiased text-slate-700">
+  <div id="toast-container"></div>
+
+  <!-- Sidebar -->
+  <aside id="sidebar" class="fixed md:static inset-y-0 left-0 transform -translate-x-full md:translate-x-0 transition-transform duration-300 ease-in-out md:flex flex-col p-4 h-full z-30">
+    <div class="glass-panel h-full rounded-[24px] flex flex-col relative overflow-hidden bg-white/80 md:bg-white/50">
+      <div class="p-6 flex items-center justify-between gap-3">
+        <div class="flex items-center gap-3 min-w-0">
+          <div class="w-10 h-10 bg-blue-600 rounded-xl flex items-center justify-center text-white font-bold flex-shrink-0">BK</div>
+          <div class="min-w-0">
+            <h1 class="font-bold text-slate-800 text-lg truncate">LMS Portal</h1>
+            <span class="text-[10px] font-bold uppercase tracking-wider text-blue-500">ADMIN</span>
+          </div>
+        </div>
+      </div>
+
+      <nav id="sidebar-nav" class="flex-1 px-4 space-y-1 overflow-y-auto py-4">
+        <div class="nav-item active" onclick="showPanel('dashboard')"><i class="fa-solid fa-tachometer-alt"></i> Dashboard</div>
+        <div class="nav-item" onclick="showPanel('logs')"><i class="fa-solid fa-book"></i> System Logs</div>
+        <div class="nav-item" onclick="showPanel('settings')"><i class="fa-solid fa-sliders-h"></i> Settings</div>
+      </nav>
+
+      <div class="p-4 mt-auto">
+        <div class="glass-card p-3 rounded-xl flex items-center gap-3 mb-3">
+          <img src="https://ui-avatars.com/api/?name=Admin&background=eff6ff&color=2563eb" class="w-10 h-10 rounded-full border-2 border-white" />
+          <div class="overflow-hidden w-full min-w-0">
+            <p class="text-sm font-bold text-slate-700 truncate">Admin Test</p>
+            <p class="text-xs text-slate-500 truncate">IT Staff</p>
+          </div>
+        </div>
+        <button onclick="logout()" class="w-full py-3 rounded-xl text-sm font-bold text-red-500 hover:bg-red-50 transition flex items-center justify-center gap-2">
+          <i class="fa-solid fa-power-off"></i> Đăng xuất
+        </button>
+      </div>
+    </div>
+  </aside>
+
+  <div class="md:pl-72 min-h-screen">
+    <header class="h-20 flex items-center justify-between px-4 md:px-8 lg:px-10">
+      <div class="flex items-center gap-3">
+        <button onclick="toggleSidebar()" aria-label="Toggle Sidebar" class="md:hidden w-12 h-12 bg-white/60 rounded-full flex items-center justify-center shadow-sm hover:bg-white transition text-slate-600">
+          <i class="fa-solid fa-bars text-lg"></i>
+        </button>
+        <h2 id="page-title" class="text-xl md:text-2xl font-bold text-slate-800">Admin - Manage System</h2>
+      </div>
+      <div class="flex items-center gap-4">
+        <button onclick="toggleNotifications()" class="w-10 h-10 bg-white/60 rounded-full flex items-center justify-center shadow-sm hover:bg-white transition relative">
+          <i class="fa-regular fa-bell text-slate-600"></i>
+        </button>
+      </div>
+    </header>
+
+    <main class="p-6 md:p-10">
+      <div class="grid grid-cols-1 lg:grid-cols-3 gap-6">
+        <div class="lg:col-span-2 glass-card p-6 rounded-xl">
+          <h3 class="text-lg font-bold mb-4">System Monitor</h3>
+
+          <div class="flex gap-3 mb-4">
+            <button class="px-4 py-2 rounded-xl bg-blue-600 text-white font-bold" onclick="simulateSync()">Sync DataCore</button>
+            <button class="px-4 py-2 rounded-xl bg-amber-500 text-white font-bold" onclick="simulateAdjust()">Adjust Settings</button>
+            <button class="px-4 py-2 rounded-xl bg-green-600 text-white font-bold" onclick="simulateStatus()">View Status</button>
+          </div>
+
+          <div id="status-box" class="p-4 border rounded-lg mb-4">
+            <div class="font-bold">System Status: <span id="sys-status">OK</span></div>
+            <div class="text-sm text-slate-500 mt-2">Last sync: <span id="sys-sync">2025-11-20 10:45</span></div>
+          </div>
+
+          <h4 class="font-bold mb-2">Live Logs</h4>
+          <div id="log-area" class="p-3 border rounded-lg h-56 overflow-y-auto log-scroll bg-slate-900 text-white text-sm">
+            <!-- logs rendered here -->
+          </div>
+
+        </div>
+
+        <aside class="glass-card p-6 rounded-xl">
+          <h4 class="font-bold mb-3">Quick Actions</h4>
+          <div class="space-y-3">
+            <div>
+              <label class="label">Filter logs</label>
+              <select id="log-filter" class="input" onchange="renderLogs()">
+                <option value="ALL">All</option>
+                <option value="INFO">INFO</option>
+                <option value="WARN">WARN</option>
+                <option value="ERROR">ERROR</option>
+              </select>
+            </div>
+
+            <div>
+              <label class="label">Clear logs</label>
+              <button class="w-full px-4 py-2 rounded-xl bg-red-500 text-white font-bold" onclick="clearLogs()">Clear</button>
+            </div>
+
+            <div>
+              <label class="label">Export logs (mô phỏng)</label>
+              <button class="w-full px-4 py-2 rounded-xl bg-blue-600 text-white font-bold" onclick="exportLogs()">Export CSV</button>
+            </div>
+          </div>
+        </aside>
+      </div>
+    </main>
+  </div>
+
+  <script>
+    // simple UI helpers
+    function toggleSidebar(){ const sb=document.getElementById('sidebar'); sb.classList.toggle('-translate-x-full'); }
+    function toggleNotifications(){ showToast('Thông báo','info','Không có thông báo mới (mô phỏng)'); }
+    function logout(){ showToast('Đăng xuất','success','Bạn đã đăng xuất.'); }
+
+    function showToast(title, type='info', message=''){
+      const container = document.getElementById('toast-container');
+      const el = document.createElement('div'); el.className='toast';
+      el.innerHTML = `<div style="width:36px;height:36px;border-radius:8px;background:${ type==='success'?'#dcfce7':'#dbeafe'};display:flex;align-items:center;justify-content:center">${ type==='success'?'✓':'i' }</div>
+                      <div><div style="font-weight:700">${title}</div><div style="font-size:13px;color:#475569">${message}</div></div>`;
+      container.appendChild(el);
+      setTimeout(()=>el.remove(),3000);
+    }
+
+    // Hard-coded logs
+    let logs = [
+      { ts:'2025-11-20 10:10:12', level:'INFO', actor:'System', action:'Service started', details:'All services running' },
+      { ts:'2025-11-20 10:12:05', level:'WARN', actor:'SyncJob', action:'DataCore latency', details:'Response 1200ms' },
+      { ts:'2025-11-20 10:45:00', level:'INFO', actor:'Admin', action:'Manual sync', details:'Sync completed' },
+      { ts:'2025-11-21 09:20:33', level:'ERROR', actor:'HCMUT_Library', action:'Fetch failed', details:'Timeout' },
+      { ts:'2025-11-22 14:02:10', level:'INFO', actor:'AutoBackup', action:'Backup completed', details:'Size: 12MB' }
+    ];
+
+    function renderLogs(){
+      const area = document.getElementById('log-area');
+      const filter = document.getElementById('log-filter').value;
+      area.innerHTML = '';
+      logs.filter(l=> filter==='ALL' || l.level===filter ).forEach(l=>{
+        const d = document.createElement('div');
+        d.style.padding='8px'; d.style.borderBottom='1px solid rgba(255,255,255,0.03)';
+        d.innerHTML = `<div style="font-weight:700">${l.ts} • ${l.level} • ${l.actor}</div>
+                       <div style="font-size:13px;color:#cbd5e1">${l.action}</div>
+                       <div style="font-size:12px;color:#9ca3af">${l.details}</div>`;
+        area.appendChild(d);
+      });
+    }
+
+    function simulateSync(){
+      showToast('Đang sync','info','Đang gọi HCMUT_DataCore (mô phỏng)...');
+      setTimeout(()=>{
+        logs.unshift({ ts: new Date().toISOString().slice(0,19).replace('T',' '), level:'INFO', actor:'Admin', action:'Manual sync', details:'Sync completed (mô phỏng)'});
+        document.getElementById('sys-sync').textContent = new Date().toISOString().slice(0,19).replace('T',' ');
+        renderLogs();
+        showToast('Sync thành công','success','Đồng bộ với DataCore hoàn tất (mô phỏng).');
+      }, 1200);
+    }
+
+    function simulateAdjust(){
+      showToast('Áp dụng cấu hình','info','Đang áp dụng thay đổi...');
+      setTimeout(()=>{
+        logs.unshift({ ts: new Date().toISOString().slice(0,19).replace('T',' '), level:'INFO', actor:'Admin', action:'Adjust settings', details:'Updated threshold values' });
+        renderLogs();
+        showToast('Áp dụng thành công','success','Cấu hình đã được cập nhật (mô phỏng).');
+      }, 1000);
+    }
+
+    function simulateStatus(){
+      const el = document.getElementById('sys-status');
+      el.textContent = el.textContent==='OK' ? 'DEGRADED' : 'OK';
+      showToast('Trạng thái hệ thống','info','Status: ' + el.textContent);
+    }
+
+    function clearLogs(){
+      if(!confirm('Bạn có muốn xóa toàn bộ logs (mô phỏng)?')) return;
+      logs = [];
+      renderLogs();
+      showToast('Đã xóa logs','success','Log đã được xóa (mô phỏng).');
+    }
+
+    function exportLogs(){
+      const csv = ['timestamp,level,actor,action,details', ...logs.map(l=>`${l.ts},${l.level},${l.actor},"${l.action}","${l.details}"`)].join('\n');
+      const blob = new Blob([csv], { type: 'text/csv' });
+      const url = URL.createObjectURL(blob);
+      const a = document.createElement('a'); a.href = url; a.download = 'system_logs.csv'; a.click();
+      URL.revokeObjectURL(url);
+      showToast('Export thành công','success','File CSV đã được tải xuống (mô phỏng).');
+    }
+
+    function showPanel(key){
+      // For this simple page panels are static; highlight nav
+      document.querySelectorAll('.nav-item').forEach(n=>n.classList.remove('active'));
+      event && event.currentTarget && event.currentTarget.classList && event.currentTarget.classList.add('active');
+    }
+
+    // init
+    renderLogs();
+  </script>
+</body>
+</html>
