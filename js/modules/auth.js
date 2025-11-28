@@ -12,22 +12,40 @@ import {
 } from "./navigation.js";
 import { destroyAllCharts } from "./charts.js";
 
+// Prevent multiple simultaneous login attempts
+let isLoggingIn = false;
+
 // Handle Login Form
 export function handleLogin(e) {
   if (e) e.preventDefault();
+
+  // Prevent multiple simultaneous submissions
+  if (isLoggingIn) {
+    console.warn("Login already in progress");
+    return;
+  }
+
   const btn = e.target.querySelector("button[type='submit']") || e.target;
   const roleSelect = document.getElementById("role-select");
   const usernameInput = document.getElementById("login-username");
   const passwordInput = document.getElementById("login-password");
 
+  // Validate DOM elements exist
+  if (!roleSelect || !usernameInput || !passwordInput) {
+    console.error("Login form elements not found");
+    showToast("Lỗi hệ thống. Vui lòng tải lại trang.", "error");
+    return;
+  }
+
   const username = usernameInput.value;
-  const password = passwordInput?.value;
+  const password = passwordInput.value;
 
   if (!username || !password) {
     showToast("Vui lòng nhập đầy đủ Tên đăng nhập và Mật khẩu.", "error");
     return;
   }
 
+  isLoggingIn = true;
   setButtonLoading(btn, true);
 
   // Simulate API delay
@@ -58,28 +76,34 @@ export function handleLogin(e) {
       if (password !== validPassword || username !== validUsername) {
         showToast("Tên đăng nhập hoặc mật khẩu không đúng.", "error");
         setButtonLoading(btn, false);
+        isLoggingIn = false;
         return;
       }
 
       setCurrentUserRole(roleSelect.value);
-      localStorage.setItem("currentUserRole", roleSelect.value);
-      localStorage.setItem("username", username);
+
+      // Safe localStorage operations
+      try {
+        localStorage.setItem("currentUserRole", roleSelect.value);
+        localStorage.setItem("username", username);
+      } catch (storageError) {
+        console.error("localStorage error:", storageError);
+        showToast("Cảnh báo: Không thể lưu phiên đăng nhập.", "warning");
+      }
 
       applyLoginState(username, roleSelect.value);
+      isLoggingIn = false;
     } catch (error) {
       console.error("Login error:", error);
       showToast("Có lỗi xảy ra khi đăng nhập. Vui lòng thử lại.", "error");
+      setButtonLoading(btn, false);
+      isLoggingIn = false;
     } finally {
-      // Only stop loading if we haven't redirected/succeeded (though applyLoginState switches view)
-      // If success, we might not want to stop loading immediately to prevent flickering before view swap?
-      // But applyLoginState hides login screen.
-      // So if we failed (returned early), we stopped loading.
-      // If we succeeded, applyLoginState handles UI.
-      // But 'finally' runs always.
-      // If success, login screen is hidden, so button state doesn't matter much.
-      // But strictly speaking:
-      if (document.getElementById("login-screen") && !document.getElementById("login-screen").classList.contains("hidden")) {
-          setButtonLoading(btn, false);
+      // Only stop loading if we haven't redirected/succeeded
+      const loginScreen = document.getElementById("login-screen");
+      if (loginScreen && !loginScreen.classList.contains("hidden")) {
+        setButtonLoading(btn, false);
+        isLoggingIn = false;
       }
     }
   }, 800);
@@ -147,26 +171,46 @@ export function applyLoginState(username, role) {
 
 // Logout
 export function logout() {
-  localStorage.removeItem("currentUserRole");
-  localStorage.removeItem("username");
-  localStorage.removeItem("activeTab");
+  // Safe localStorage operations
+  try {
+    localStorage.removeItem("currentUserRole");
+    localStorage.removeItem("username");
+    localStorage.removeItem("activeTab");
+  } catch (storageError) {
+    console.error("localStorage error during logout:", storageError);
+  }
 
   setCurrentUserRole("student");
   destroyAllCharts();
 
-  document.getElementById("main-app").classList.add("hidden");
-  document.getElementById("main-app").classList.remove("flex");
-  
-  const loginScreen = document.getElementById("login-screen");
-  loginScreen.classList.remove("hidden");
-  
-  document.getElementById("login-username").value = "hcmut_student";
-  
-  // Reset button loading state if it was stuck
-  const btn = loginScreen.querySelector("button[type='submit']");
-  if (btn) {
-    setButtonLoading(btn, false, `Đăng nhập <i class="fa-solid fa-arrow-right ml-2"></i>`);
+  const mainApp = document.getElementById("main-app");
+  if (mainApp) {
+    mainApp.classList.add("hidden");
+    mainApp.classList.remove("flex");
   }
+
+  const loginScreen = document.getElementById("login-screen");
+  if (loginScreen) {
+    loginScreen.classList.remove("hidden");
+  }
+
+  const usernameInput = document.getElementById("login-username");
+  if (usernameInput) {
+    usernameInput.value = "hcmut_student";
+  }
+
+  // Reset button loading state if it was stuck
+  const btn = loginScreen?.querySelector("button[type='submit']");
+  if (btn) {
+    setButtonLoading(
+      btn,
+      false,
+      `Đăng nhập <i class="fa-solid fa-arrow-right ml-2"></i>`
+    );
+  }
+
+  // Reset login flag
+  isLoggingIn = false;
 }
 
 // Role Change Handler (for login form)
