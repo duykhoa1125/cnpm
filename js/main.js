@@ -579,22 +579,48 @@ const roleMenus = {
   ],
 };
 
+// Helper: Button Loading State
+function setButtonLoading(btn, isLoading, originalText = "") {
+    if (!btn) return;
+    
+    if (isLoading) {
+        btn.dataset.originalText = btn.innerHTML;
+        btn.disabled = true;
+        btn.classList.add('opacity-75', 'cursor-not-allowed');
+        btn.innerHTML = `<i class="fa-solid fa-circle-notch fa-spin mr-2"></i>Đang xử lý...`;
+    } else {
+        btn.innerHTML = originalText || btn.dataset.originalText;
+        btn.disabled = false;
+        btn.classList.remove('opacity-75', 'cursor-not-allowed');
+    }
+}
+
 function handleLogin(e) {
   if (e) e.preventDefault();
-  currentUserRole = document.getElementById("role-select").value;
-  const username = document.getElementById("login-username").value;
-  const password = document.getElementById("login-password")?.value;
+  const btn = e.target.querySelector("button[type='submit']") || e.target;
+  const roleSelect = document.getElementById("role-select");
+  const usernameInput = document.getElementById("login-username");
+  const passwordInput = document.getElementById("login-password");
+
+  const username = usernameInput.value;
+  const password = passwordInput?.value;
 
   if (!username || !password) {
-    showToast("Vui lòng nhập đầy đủ Tên đăng nhập và Mật khẩu.", "error");
-    return;
+      showToast("Vui lòng nhập đầy đủ Tên đăng nhập và Mật khẩu.", 'error');
+      return;
   }
 
-  // Save to local storage
-  localStorage.setItem("currentUserRole", currentUserRole);
-  localStorage.setItem("username", username);
+  setButtonLoading(btn, true);
 
-  applyLoginState(username, currentUserRole);
+  // Simulate API delay
+  setTimeout(() => {
+      currentUserRole = roleSelect.value;
+      localStorage.setItem("currentUserRole", currentUserRole);
+      localStorage.setItem("username", username);
+
+      applyLoginState(username, currentUserRole);
+      setButtonLoading(btn, false);
+  }, 800);
 }
 
 function applyLoginState(username, role) {
@@ -607,6 +633,9 @@ function applyLoginState(username, role) {
 
   const portalBadge = document.getElementById("portal-badge");
   if (portalBadge) portalBadge.innerText = role.toUpperCase();
+
+  // Update Greeting based on time
+  updateDashboardGreeting();
 
   generateSidebar(role);
 
@@ -633,6 +662,20 @@ function applyLoginState(username, role) {
       : "dashboard_student";
 
   switchTab(savedTab || dashboardId);
+}
+
+function updateDashboardGreeting() {
+    const hour = new Date().getHours();
+    let greeting = "Chào";
+    if (hour < 12) greeting = "Chào buổi sáng";
+    else if (hour < 18) greeting = "Chào buổi chiều";
+    else greeting = "Chào buổi tối";
+
+    const greetingEl = document.querySelector("#dashboard_student h2 + p");
+    if (greetingEl && greetingEl.innerHTML.includes("Chào mừng")) {
+        const userSpan = greetingEl.querySelector("span") ? greetingEl.querySelector("span").outerHTML : `<span class="user-name-display font-bold text-blue-600">Sinh viên</span>`;
+        greetingEl.innerHTML = `${greeting}, ${userSpan}!`;
+    }
 }
 
 function generateSidebar(role) {
@@ -1051,6 +1094,8 @@ let bonusRsvps = [
 
 function submitBonusSession(e) {
   e.preventDefault();
+  const btn = e.target.querySelector("button[type='submit']");
+  setButtonLoading(btn, true);
 
   const title = document.getElementById("bonus-title")?.value || "Untitled";
   const course = document.getElementById("bonus-course")?.value;
@@ -1070,44 +1115,52 @@ function submitBonusSession(e) {
   // Validation
   if (!course) {
     showToast("Vui lòng chọn môn học!", "error");
+    setButtonLoading(btn, false);
     return;
   }
   if (!date || !start) {
     showToast("Vui lòng nhập ngày và giờ bắt đầu!", "error");
+    setButtonLoading(btn, false);
     return;
   }
   if (duration <= 0) {
     showToast("Thời lượng phải lớn hơn 0!", "error");
+    setButtonLoading(btn, false);
     return;
   }
 
-  const newSession = {
-    id: "S" + (bonusSessions.length + 1),
-    title: title,
-    course: course,
-    desc: desc,
-    scope: scope,
-    students: students,
-    date: date,
-    start: start,
-    duration: parseInt(duration),
-    mode: mode,
-    location: location,
-    max: parseInt(max),
-    approval: approval,
-    tutor: "Nguyen Van B",
-    status: approval ? "PENDING" : "ACTIVE",
-    count: 0,
-  };
+  // Simulate Network
+  setTimeout(() => {
+      const newSession = {
+        id: "S" + (bonusSessions.length + 1),
+        title: title,
+        course: course,
+        desc: desc,
+        scope: scope,
+        students: students,
+        date: date,
+        start: start,
+        duration: parseInt(duration),
+        mode: mode,
+        location: location,
+        max: parseInt(max),
+        approval: approval,
+        tutor: "Nguyen Van B",
+        status: approval ? "PENDING" : "ACTIVE",
+        count: 0,
+      };
 
-  bonusSessions.push(newSession);
+      bonusSessions.push(newSession);
 
-  showToast("Đã tạo buổi học bổ sung thành công!", "success");
-  document.getElementById("bonus-session-modal").classList.add("hidden");
-  document.getElementById("bonus-session-form")?.reset();
-  updateBonusPreview();
-  renderBonusSessions();
-  renderBonusRsvps();
+      showToast("Đã tạo buổi học bổ sung thành công!", "success");
+      document.getElementById("bonus-session-modal").classList.add("hidden");
+      document.getElementById("bonus-session-form")?.reset();
+      updateBonusPreview();
+      renderBonusSessions();
+      renderBonusRsvps();
+      
+      setButtonLoading(btn, false);
+  }, 800);
 }
 
 function onBonusScopeChange() {
@@ -1365,6 +1418,8 @@ function toggleProfileEdit() {
 
 function updateProfile(e) {
   e.preventDefault();
+  const btn = e.target.querySelector("button[type='submit']");
+  setButtonLoading(btn, true);
 
   const name = document.getElementById("student-name-input").value.trim();
   const email = document.getElementById("student-email-input").value.trim();
@@ -1372,31 +1427,45 @@ function updateProfile(e) {
   const avatarInput = document.getElementById("student-avatar-input");
 
   // Validation
-  if (!name) return showToast("Vui lòng nhập họ tên!", "error");
-
+  if (!name) {
+      showToast("Vui lòng nhập họ tên!", "error");
+      setButtonLoading(btn, false);
+      return;
+  }
+  
   const emailRegex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
-  if (!emailRegex.test(email)) return showToast("Email không hợp lệ!", "error");
-
-  const phoneRegex = /^[0-9]{10,11}$/;
-  if (!phoneRegex.test(phone.replace(/\s/g, "")))
-    return showToast("Số điện thoại không hợp lệ!", "error");
-
-  // Update DOM
-  document.getElementById("student-name-display").innerText = name;
-  document.getElementById("student-email-display").innerText = email;
-  document.getElementById("student-phone-display").innerText = phone;
-
-  // Update Avatar if changed
-  if (avatarInput.files && avatarInput.files[0]) {
-    const reader = new FileReader();
-    reader.onload = function (e) {
-      document.getElementById("student-avatar-display").src = e.target.result;
-    };
-    reader.readAsDataURL(avatarInput.files[0]);
+  if (!emailRegex.test(email)) {
+      showToast("Email không hợp lệ!", "error");
+      setButtonLoading(btn, false);
+      return;
   }
 
-  showToast("Hồ sơ sinh viên đã được cập nhật!", "success");
-  toggleProfileEdit();
+  const phoneRegex = /^[0-9]{10,11}$/;
+  if (!phoneRegex.test(phone.replace(/\s/g, ""))) {
+      showToast("Số điện thoại không hợp lệ!", "error");
+      setButtonLoading(btn, false);
+      return;
+  }
+
+  setTimeout(() => {
+      // Update DOM
+      document.getElementById("student-name-display").innerText = name;
+      document.getElementById("student-email-display").innerText = email;
+      document.getElementById("student-phone-display").innerText = phone;
+      
+      // Update Avatar if changed
+      if (avatarInput.files && avatarInput.files[0]) {
+          const reader = new FileReader();
+          reader.onload = function (e) {
+              document.getElementById("student-avatar-display").src = e.target.result;
+          };
+          reader.readAsDataURL(avatarInput.files[0]);
+      }
+
+      showToast("Hồ sơ sinh viên đã được cập nhật!", "success");
+      toggleProfileEdit();
+      setButtonLoading(btn, false);
+  }, 800);
 }
 
 function toggleTutorProfileEdit() {
@@ -1428,6 +1497,8 @@ function toggleTutorProfileEdit() {
 
 function updateTutorProfile(e) {
   e.preventDefault();
+  const btn = e.target.querySelector("button[type='submit']");
+  setButtonLoading(btn, true);
 
   const name = document.getElementById("tutor-name-input").value.trim();
   const email = document.getElementById("tutor-email-input").value.trim();
@@ -1435,31 +1506,45 @@ function updateTutorProfile(e) {
   const avatarInput = document.getElementById("tutor-avatar-input");
 
   // Validation
-  if (!name) return showToast("Vui lòng nhập họ tên!", "error");
-
-  const emailRegex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
-  if (!emailRegex.test(email)) return showToast("Email không hợp lệ!", "error");
-
-  const phoneRegex = /^[0-9]{10,11}$/;
-  if (!phoneRegex.test(phone.replace(/\s/g, "")))
-    return showToast("Số điện thoại không hợp lệ!", "error");
-
-  // Update DOM
-  document.getElementById("tutor-name-display").innerText = name;
-  document.getElementById("tutor-email-display").innerText = email;
-  document.getElementById("tutor-phone-display").innerText = phone;
-
-  // Update Avatar if changed
-  if (avatarInput.files && avatarInput.files[0]) {
-    const reader = new FileReader();
-    reader.onload = function (e) {
-      document.getElementById("tutor-avatar-display").src = e.target.result;
-    };
-    reader.readAsDataURL(avatarInput.files[0]);
+  if (!name) {
+      showToast("Vui lòng nhập họ tên!", "error");
+      setButtonLoading(btn, false);
+      return;
   }
 
-  showToast("Hồ sơ Tutor đã được cập nhật!", "success");
-  toggleTutorProfileEdit();
+  const emailRegex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
+  if (!emailRegex.test(email)) {
+      showToast("Email không hợp lệ!", "error");
+      setButtonLoading(btn, false);
+      return;
+  }
+
+  const phoneRegex = /^[0-9]{10,11}$/;
+  if (!phoneRegex.test(phone.replace(/\s/g, ""))) {
+      showToast("Số điện thoại không hợp lệ!", "error");
+      setButtonLoading(btn, false);
+      return;
+  }
+
+  setTimeout(() => {
+      // Update DOM
+      document.getElementById("tutor-name-display").innerText = name;
+      document.getElementById("tutor-email-display").innerText = email;
+      document.getElementById("tutor-phone-display").innerText = phone;
+
+      // Update Avatar if changed
+      if (avatarInput.files && avatarInput.files[0]) {
+        const reader = new FileReader();
+        reader.onload = function (e) {
+          document.getElementById("tutor-avatar-display").src = e.target.result;
+        };
+        reader.readAsDataURL(avatarInput.files[0]);
+      }
+
+      showToast("Hồ sơ Tutor đã được cập nhật!", "success");
+      toggleTutorProfileEdit();
+      setButtonLoading(btn, false);
+  }, 800);
 }
 
 function handleImagePreview(input, imgId, placeholderId) {
