@@ -32,13 +32,37 @@ export function handleLogin(e) {
 
   // Simulate API delay
   setTimeout(() => {
-    setCurrentUserRole(roleSelect.value);
-    localStorage.setItem("currentUserRole", roleSelect.value);
-    localStorage.setItem("username", username);
+    try {
+      setCurrentUserRole(roleSelect.value);
+      localStorage.setItem("currentUserRole", roleSelect.value);
+      localStorage.setItem("username", username);
 
-    applyLoginState(username, roleSelect.value);
-    setButtonLoading(btn, false);
+      applyLoginState(username, roleSelect.value);
+    } catch (error) {
+      console.error("Login error:", error);
+      showToast("Có lỗi xảy ra khi đăng nhập. Vui lòng thử lại.", "error");
+    } finally {
+      setButtonLoading(btn, false);
+    }
   }, 800);
+}
+
+// Toggle Password Visibility
+export function togglePasswordVisibility() {
+  const passwordInput = document.getElementById("login-password");
+  const toggleIcon = document.getElementById("password-toggle-icon");
+
+  if (!passwordInput || !toggleIcon) return;
+
+  if (passwordInput.type === "password") {
+    passwordInput.type = "text";
+    toggleIcon.classList.remove("fa-eye");
+    toggleIcon.classList.add("fa-eye-slash");
+  } else {
+    passwordInput.type = "password";
+    toggleIcon.classList.remove("fa-eye-slash");
+    toggleIcon.classList.add("fa-eye");
+  }
 }
 
 // Apply Login State
@@ -174,3 +198,4 @@ export function initAuth() {
 window.handleLogin = handleLogin;
 window.logout = logout;
 window.onRoleChange = onRoleChange;
+window.togglePasswordVisibility = togglePasswordVisibility;
