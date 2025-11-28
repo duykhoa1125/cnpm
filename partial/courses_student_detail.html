@@ -1,0 +1,173 @@
+<div id="courses_student_detail" class="section-view hidden space-y-6">
+  <!-- Header -->
+  <div
+    class="flex flex-col md:flex-row justify-between items-start md:items-center gap-4"
+  >
+    <div>
+      <button
+        onclick="backToCourses()"
+        class="text-slate-500 hover:text-blue-600 text-sm font-bold mb-2 flex items-center gap-2 transition"
+      >
+        <i class="fa-solid fa-arrow-left"></i> Quay lại danh sách
+      </button>
+      <h3 id="detail-course-name" class="text-2xl font-black text-slate-800">
+        Tên Môn Học
+      </h3>
+      <p
+        id="detail-course-info"
+        class="text-sm text-slate-500 font-medium mt-1"
+      >
+        <i class="fa-solid fa-user-tie mr-1.5 text-blue-500"></i>
+        <span id="detail-tutor-name">--</span>
+        <span class="mx-2">•</span>
+        <i class="fa-solid fa-clock mr-1.5 text-orange-500"></i>
+        <span id="detail-schedule">--</span>
+      </p>
+    </div>
+    <div class="flex gap-3">
+      <button
+        onclick="cancelCurrentCourse()"
+        class="px-4 py-2 rounded-xl bg-red-50 text-red-600 text-xs font-bold border border-red-100 hover:bg-red-600 hover:text-white transition flex items-center gap-2"
+      >
+        <i class="fa-solid fa-ban"></i> Hủy môn
+      </button>
+    </div>
+  </div>
+
+  <!-- Tabs -->
+  <div class="flex border-b border-slate-200 overflow-x-auto">
+    <button
+      class="course-tab-btn active px-5 py-3 text-sm font-bold text-blue-600 border-b-2 border-blue-600 transition whitespace-nowrap"
+      onclick="switchCourseTab(this, 'tab-announcements')"
+    >
+      <i class="fa-solid fa-bullhorn mr-2"></i>Thông báo
+    </button>
+    <button
+      class="course-tab-btn px-5 py-3 text-sm font-bold text-slate-500 hover:text-blue-600 transition whitespace-nowrap"
+      onclick="switchCourseTab(this, 'tab-schedule')"
+    >
+      <i class="fa-solid fa-calendar-days mr-2"></i>Lịch học
+    </button>
+    <button
+      class="course-tab-btn px-5 py-3 text-sm font-bold text-slate-500 hover:text-blue-600 transition whitespace-nowrap"
+      onclick="switchCourseTab(this, 'tab-assignments')"
+    >
+      <i class="fa-solid fa-list-check mr-2"></i>Bài tập & Kiểm tra
+    </button>
+    <button
+      class="course-tab-btn px-5 py-3 text-sm font-bold text-slate-500 hover:text-blue-600 transition whitespace-nowrap"
+      onclick="switchCourseTab(this, 'tab-forum')"
+    >
+      <i class="fa-solid fa-comments mr-2"></i>Diễn đàn
+    </button>
+    <button
+      class="course-tab-btn px-5 py-3 text-sm font-bold text-slate-500 hover:text-blue-600 transition whitespace-nowrap"
+      onclick="switchCourseTab(this, 'tab-exams')"
+    >
+      <i class="fa-solid fa-file-pen mr-2"></i>Lịch thi
+    </button>
+  </div>
+
+  <!-- Content Areas -->
+  <div class="min-h-[400px]">
+    <!-- Announcements Tab -->
+    <div id="tab-announcements" class="course-tab-content animate-fade-in-up">
+      <div id="course-announcements-list" class="space-y-4">
+        <!-- Content injected by JS -->
+      </div>
+    </div>
+
+    <!-- Schedule Tab -->
+    <div id="tab-schedule" class="course-tab-content hidden animate-fade-in-up">
+      <div class="glass-card p-6 rounded-2xl">
+        <h4 class="text-lg font-bold text-slate-800 mb-4">
+          Lịch trình học tập
+        </h4>
+        <div class="overflow-x-auto">
+          <table class="w-full text-left border-collapse">
+            <thead
+              class="bg-slate-50 text-xs text-slate-500 uppercase font-bold"
+            >
+              <tr>
+                <th class="p-3 rounded-l-lg">Tuần</th>
+                <th class="p-3">Nội dung</th>
+                <th class="p-3">Thời gian</th>
+                <th class="p-3">Phòng</th>
+                <th class="p-3 rounded-r-lg">Ghi chú</th>
+              </tr>
+            </thead>
+            <tbody
+              id="course-schedule-list"
+              class="text-sm text-slate-700 divide-y divide-slate-100"
+            >
+              <!-- Content injected by JS -->
+            </tbody>
+          </table>
+        </div>
+      </div>
+    </div>
+
+    <!-- Assignments & Exams Tab -->
+    <div
+      id="tab-assignments"
+      class="course-tab-content hidden animate-fade-in-up"
+    >
+      <div class="grid grid-cols-1 lg:grid-cols-2 gap-6">
+        <!-- Assignments -->
+        <div class="space-y-4">
+          <h4 class="text-lg font-bold text-slate-800 flex items-center gap-2">
+            <span
+              class="w-8 h-8 rounded-lg bg-purple-100 text-purple-600 flex items-center justify-center"
+              ><i class="fa-solid fa-file-code"></i
+            ></span>
+            Bài tập lớn
+          </h4>
+          <div id="course-assignments-list" class="space-y-3">
+            <!-- Content injected by JS -->
+          </div>
+        </div>
+
+        <!-- Quizzes -->
+        <div class="space-y-4">
+          <h4 class="text-lg font-bold text-slate-800 flex items-center gap-2">
+            <span
+              class="w-8 h-8 rounded-lg bg-orange-100 text-orange-600 flex items-center justify-center"
+              ><i class="fa-solid fa-stopwatch"></i
+            ></span>
+            Kiểm tra & Quiz
+          </h4>
+          <div id="course-quizzes-list" class="space-y-3">
+            <!-- Content injected by JS -->
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <!-- Forum Tab -->
+    <div id="tab-forum" class="course-tab-content hidden animate-fade-in-up">
+      <div class="flex justify-between items-center mb-6">
+        <h4 class="text-lg font-bold text-slate-800">Thảo luận lớp học</h4>
+        <button
+          class="px-4 py-2 rounded-xl bg-blue-600 text-white text-xs font-bold shadow-lg hover:bg-blue-700 transition"
+        >
+          <i class="fa-solid fa-plus mr-2"></i>Tạo chủ đề mới
+        </button>
+      </div>
+      <div id="course-forum-list" class="space-y-3">
+        <!-- Content injected by JS -->
+      </div>
+    </div>
+
+    <!-- Exam Schedule Tab -->
+    <div id="tab-exams" class="course-tab-content hidden animate-fade-in-up">
+      <div class="glass-card p-6 rounded-2xl border-l-4 border-red-500">
+        <h4 class="text-lg font-bold text-slate-800 mb-4">
+          Lịch thi tập trung
+        </h4>
+        <div id="course-exams-list" class="space-y-4">
+          <!-- Content injected by JS -->
+        </div>
+      </div>
+    </div>
+  </div>
+</div>

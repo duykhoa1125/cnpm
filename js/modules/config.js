@@ -764,8 +764,149 @@ export const breadcrumbMap = {
     { label: "Trang chủ", icon: "fa-home" },
     { label: "Quy tắc Hủy khóa học", icon: "fa-ban" },
   ],
+  courses_student_detail: [
+    { label: "Trang chủ", icon: "fa-home", id: "dashboard_student" },
+    { label: "Môn học của tôi", icon: "fa-book-open", id: "courses_student" },
+    { label: "Chi tiết môn học", icon: "fa-chalkboard" },
+  ],
   notifications_view: [
     { label: "Trang chủ", icon: "fa-home" },
     { label: "Thông báo", icon: "fa-bell" },
   ],
+};
+
+// Mock Course Details
+export const mockCourseDetails = {
+  "Giải tích 1": {
+    tutor: "Trần Văn B",
+    schedule: "Thứ 2 (07:00 - 10:00)",
+    announcements: [
+      {
+        id: 1,
+        title: "Thông báo về lịch thi giữa kỳ",
+        content:
+          "Các em chú ý lịch thi giữa kỳ sẽ diễn ra vào tuần 8. Nội dung bao gồm chương 1 đến chương 3.",
+        date: "2025-10-15",
+        author: "Trần Văn B",
+        type: "important",
+      },
+      {
+        id: 2,
+        title: "Nghỉ học bù ngày 20/11",
+        content:
+          "Lớp sẽ nghỉ học vào ngày 20/11 và học bù vào sáng thứ 7 tuần sau.",
+        date: "2025-11-10",
+        author: "Trần Văn B",
+        type: "normal",
+      },
+    ],
+    scheduleList: [
+      {
+        week: 1,
+        content: "Giới thiệu môn học & Chương 1: Hàm số",
+        time: "07:00 - 10:00",
+        room: "H6-302",
+        note: "",
+      },
+      {
+        week: 2,
+        content: "Chương 1: Giới hạn và Liên tục",
+        time: "07:00 - 10:00",
+        room: "H6-302",
+        note: "",
+      },
+      {
+        week: 3,
+        content: "Chương 2: Đạo hàm và Vi phân",
+        time: "07:00 - 10:00",
+        room: "H6-302",
+        note: "Quiz nhỏ",
+      },
+      {
+        week: 4,
+        content: "Chương 2: Ứng dụng của Đạo hàm",
+        time: "07:00 - 10:00",
+        room: "H6-302",
+        note: "",
+      },
+      {
+        week: 5,
+        content: "Chương 3: Tích phân bất định",
+        time: "07:00 - 10:00",
+        room: "H6-302",
+        note: "",
+      },
+    ],
+    assignments: [
+      {
+        id: 1,
+        title: "Bài tập lớn số 1: Ứng dụng đạo hàm",
+        deadline: "2025-10-30",
+        status: "submitted",
+        score: 8.5,
+      },
+      {
+        id: 2,
+        title: "Bài tập lớn số 2: Tích phân",
+        deadline: "2025-12-15",
+        status: "pending",
+        score: null,
+      },
+    ],
+    quizzes: [
+      {
+        id: 1,
+        title: "Quiz 1: Chương 1",
+        deadline: "2025-09-20",
+        status: "completed",
+        score: 9.0,
+      },
+      {
+        id: 2,
+        title: "Quiz 2: Chương 2",
+        deadline: "2025-10-10",
+        status: "completed",
+        score: 7.5,
+      },
+      {
+        id: 3,
+        title: "Kiểm tra giữa kỳ",
+        deadline: "2025-10-25",
+        status: "completed",
+        score: 8.0,
+      },
+    ],
+    forum: [
+      {
+        id: 1,
+        title: "Hỏi về bài tập chương 2",
+        author: "Nguyễn Văn A",
+        replies: 5,
+        last_post: "2025-10-05",
+      },
+      {
+        id: 2,
+        title: "Xin tài liệu tham khảo thêm",
+        author: "Lê Thị C",
+        replies: 2,
+        last_post: "2025-10-12",
+      },
+    ],
+    exams: [
+      {
+        name: "Thi Giữa Kỳ",
+        date: "2025-10-25",
+        time: "07:00",
+        room: "H6-302",
+        type: "Tự luận",
+      },
+      {
+        name: "Thi Cuối Kỳ",
+        date: "2025-12-25",
+        time: "07:00",
+        room: "A4-401",
+        type: "Tự luận",
+      },
+    ],
+  },
 };

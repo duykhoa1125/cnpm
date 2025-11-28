@@ -3,7 +3,7 @@
  * Handles tutor and student course management
  */
 
-import { mockTutorClasses } from "./config.js";
+import { mockTutorClasses, mockCourseDetails } from "./config.js";
 import { showToast, setButtonLoading, confirmActionModal } from "./ui.js";
 import { switchTab } from "./navigation.js";
 
@@ -83,10 +83,14 @@ export function renderTutorCourses() {
                         <i class="fa-solid fa-folder-open"></i> Quản lý & Chi tiết
                     </button>
                     <div class="flex gap-2">
-                         <button onclick="takeAttendance('${c.id}')" class="flex-1 px-4 py-2.5 rounded-xl bg-white border border-slate-200 text-xs font-bold text-slate-600 hover:bg-slate-50 transition flex items-center justify-center gap-2">
+                         <button onclick="takeAttendance('${
+                           c.id
+                         }')" class="flex-1 px-4 py-2.5 rounded-xl bg-white border border-slate-200 text-xs font-bold text-slate-600 hover:bg-slate-50 transition flex items-center justify-center gap-2">
                             <i class="fa-solid fa-list-check"></i> Điểm danh
                         </button>
-                        <button onclick="sendEmail('${c.id}')" class="px-4 py-2.5 rounded-xl bg-white border border-slate-200 text-xs font-bold text-slate-600 hover:text-blue-600 hover:border-blue-200 transition">
+                        <button onclick="sendEmail('${
+                          c.id
+                        }')" class="px-4 py-2.5 rounded-xl bg-white border border-slate-200 text-xs font-bold text-slate-600 hover:text-blue-600 hover:border-blue-200 transition">
                             <i class="fa-solid fa-envelope"></i>
                         </button>
                     </div>
@@ -345,7 +349,14 @@ export function exportClassData(courseId) {
   showToast(`Đang xuất báo cáo lớp ${courseId}...`, "info");
 
   // Create CSV content
-  const headers = ["MSSV", "Ho Ten", "Tien Do (%)", "Diem GK", "Diem CK", "Diem TK"];
+  const headers = [
+    "MSSV",
+    "Ho Ten",
+    "Tien Do (%)",
+    "Diem GK",
+    "Diem CK",
+    "Diem TK",
+  ];
   const rows = course.students.map((s) => [
     s.id,
     s.name,
@@ -384,9 +395,11 @@ export function takeAttendance(courseId) {
 
   title.innerText = `Lớp: ${course.name} - ${course.group}`;
   count.innerText = course.students.length;
-  
+
   // Populate list
-  list.innerHTML = course.students.map(s => `
+  list.innerHTML = course.students
+    .map(
+      (s) => `
     <div class="flex items-center justify-between p-3 bg-slate-50 rounded-xl border border-slate-100 hover:border-blue-200 transition group/student">
         <div class="flex items-center gap-3">
             <div class="w-8 h-8 rounded-full bg-white border border-slate-200 flex items-center justify-center text-xs font-bold text-slate-600">
@@ -398,51 +411,57 @@ export function takeAttendance(courseId) {
             </div>
         </div>
         <label class="relative inline-flex items-center cursor-pointer">
-            <input type="checkbox" value="${s.id}" class="sr-only peer attendance-check" checked>
+            <input type="checkbox" value="${
+              s.id
+            }" class="sr-only peer attendance-check" checked>
             <div class="w-11 h-6 bg-slate-200 peer-focus:outline-none peer-focus:ring-4 peer-focus:ring-blue-300 rounded-full peer peer-checked:after:translate-x-full peer-checked:after:border-white after:content-[''] after:absolute after:top-[2px] after:left-[2px] after:bg-white after:border-gray-300 after:border after:rounded-full after:h-5 after:w-5 after:transition-all peer-checked:bg-blue-600"></div>
             <span class="ml-3 text-xs font-medium text-slate-600 peer-checked:text-blue-600 min-w-[3rem] text-right status-text">Có mặt</span>
         </label>
     </div>
-  `).join("");
+  `
+    )
+    .join("");
 
   // Add event listeners to update text
-  list.querySelectorAll('.attendance-check').forEach(cb => {
-      cb.addEventListener('change', (e) => {
-          const text = e.target.parentElement.querySelector('.status-text');
-          text.innerText = e.target.checked ? 'Có mặt' : 'Vắng';
-          text.classList.toggle('text-blue-600', e.target.checked);
-          text.classList.toggle('text-slate-400', !e.target.checked);
-      });
+  list.querySelectorAll(".attendance-check").forEach((cb) => {
+    cb.addEventListener("change", (e) => {
+      const text = e.target.parentElement.querySelector(".status-text");
+      text.innerText = e.target.checked ? "Có mặt" : "Vắng";
+      text.classList.toggle("text-blue-600", e.target.checked);
+      text.classList.toggle("text-slate-400", !e.target.checked);
+    });
   });
 
   modal.classList.remove("hidden");
 }
 
 export function closeAttendanceModal() {
-    document.getElementById("attendance-modal").classList.add("hidden");
+  document.getElementById("attendance-modal").classList.add("hidden");
 }
 
 export function toggleAllAttendance() {
-    const checks = document.querySelectorAll('.attendance-check');
-    const allChecked = Array.from(checks).every(c => c.checked);
-    
-    checks.forEach(c => {
-        c.checked = !allChecked;
-        // Trigger change event manually to update UI text
-        c.dispatchEvent(new Event('change'));
-    });
+  const checks = document.querySelectorAll(".attendance-check");
+  const allChecked = Array.from(checks).every((c) => c.checked);
+
+  checks.forEach((c) => {
+    c.checked = !allChecked;
+    // Trigger change event manually to update UI text
+    c.dispatchEvent(new Event("change"));
+  });
 }
 
 export function submitAttendance() {
-    const btn = document.querySelector('#attendance-modal button[onclick="submitAttendance()"]');
-    setButtonLoading(btn, true);
-    
-    // Simulate API call
-    setTimeout(() => {
-        setButtonLoading(btn, false);
-        showToast("Đã lưu điểm danh thành công!", "success");
-        closeAttendanceModal();
-    }, 800);
+  const btn = document.querySelector(
+    '#attendance-modal button[onclick="submitAttendance()"]'
+  );
+  setButtonLoading(btn, true);
+
+  // Simulate API call
+  setTimeout(() => {
+    setButtonLoading(btn, false);
+    showToast("Đã lưu điểm danh thành công!", "success");
+    closeAttendanceModal();
+  }, 800);
 }
 
 // Send Email
@@ -452,27 +471,27 @@ export function sendEmail(courseId) {
 
   const modal = document.getElementById("email-modal");
   const title = document.getElementById("email-course-name");
-  
+
   title.innerText = `Đến: Sinh viên lớp ${course.name} (${course.group})`;
   document.getElementById("email-form").reset();
-  
+
   modal.classList.remove("hidden");
 }
 
 export function closeEmailModal() {
-    document.getElementById("email-modal").classList.add("hidden");
+  document.getElementById("email-modal").classList.add("hidden");
 }
 
 export function submitEmail(e) {
-    e.preventDefault();
-    const btn = document.querySelector('#email-form button[type="submit"]');
-    setButtonLoading(btn, true);
+  e.preventDefault();
+  const btn = document.querySelector('#email-form button[type="submit"]');
+  setButtonLoading(btn, true);
 
-    setTimeout(() => {
-        setButtonLoading(btn, false);
-        showToast("Email đã được gửi đi thành công!", "success");
-        closeEmailModal();
-    }, 1000);
+  setTimeout(() => {
+    setButtonLoading(btn, false);
+    showToast("Email đã được gửi đi thành công!", "success");
+    closeEmailModal();
+  }, 1000);
 }
 
 // Submit Upload
@@ -514,10 +533,285 @@ export function viewAllSchedule() {
     "info"
   );
 }
-
 // Enter Class
-export function enterClass(courseName) {
-  showToast(`Đang vào lớp học ${courseName || ""}...`, "success");
+let currentCourseId = null;
+
+export function enterClass(courseId, courseName) {
+  currentCourseId = courseId;
+
+  const details = mockCourseDetails[courseName] || {
+    tutor: "Unknown",
+    schedule: "Unknown",
+    announcements: [],
+    scheduleList: [],
+    assignments: [],
+    quizzes: [],
+    forum: [],
+    exams: [],
+  };
+
+  // Populate Header
+  const nameEl = document.getElementById("detail-course-name");
+  const tutorEl = document.getElementById("detail-tutor-name");
+  const scheduleEl = document.getElementById("detail-schedule");
+
+  if (nameEl) nameEl.innerText = courseName;
+  if (tutorEl) tutorEl.innerText = details.tutor;
+  if (scheduleEl) scheduleEl.innerText = details.schedule;
+
+  // Render Announcements (Default Tab)
+  renderCourseAnnouncements(details.announcements);
+
+  // Render other tabs data
+  renderCourseSchedule(details.scheduleList);
+  renderCourseAssignments(details.assignments, details.quizzes);
+  renderCourseForum(details.forum);
+  renderCourseExams(details.exams);
+
+  // Switch View
+  switchTab("courses_student_detail");
+
+  // Reset tabs to first one
+  const firstTab = document.querySelector(".course-tab-btn");
+  if (firstTab) switchCourseTab(firstTab, "tab-announcements");
+}
+
+export function backToCourses() {
+  switchTab("courses_student");
+}
+
+export function switchCourseTab(btn, targetId) {
+  // Remove active class from all buttons
+  document.querySelectorAll(".course-tab-btn").forEach((b) => {
+    b.classList.remove(
+      "active",
+      "border-b-2",
+      "border-blue-600",
+      "text-blue-600"
+    );
+    b.classList.add("text-slate-500");
+  });
+
+  // Add active class to clicked button
+  btn.classList.add("active", "border-b-2", "border-blue-600", "text-blue-600");
+  btn.classList.remove("text-slate-500");
+
+  // Hide all tab contents
+  document
+    .querySelectorAll(".course-tab-content")
+    .forEach((c) => c.classList.add("hidden"));
+
+  // Show target tab content
+  const target = document.getElementById(targetId);
+  if (target) target.classList.remove("hidden");
+}
+
+function renderCourseAnnouncements(list) {
+  const container = document.getElementById("course-announcements-list");
+  if (!container) return;
+  if (!list || list.length === 0) {
+    container.innerHTML =
+      '<p class="text-slate-400 text-center italic">Không có thông báo nào.</p>';
+    return;
+  }
+  container.innerHTML = list
+    .map(
+      (a) => `
+        <div class="p-4 rounded-xl border ${
+          a.type === "important"
+            ? "border-red-200 bg-red-50"
+            : "border-slate-200 bg-white"
+        }">
+            <div class="flex justify-between items-start mb-2">
+                <h5 class="font-bold ${
+                  a.type === "important" ? "text-red-700" : "text-slate-800"
+                }">${a.title}</h5>
+                <span class="text-xs text-slate-500">${a.date}</span>
+            </div>
+            <p class="text-sm text-slate-600 mb-2">${a.content}</p>
+            <p class="text-xs font-bold text-slate-500"><i class="fa-solid fa-user-pen mr-1"></i> ${
+              a.author
+            }</p>
+        </div>
+    `
+    )
+    .join("");
+}
+
+function renderCourseSchedule(list) {
+  const container = document.getElementById("course-schedule-list");
+  if (!container) return;
+  if (!list || list.length === 0) {
+    container.innerHTML =
+      '<tr><td colspan="5" class="text-center p-4 text-slate-400">Chưa có lịch học.</td></tr>';
+    return;
+  }
+  container.innerHTML = list
+    .map(
+      (s) => `
+        <tr class="hover:bg-slate-50 transition">
+            <td class="p-3 font-bold text-blue-600">Tuần ${s.week}</td>
+            <td class="p-3 font-medium">${s.content}</td>
+            <td class="p-3 whitespace-nowrap"><i class="fa-regular fa-clock mr-1 text-slate-400"></i> ${
+              s.time
+            }</td>
+            <td class="p-3 whitespace-nowrap"><i class="fa-solid fa-location-dot mr-1 text-slate-400"></i> ${
+              s.room
+            }</td>
+            <td class="p-3 text-xs italic text-slate-500">${s.note || ""}</td>
+        </tr>
+    `
+    )
+    .join("");
+}
+
+function renderCourseAssignments(assignments, quizzes) {
+  const assignContainer = document.getElementById("course-assignments-list");
+  const quizContainer = document.getElementById("course-quizzes-list");
+
+  if (assignContainer) {
+    if (!assignments || assignments.length === 0) {
+      assignContainer.innerHTML =
+        '<p class="text-slate-400 text-sm italic">Không có bài tập lớn.</p>';
+    } else {
+      assignContainer.innerHTML = assignments
+        .map(
+          (a) => `
+                <div class="p-3 rounded-xl border border-slate-200 bg-white flex justify-between items-center group hover:border-purple-300 transition">
+                    <div>
+                        <p class="text-sm font-bold text-slate-800 group-hover:text-purple-700 transition">${
+                          a.title
+                        }</p>
+                        <p class="text-xs text-slate-500 mt-1">Hạn: ${
+                          a.deadline
+                        }</p>
+                    </div>
+                    <div class="text-right">
+                        ${
+                          a.status === "submitted"
+                            ? `<span class="px-2 py-1 rounded bg-green-100 text-green-700 text-[10px] font-bold">Đã nộp</span>`
+                            : `<span class="px-2 py-1 rounded bg-orange-100 text-orange-700 text-[10px] font-bold">Chưa nộp</span>`
+                        }
+                        ${
+                          a.score !== null
+                            ? `<p class="text-sm font-black text-purple-600 mt-1">${a.score}</p>`
+                            : ""
+                        }
+                    </div>
+                </div>
+            `
+        )
+        .join("");
+    }
+  }
+
+  if (quizContainer) {
+    if (!quizzes || quizzes.length === 0) {
+      quizContainer.innerHTML =
+        '<p class="text-slate-400 text-sm italic">Không có bài kiểm tra.</p>';
+    } else {
+      quizContainer.innerHTML = quizzes
+        .map(
+          (q) => `
+                <div class="p-3 rounded-xl border border-slate-200 bg-white flex justify-between items-center group hover:border-orange-300 transition">
+                    <div>
+                        <p class="text-sm font-bold text-slate-800 group-hover:text-orange-700 transition">${
+                          q.title
+                        }</p>
+                        <p class="text-xs text-slate-500 mt-1">Hạn: ${
+                          q.deadline
+                        }</p>
+                    </div>
+                    <div class="text-right">
+                        ${
+                          q.status === "completed"
+                            ? `<span class="px-2 py-1 rounded bg-blue-100 text-blue-700 text-[10px] font-bold">Đã làm</span>`
+                            : `<span class="px-2 py-1 rounded bg-slate-100 text-slate-500 text-[10px] font-bold">Chưa làm</span>`
+                        }
+                        ${
+                          q.score !== null
+                            ? `<p class="text-sm font-black text-orange-600 mt-1">${q.score}</p>`
+                            : ""
+                        }
+                    </div>
+                </div>
+            `
+        )
+        .join("");
+    }
+  }
+}
+
+function renderCourseForum(list) {
+  const container = document.getElementById("course-forum-list");
+  if (!container) return;
+  if (!list || list.length === 0) {
+    container.innerHTML =
+      '<p class="text-slate-400 text-center italic">Chưa có thảo luận nào.</p>';
+    return;
+  }
+  container.innerHTML = list
+    .map(
+      (f) => `
+        <div class="p-4 rounded-xl border border-slate-200 bg-white hover:shadow-md transition cursor-pointer">
+            <div class="flex justify-between items-start">
+                <h5 class="font-bold text-slate-800 hover:text-blue-600 transition">${
+                  f.title
+                }</h5>
+                <span class="text-xs text-slate-400">${f.last_post}</span>
+            </div>
+            <div class="flex justify-between items-center mt-3">
+                <div class="flex items-center gap-2">
+                    <div class="w-6 h-6 rounded-full bg-slate-200 flex items-center justify-center text-xs font-bold text-slate-600">${f.author.charAt(
+                      0
+                    )}</div>
+                    <span class="text-xs text-slate-600">${f.author}</span>
+                </div>
+                <div class="flex items-center gap-4 text-slate-400 text-xs">
+                    <span><i class="fa-solid fa-reply mr-1"></i> ${
+                      f.replies
+                    } trả lời</span>
+                </div>
+            </div>
+        </div>
+    `
+    )
+    .join("");
+}
+
+function renderCourseExams(list) {
+  const container = document.getElementById("course-exams-list");
+  if (!container) return;
+  if (!list || list.length === 0) {
+    container.innerHTML =
+      '<p class="text-slate-400 text-center italic">Chưa có lịch thi.</p>';
+    return;
+  }
+  container.innerHTML = list
+    .map(
+      (e) => `
+        <div class="flex items-center p-4 bg-red-50 rounded-xl border border-red-100">
+            <div class="w-12 h-12 rounded-lg bg-white text-red-500 flex flex-col items-center justify-center shadow-sm flex-shrink-0">
+                <span class="text-[10px] font-bold uppercase">${
+                  e.date.split("-")[1]
+                }</span>
+                <span class="text-lg font-black">${e.date.split("-")[2]}</span>
+            </div>
+            <div class="ml-4 flex-1">
+                <h5 class="font-bold text-slate-800">${e.name}</h5>
+                <p class="text-xs text-slate-500 mt-1">
+                    <i class="fa-regular fa-clock mr-1"></i> ${e.time}
+                    <span class="mx-2">•</span>
+                    <i class="fa-solid fa-location-dot mr-1"></i> ${e.room}
+                </p>
+            </div>
+            <span class="px-3 py-1 rounded-full bg-white text-red-600 text-xs font-bold border border-red-100 shadow-sm">${
+              e.type
+            }</span>
+        </div>
+    `
+    )
+    .join("");
 }
 
 // Search Courses
@@ -580,3 +874,15 @@ window.searchCourses = searchCourses;
 window.viewDetailedReport = viewDetailedReport;
 window.toggleClassDetails = toggleClassDetails;
 window.saveTutorSchedule = saveTutorSchedule;
+window.switchCourseTab = switchCourseTab;
+window.backToCourses = backToCourses;
+
+export function cancelCurrentCourse() {
+  const courseName = document.getElementById("detail-course-name").innerText;
+  if (currentCourseId && courseName) {
+    if (window.cancelCourse) {
+      window.cancelCourse(currentCourseId, courseName);
+    }
+  }
+}
+window.cancelCurrentCourse = cancelCurrentCourse;
