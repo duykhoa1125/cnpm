@@ -154,24 +154,25 @@ export function enterClass(courseId, courseName) {
   if (nameEl) nameEl.innerText = `${courseName} - ${details.group || ""}`;
   if (infoEl) {
     infoEl.innerHTML = `
-        <i class="fa-solid fa-user-tie mr-1.5 text-blue-500"></i> ${
-          details.tutor
-        }
-        <span class="mx-2">•</span>
-        <i class="fa-solid fa-clock mr-1.5 text-orange-500"></i> ${
-          details.schedule
-        }
-        <span class="mx-2">•</span>
-        <i class="fa-solid fa-location-dot mr-1.5 text-red-500"></i> ${
-          details.room || "Chưa cập nhật"
-        }
+        <div class="flex items-center gap-2 bg-white/20 px-3 py-1 rounded-lg backdrop-blur-sm">
+            <i class="fa-solid fa-user-tie"></i> ${details.tutor}
+        </div>
+        <div class="flex items-center gap-2 bg-white/20 px-3 py-1 rounded-lg backdrop-blur-sm">
+            <i class="fa-solid fa-clock"></i> ${details.schedule}
+        </div>
+        <div class="flex items-center gap-2 bg-white/20 px-3 py-1 rounded-lg backdrop-blur-sm">
+            <i class="fa-solid fa-location-dot"></i> ${
+              details.room || "Chưa cập nhật"
+            }
+        </div>
       `;
   }
 
-  // Render Announcements (Default Tab)
-  renderCourseAnnouncements(details.announcements);
+  // Render Overview (Default Tab)
+  renderCourseOverview(details);
 
   // Render other tabs data
+  renderCourseAnnouncements(details.announcements);
   renderCourseSchedule(details.scheduleList);
   renderCourseAssignments(details.assignments, details.quizzes);
   renderCourseForum(details.forum);
@@ -182,9 +183,9 @@ export function enterClass(courseId, courseName) {
   // Switch View
   switchTab("courses_student_detail");
 
-  // Reset tabs to first one
+  // Reset tabs to Overview
   const firstTab = document.querySelector(".course-tab-btn");
-  if (firstTab) switchCourseTab(firstTab, "tab-announcements");
+  if (firstTab) switchCourseTab(firstTab, "tab-overview");
 }
 
 export function backToCourses() {
@@ -196,16 +197,23 @@ export function switchCourseTab(btn, targetId) {
   document.querySelectorAll(".course-tab-btn").forEach((b) => {
     b.classList.remove(
       "active",
-      "border-b-2",
-      "border-blue-600",
-      "text-blue-600"
+      "bg-blue-600",
+      "text-white",
+      "shadow-lg",
+      "shadow-blue-500/30"
     );
-    b.classList.add("text-slate-500");
+    b.classList.add("text-slate-500", "hover:bg-slate-100");
   });
 
   // Add active class to clicked button
-  btn.classList.add("active", "border-b-2", "border-blue-600", "text-blue-600");
-  btn.classList.remove("text-slate-500");
+  btn.classList.add(
+    "active",
+    "bg-blue-600",
+    "text-white",
+    "shadow-lg",
+    "shadow-blue-500/30"
+  );
+  btn.classList.remove("text-slate-500", "hover:bg-slate-100");
 
   // Hide all tab contents
   document
@@ -218,6 +226,116 @@ export function switchCourseTab(btn, targetId) {
 }
 
 // Render helpers (internal)
+function renderCourseOverview(details) {
+  // Recent Announcements (Top 2)
+  const annContainer = document.getElementById("overview-announcements");
+  if (annContainer) {
+    const recent = details.announcements.slice(0, 2);
+    if (recent.length === 0) {
+      annContainer.innerHTML =
+        '<p class="text-slate-400 text-sm italic">Không có thông báo mới.</p>';
+    } else {
+      annContainer.innerHTML = recent
+        .map(
+          (a) => `
+                <div class="p-3 rounded-xl bg-slate-50 border border-slate-100">
+                    <div class="flex justify-between items-start mb-1">
+                        <span class="text-xs font-bold ${
+                          a.type === "important"
+                            ? "text-red-600 bg-red-100 px-2 py-0.5 rounded"
+                            : "text-blue-600 bg-blue-100 px-2 py-0.5 rounded"
+                        } uppercase">${
+            a.type === "important" ? "Quan trọng" : "Thông báo"
+          }</span>
+                        <span class="text-[10px] text-slate-400">${
+                          a.date
+                        }</span>
+                    </div>
+                    <h5 class="font-bold text-slate-800 text-sm mb-1 line-clamp-1">${
+                      a.title
+                    }</h5>
+                    <p class="text-xs text-slate-500 line-clamp-2">${
+                      a.content
+                    }</p>
+                </div>
+            `
+        )
+        .join("");
+    }
+  }
+
+  // Upcoming Schedule (Next 2)
+  const schedContainer = document.getElementById("overview-schedule");
+  if (schedContainer) {
+    const upcoming = details.scheduleList.slice(0, 2); // Mock: just take first 2
+    if (upcoming.length === 0) {
+      schedContainer.innerHTML =
+        '<p class="text-slate-400 text-sm italic">Chưa có lịch học.</p>';
+    } else {
+      schedContainer.innerHTML = upcoming
+        .map(
+          (s) => `
+                <div class="flex items-center gap-4 py-3 border-b border-slate-100 last:border-0">
+                    <div class="w-12 h-12 rounded-xl bg-blue-50 text-blue-600 flex flex-col items-center justify-center shadow-sm flex-shrink-0">
+                        <span class="text-[10px] font-bold uppercase">TUẦN</span>
+                        <span class="text-lg font-black leading-none">${s.week}</span>
+                    </div>
+                    <div>
+                        <h5 class="font-bold text-slate-800 text-sm">${s.content}</h5>
+                        <p class="text-xs text-slate-500 mt-1">
+                            <i class="fa-regular fa-clock mr-1"></i> ${s.time} • <i class="fa-solid fa-location-dot mr-1"></i> ${s.room}
+                        </p>
+                    </div>
+                </div>
+            `
+        )
+        .join("");
+    }
+  }
+
+  // Deadlines (Assignments & Quizzes)
+  const deadContainer = document.getElementById("overview-deadlines");
+  if (deadContainer) {
+    const allTasks = [
+      ...(details.assignments || []),
+      ...(details.quizzes || []),
+    ];
+    // Filter incomplete
+    const pending = allTasks
+      .filter((t) => t.status !== "submitted" && t.status !== "completed")
+      .slice(0, 3);
+
+    if (pending.length === 0) {
+      deadContainer.innerHTML = `
+                <div class="text-center py-4">
+                    <div class="w-10 h-10 bg-green-100 text-green-600 rounded-full flex items-center justify-center mx-auto mb-2"><i class="fa-solid fa-check"></i></div>
+                    <p class="text-slate-500 text-sm font-medium">Bạn đã hoàn thành tất cả bài tập!</p>
+                </div>
+            `;
+    } else {
+      deadContainer.innerHTML = pending
+        .map(
+          (t) => `
+                <div class="p-3 rounded-xl bg-white border border-slate-100 shadow-sm flex justify-between items-center group cursor-pointer hover:border-orange-300 transition" onclick="openAssignmentModal('${
+                  t.score !== undefined ? "assignment" : "quiz"
+                }', '${t.id}')">
+                    <div>
+                        <p class="text-xs font-bold text-orange-500 mb-0.5"><i class="fa-regular fa-clock mr-1"></i> Hạn: ${
+                          t.deadline
+                        }</p>
+                        <h5 class="font-bold text-slate-800 text-sm group-hover:text-orange-600 transition">${
+                          t.title
+                        }</h5>
+                    </div>
+                    <i class="fa-solid fa-chevron-right text-slate-300 text-xs"></i>
+                </div>
+            `
+        )
+        .join("");
+    }
+  }
+}
+
 function renderCourseAnnouncements(list) {
   const container = document.getElementById("course-announcements-list");
   if (!container) return;

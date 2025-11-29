@@ -1,7 +1,5 @@
 
-1. Material Preview/Download Modal
-Click download → modal preview hoặc confirm download
-2. Create Forum Topic Modal
+1. Create Forum Topic Modal
 Form tạo topic mới với:
 Title
 Content
