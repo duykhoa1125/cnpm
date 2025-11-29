@@ -329,6 +329,91 @@ export function createAdminProgressCharts() {
     setAdminGradeChart(newGradeChart);
   }
 }
+
+// Create Department Progress Charts
+export function createDepartmentProgressCharts() {
+  // Reuse admin chart variables or create new ones if needed.
+  // For simplicity, we'll just create new chart instances without storing them in global config for now,
+  // or we could add new global variables if we wanted to destroy them properly.
+  // Given the scope, we'll just create them.
+
+  // Chart 1: Department Comparison (Targeting _dept)
+  const ctx1 = document.getElementById("deptComparisonChart_dept");
+  if (ctx1) {
+    // Destroy existing if any (basic check)
+    const existingChart = Chart.getChart(ctx1);
+    if (existingChart) existingChart.destroy();
+
+    new Chart(ctx1, {
+      type: "bar",
+      data: {
+        labels: ["KHMT", "Đ-ĐT", "Cơ Khí", "Hóa", "Xây Dựng"],
+        datasets: [
+          {
+            label: "GPA TB (Thang 4)",
+            data: [3.24, 2.8, 2.6, 2.9, 2.5], // Highlighted KHMT
+            backgroundColor: [
+              "#3b82f6",
+              "#cbd5e1",
+              "#cbd5e1",
+              "#cbd5e1",
+              "#cbd5e1",
+            ],
+            borderRadius: 4,
+          },
+        ],
+      },
+      options: {
+        responsive: true,
+        scales: {
+          y: {
+            beginAtZero: true,
+            max: 4,
+            title: { display: true, text: "GPA (4.0)" },
+          },
+        },
+      },
+    });
+  }
+
+  // Chart 2: Grade Distribution (Targeting _dept)
+  const ctx2 = document.getElementById("systemGradeDistChart_dept");
+  if (ctx2) {
+    const existingChart = Chart.getChart(ctx2);
+    if (existingChart) existingChart.destroy();
+
+    new Chart(ctx2, {
+      type: "doughnut",
+      data: {
+        labels: [
+          "Xuất sắc (3.6-4.0)",
+          "Giỏi (3.2-3.6)",
+          "Khá (2.5-3.2)",
+          "Trung bình (2.0-2.5)",
+          "Yếu/Kém (<2.0)",
+        ],
+        datasets: [
+          {
+            data: [20, 40, 25, 10, 5], // Slightly better stats for this dept
+            backgroundColor: [
+              "#22c55e",
+              "#3b82f6",
+              "#6366f1",
+              "#f59e0b",
+              "#ef4444",
+            ],
+            borderWidth: 0,
+          },
+        ],
+      },
+      options: {
+        responsive: true,
+        cutout: "60%",
+        plugins: { legend: { position: "right" } },
+      },
+    });
+  }
+}
 // Initialize Student Dashboard Charts
 export function initStudentGPAChart() {
   const ctx = document.getElementById("studentGPAChart");

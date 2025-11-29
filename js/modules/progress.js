@@ -102,7 +102,18 @@ export function filterProgressTable() {
 
 // Render Admin Progress View
 export function renderAdminProgress() {
-  createAdminProgressCharts();
+  const isDepartmentView = document
+    .getElementById("progress_department")
+    .classList.contains("active");
+
+  if (isDepartmentView) {
+    import("./charts.js").then((module) => {
+      if (module.createDepartmentProgressCharts)
+        module.createDepartmentProgressCharts();
+    });
+  } else {
+    createAdminProgressCharts();
+  }
 }
 
 // Export Progress to CSV
