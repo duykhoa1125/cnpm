@@ -104,6 +104,43 @@ export const mockTutorClasses = [
   },
 ];
 
+// Mock Student Courses (Registered)
+export const mockStudentCourses = [
+  {
+    id: "CO1023",
+    name: "Giải tích 1",
+    tutor: "Trần Văn B",
+    deadline: "30/11/2025",
+    progress: 80,
+    week: 12,
+    totalWeeks: 15,
+    icon: "fa-calculator",
+    color: "blue",
+  },
+  {
+    id: "CO3005",
+    name: "Lập trình Web",
+    tutor: "Nguyễn Văn A",
+    deadline: "15/10/2025",
+    progress: 33,
+    week: 5,
+    totalWeeks: 15,
+    icon: "fa-code",
+    color: "purple",
+  },
+  {
+    id: "CO2003",
+    name: "Cấu trúc dữ liệu",
+    tutor: "Lê Thị C",
+    deadline: "20/09/2025",
+    progress: 6,
+    week: 1,
+    totalWeeks: 15,
+    icon: "fa-layer-group",
+    color: "orange",
+  },
+];
+
 // Mock Course Details
 export const mockCourseDetails = {
   "Giải tích 1": {

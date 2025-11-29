@@ -86,25 +86,32 @@ export function renderNotifications() {
           (n) => `
                 <div onclick="viewNotificationDetail(${
                   n.id
-                })" class="p-3 rounded-xl cursor-pointer transition group ${
+                })" class="p-3 rounded-xl cursor-pointer transition group flex gap-3 ${
             n.isRead
-              ? "hover:bg-slate-50 opacity-70"
-              : "bg-blue-50/50 hover:bg-blue-50"
+              ? "hover:bg-slate-50 opacity-75"
+              : "bg-blue-50/40 hover:bg-blue-50"
           }">
-                    <div class="flex justify-between items-start mb-1">
-                        <p class="text-xs font-bold ${getTypeColor(
-                          n.type
-                        )}">${getTypeName(n.type)}</p>
-                        <p class="text-[10px] text-slate-400 whitespace-nowrap ml-2">${
-                          n.time
+                    <div class="w-10 h-10 rounded-full flex-shrink-0 flex items-center justify-center ${getTypeIconStyle(
+                      n.type
+                    )} bg-opacity-20">
+                        <i class="fa-solid ${getTypeIcon(n.type)} text-sm"></i>
+                    </div>
+                    <div class="flex-1 min-w-0">
+                        <div class="flex justify-between items-start mb-0.5">
+                            <p class="text-[10px] font-bold uppercase tracking-wider ${getTypeColor(
+                              n.type
+                            )}">${getTypeName(n.type)}</p>
+                            <p class="text-[10px] text-slate-400 whitespace-nowrap ml-2">${
+                              n.time
+                            }</p>
+                        </div>
+                        <p class="text-sm text-slate-800 font-bold leading-tight mb-0.5 group-hover:text-blue-600 transition line-clamp-2">${
+                          n.title
+                        }</p>
+                        <p class="text-xs text-slate-500 line-clamp-1">${
+                          n.message
                         }</p>
                     </div>
-                    <p class="text-sm text-slate-800 font-bold leading-tight mb-1 group-hover:text-blue-600 transition">${
-                      n.title
-                    }</p>
-                    <p class="text-xs text-slate-500 line-clamp-1">${
-                      n.message
-                    }</p>
                 </div>
             `
         )

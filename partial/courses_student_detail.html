@@ -160,6 +160,7 @@
       <div class="flex justify-between items-center mb-6">
         <h4 class="text-lg font-bold text-slate-800">Thảo luận lớp học</h4>
         <button
+          onclick="document.getElementById('create-topic-modal').classList.remove('hidden')"
           class="px-4 py-2 rounded-xl bg-blue-600 text-white text-xs font-bold shadow-lg hover:bg-blue-700 transition"
         >
           <i class="fa-solid fa-plus mr-2"></i>Tạo chủ đề mới
@@ -193,7 +194,105 @@
           id="course-materials-list"
           class="grid grid-cols-1 md:grid-cols-2 gap-4"
         >
-          <!-- Content injected by JS -->
+          <!-- Hardcoded Materials for Demo -->
+          <div
+            class="p-4 bg-white rounded-2xl border border-slate-100 hover:shadow-md transition flex items-center gap-4 group"
+          >
+            <div
+              class="w-12 h-12 rounded-xl bg-red-50 text-red-500 flex items-center justify-center text-xl shadow-sm border border-red-100"
+            >
+              <i class="fa-solid fa-file-pdf"></i>
+            </div>
+            <div class="flex-1 min-w-0">
+              <h5 class="font-bold text-slate-800 text-sm truncate">
+                Bài giảng Tuần 1: Giới thiệu môn học
+              </h5>
+              <p class="text-xs text-slate-500 mt-1">2.4 MB • 15/08/2025</p>
+            </div>
+            <div
+              class="flex gap-2 opacity-0 group-hover:opacity-100 transition-opacity"
+            >
+              <button
+                onclick="document.getElementById('preview-modal').classList.remove('hidden')"
+                class="p-2 rounded-lg bg-slate-100 text-slate-600 hover:bg-blue-50 hover:text-blue-600 transition"
+                title="Xem trước"
+              >
+                <i class="fa-solid fa-eye"></i>
+              </button>
+              <button
+                class="p-2 rounded-lg bg-slate-100 text-slate-600 hover:bg-blue-50 hover:text-blue-600 transition"
+                title="Tải xuống"
+              >
+                <i class="fa-solid fa-download"></i>
+              </button>
+            </div>
+          </div>
+
+          <div
+            class="p-4 bg-white rounded-2xl border border-slate-100 hover:shadow-md transition flex items-center gap-4 group"
+          >
+            <div
+              class="w-12 h-12 rounded-xl bg-blue-50 text-blue-500 flex items-center justify-center text-xl shadow-sm border border-blue-100"
+            >
+              <i class="fa-solid fa-file-word"></i>
+            </div>
+            <div class="flex-1 min-w-0">
+              <h5 class="font-bold text-slate-800 text-sm truncate">
+                Đề cương chi tiết (Syllabus)
+              </h5>
+              <p class="text-xs text-slate-500 mt-1">500 KB • 10/08/2025</p>
+            </div>
+            <div
+              class="flex gap-2 opacity-0 group-hover:opacity-100 transition-opacity"
+            >
+              <button
+                onclick="document.getElementById('preview-modal').classList.remove('hidden')"
+                class="p-2 rounded-lg bg-slate-100 text-slate-600 hover:bg-blue-50 hover:text-blue-600 transition"
+                title="Xem trước"
+              >
+                <i class="fa-solid fa-eye"></i>
+              </button>
+              <button
+                class="p-2 rounded-lg bg-slate-100 text-slate-600 hover:bg-blue-50 hover:text-blue-600 transition"
+                title="Tải xuống"
+              >
+                <i class="fa-solid fa-download"></i>
+              </button>
+            </div>
+          </div>
+
+          <div
+            class="p-4 bg-white rounded-2xl border border-slate-100 hover:shadow-md transition flex items-center gap-4 group"
+          >
+            <div
+              class="w-12 h-12 rounded-xl bg-orange-50 text-orange-500 flex items-center justify-center text-xl shadow-sm border border-orange-100"
+            >
+              <i class="fa-solid fa-file-powerpoint"></i>
+            </div>
+            <div class="flex-1 min-w-0">
+              <h5 class="font-bold text-slate-800 text-sm truncate">
+                Slide bài giảng Chương 2
+              </h5>
+              <p class="text-xs text-slate-500 mt-1">5.1 MB • 22/08/2025</p>
+            </div>
+            <div
+              class="flex gap-2 opacity-0 group-hover:opacity-100 transition-opacity"
+            >
+              <button
+                onclick="document.getElementById('preview-modal').classList.remove('hidden')"
+                class="p-2 rounded-lg bg-slate-100 text-slate-600 hover:bg-blue-50 hover:text-blue-600 transition"
+                title="Xem trước"
+              >
+                <i class="fa-solid fa-eye"></i>
+              </button>
+              <button
+                class="p-2 rounded-lg bg-slate-100 text-slate-600 hover:bg-blue-50 hover:text-blue-600 transition"
+                title="Tải xuống"
+              >
+                <i class="fa-solid fa-download"></i>
+              </button>
+            </div>
+          </div>
         </div>
       </div>
     </div>

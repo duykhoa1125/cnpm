@@ -116,6 +116,7 @@ import {
   openForumModal,
   closeForumModal,
   submitForumReply,
+  renderStudentCourses,
 } from "./modules/courses.js";
 
 import {
@@ -267,6 +268,12 @@ document.addEventListener("partialsLoaded", () => {
 
   // Initialize Bonus Module
   initBonusModule();
+
+  // Initialize Notifications
+  renderNotifications();
+
+  // Initialize Student Courses
+  if (window.renderStudentCourses) window.renderStudentCourses();
 
   // Setup Feedback Select
   const feedbackSelect = document.querySelector("#feedback_student select");

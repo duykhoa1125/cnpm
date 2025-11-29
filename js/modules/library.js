@@ -130,15 +130,65 @@ export function resetLibraryFilter() {
   filterLibrary();
 }
 
-// Open Library Material
+// Open Library Material (Preview)
 export function openLibraryMaterial(id) {
   const item = mockMaterials.find((m) => m.id === id);
   if (item) {
-    const modalTitle = document.querySelector("#material-modal h3");
-    if (modalTitle) modalTitle.innerText = item.title;
+    // Populate Preview Modal
+    const modal = document.getElementById("preview-modal");
+    if (!modal) return;
 
-    document.getElementById("material-modal").classList.remove("hidden");
-    showToast(`Đang mở tài liệu: ${item.title}`, "info");
+    // Update Title
+    const titleEl = modal.querySelector("h3");
+    if (titleEl)
+      titleEl.innerHTML = `<i class="fa-solid fa-eye text-blue-500 mr-2"></i> ${item.title}`;
+
+    // Update Content Placeholder based on type
+    const contentContainer = modal.querySelector(".bg-slate-100");
+    if (contentContainer) {
+      let icon = "fa-file";
+      let typeName = "Tài liệu";
+
+      if (item.type === "PDF") {
+        icon = "fa-file-pdf";
+        typeName = "PDF Document";
+      } else if (item.type === "Slide") {
+        icon = "fa-file-powerpoint";
+        typeName = "Presentation";
+      } else if (item.type === "Video") {
+        icon = "fa-video";
+        typeName = "Video Recording";
+      } else if (item.type === "Exam") {
+        icon = "fa-file-lines";
+        typeName = "Exam Paper";
+      }
+
+      contentContainer.innerHTML = `
+            <div class="text-center p-8 animate-fade-in-up">
+                <div class="w-24 h-24 bg-white rounded-3xl shadow-lg flex items-center justify-center mx-auto mb-6 text-5xl text-blue-500">
+                    <i class="fa-regular ${icon}"></i>
+                </div>
+                <h4 class="text-xl font-bold text-slate-800 mb-2">${
+                  item.title
+                }</h4>
+                <p class="text-slate-500 font-medium mb-4">${typeName} • ${
+        item.size || "Unknown size"
+      }</p>
+                <div class="flex justify-center gap-3">
+                    <button class="px-4 py-2 rounded-xl bg-white border border-slate-200 text-slate-600 font-bold hover:bg-slate-50 transition shadow-sm">
+                        <i class="fa-solid fa-share-nodes mr-2"></i> Chia sẻ
+                    </button>
+                    <button class="px-4 py-2 rounded-xl bg-blue-600 text-white font-bold hover:bg-blue-700 transition shadow-lg shadow-blue-500/30">
+                        <i class="fa-solid fa-download mr-2"></i> Tải xuống ngay
+                    </button>
+                </div>
+            </div>
+            <iframe src="about:blank" class="absolute inset-0 w-full h-full opacity-0 pointer-events-none"></iframe>
+        `;
+    }
+
+    modal.classList.remove("hidden");
+    showToast(`Đang xem trước: ${item.title}`, "info");
   }
 }
 

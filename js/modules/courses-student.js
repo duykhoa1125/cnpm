@@ -3,7 +3,7 @@
  * Handles student-specific course management logic
  */
 
-import { mockCourseDetails } from "./config.js";
+import { mockCourseDetails, mockStudentCourses } from "./config.js";
 import { showToast, setButtonLoading, confirmActionModal } from "./ui.js";
 import { switchTab } from "./navigation.js";
 
@@ -22,11 +22,102 @@ export function confirmRegistration(courseName) {
     "Xác nhận Đăng ký",
     `Bạn có chắc chắn muốn đăng ký môn học "${courseName}" không?`,
     () => {
+      // Add to mock data
+      const newCourse = {
+        id: `CO${Math.floor(Math.random() * 9000) + 1000}`,
+        name: courseName,
+        tutor: "Tutor Mới",
+        deadline: "30/12/2025",
+        progress: 0,
+        week: 1,
+        totalWeeks: 15,
+        icon: "fa-book",
+        color: "green",
+      };
+      mockStudentCourses.push(newCourse);
+
+      // Re-render and switch tab
+      renderStudentCourses();
+      switchTab("courses_student");
+
       showToast(`Đã đăng ký thành công ${courseName}!`, "success");
     },
     "Đăng ký",
     "bg-blue-600"
   );
+}
+
+// Render Student Courses
+export function renderStudentCourses() {
+  const container = document.getElementById("student-course-list");
+  if (!container) return;
+
+  if (mockStudentCourses.length === 0) {
+    container.innerHTML =
+      '<div class="col-span-full text-center py-12 text-slate-400 italic">Bạn chưa đăng ký môn học nào.</div>';
+    return;
+  }
+
+  container.innerHTML = mockStudentCourses
+    .map(
+      (course) => `
+    <div
+      id="course-card-${course.id}"
+      class="glass-card p-6 rounded-[28px] flex flex-col md:flex-row gap-6 group hover:border-blue-300 transition-all relative overflow-hidden hover-lift"
+    >
+      <div
+        class="w-full md:w-32 h-32 rounded-2xl bg-${course.color}-100 flex items-center justify-center text-4xl text-${course.color}-500 shadow-inner flex-shrink-0"
+      >
+        <i class="fa-solid ${course.icon}"></i>
+      </div>
+      <div class="flex-1 min-w-0">
+        <div class="flex justify-between items-start">
+          <div class="min-w-0">
+            <span
+              class="text-[10px] font-bold bg-${course.color}-50 text-${course.color}-600 px-2 py-1 rounded uppercase"
+              >${course.id}</span
+            >
+            <h4 class="text-xl font-bold text-slate-800 mt-1 truncate">
+              ${course.name}
+            </h4>
+            <p class="text-sm text-slate-500 truncate">
+              <i class="fa-solid fa-user-tie mr-1"></i> Tutor: ${course.tutor}
+            </p>
+            <p class="text-[10px] text-orange-500 font-bold mt-1">
+              <i class="fa-regular fa-clock mr-1"></i> Hạn hủy: ${course.deadline}
+            </p>
+          </div>
+          <button
+            onclick="cancelCourse('${course.id}', '${course.name}')"
+            class="ml-2 px-3 py-1 rounded-lg bg-red-50 text-red-500 text-xs font-bold hover:bg-red-500 hover:text-white transition border border-red-100 flex-shrink-0"
+          >
+            <i class="fa-solid fa-ban mr-1"></i> Hủy môn
+          </button>
+        </div>
+        <div class="mt-4">
+          <div
+            class="flex justify-between text-xs font-bold text-slate-500 mb-1"
+          >
+            <span>Tiến độ (Tuần ${course.week}/${course.totalWeeks})</span>
+            <span>${course.progress}%</span>
+          </div>
+          <div class="h-2 bg-slate-100 rounded-full overflow-hidden">
+            <div class="h-full bg-${course.color}-500 w-[${course.progress}%] rounded-full"></div>
+          </div>
+        </div>
+        <div class="mt-4 flex gap-3 flex-wrap">
+          <button
+            onclick="enterClass('${course.id}', '${course.name}')"
+            class="px-4 py-2 rounded-xl bg-blue-600 text-white text-xs font-bold shadow-lg hover:bg-blue-700 transition"
+          >
+            Vào lớp
+          </button>
+        </div>
+      </div>
+    </div>
+  `
+    )
+    .join("");
 }
 
 // View All Schedule
@@ -719,4 +810,4 @@ window.closeAssignmentModal = closeAssignmentModal;
 window.openForumModal = openForumModal;
 window.closeForumModal = closeForumModal;
 window.submitForumReply = submitForumReply;
-window.cancelCurrentCourse = cancelCurrentCourse;
+window.renderStudentCourses = renderStudentCourses;

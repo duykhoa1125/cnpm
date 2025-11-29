@@ -610,3 +610,137 @@
     </div>
   </div>
 </div>
+<!-- Create Topic Modal -->
+<div
+  id="create-topic-modal"
+  class="fixed inset-0 z-[60] hidden flex items-center justify-center"
+>
+  <div
+    class="absolute inset-0 bg-slate-900/20 backdrop-blur-sm transition-opacity"
+    onclick="document.getElementById('create-topic-modal').classList.add('hidden')"
+  ></div>
+
+  <div
+    class="glass-panel w-full max-w-2xl p-8 rounded-[32px] shadow-2xl relative z-10 bg-white/80 transform transition-all scale-100 m-4"
+  >
+    <div class="text-center mb-6">
+      <div
+        class="w-16 h-16 bg-blue-50 text-blue-600 rounded-full flex items-center justify-center text-2xl mx-auto mb-4 shadow-inner border border-blue-100"
+      >
+        <i class="fa-solid fa-pen-to-square"></i>
+      </div>
+      <h3 class="text-2xl font-black text-slate-800">Tạo chủ đề thảo luận</h3>
+      <p class="text-slate-500 mt-2 text-sm font-medium">
+        Chia sẻ ý kiến hoặc đặt câu hỏi cho lớp học.
+      </p>
+    </div>
+
+    <form
+      class="space-y-5"
+      onsubmit="event.preventDefault(); document.getElementById('create-topic-modal').classList.add('hidden'); showToast('Đã tạo chủ đề thành công!', 'success');"
+    >
+      <div>
+        <label
+          class="text-xs font-bold text-slate-500 uppercase ml-1 mb-1 block"
+          >Tiêu đề</label
+        >
+        <input
+          type="text"
+          class="w-full p-3 rounded-xl border border-slate-200 bg-white/50 focus:outline-none focus:border-blue-500 transition font-bold text-slate-700"
+          placeholder="Nhập tiêu đề thảo luận..."
+          required
+        />
+      </div>
+
+      <div>
+        <label
+          class="text-xs font-bold text-slate-500 uppercase ml-1 mb-1 block"
+          >Nội dung</label
+        >
+        <textarea
+          rows="5"
+          class="w-full p-3 rounded-xl border border-slate-200 bg-white/50 focus:outline-none focus:border-blue-500 transition font-medium text-slate-700"
+          placeholder="Nội dung chi tiết..."
+          required
+        ></textarea>
+      </div>
+
+      <div class="grid grid-cols-2 gap-4">
+        <button
+          type="button"
+          onclick="document.getElementById('create-topic-modal').classList.add('hidden')"
+          class="w-full py-3 bg-slate-100 text-slate-600 font-bold rounded-xl hover:bg-slate-200 transition text-sm"
+        >
+          Hủy bỏ
+        </button>
+        <button
+          type="submit"
+          class="w-full py-3 bg-blue-600 text-white font-bold rounded-xl hover:bg-blue-700 shadow-lg shadow-blue-500/30 transition text-sm"
+        >
+          <i class="fa-solid fa-paper-plane mr-1"></i> Đăng bài
+        </button>
+      </div>
+    </form>
+  </div>
+</div>
+
+<!-- Document Preview Modal -->
+<div
+  id="preview-modal"
+  class="fixed inset-0 z-[70] hidden flex items-center justify-center"
+>
+  <div
+    class="absolute inset-0 bg-slate-900/40 backdrop-blur-sm transition-opacity"
+    onclick="document.getElementById('preview-modal').classList.add('hidden')"
+  ></div>
+
+  <div
+    class="glass-panel w-full max-w-4xl h-[85vh] p-0 rounded-[24px] shadow-2xl relative z-10 bg-white flex flex-col overflow-hidden m-4"
+  >
+    <div
+      class="p-4 border-b border-slate-100 flex justify-between items-center bg-slate-50"
+    >
+      <h3 class="font-bold text-slate-800 flex items-center gap-2">
+        <i class="fa-solid fa-eye text-blue-500"></i> Xem trước tài liệu
+      </h3>
+      <button
+        onclick="document.getElementById('preview-modal').classList.add('hidden')"
+        class="w-8 h-8 rounded-full hover:bg-slate-200 flex items-center justify-center text-slate-500 transition"
+      >
+        <i class="fa-solid fa-times"></i>
+      </button>
+    </div>
+    <div
+      class="flex-1 bg-slate-100 flex items-center justify-center overflow-hidden relative"
+    >
+      <!-- Placeholder for preview content -->
+      <div class="text-center p-8">
+        <div
+          class="w-20 h-20 bg-white rounded-2xl shadow-sm flex items-center justify-center mx-auto mb-4 text-4xl text-slate-300"
+        >
+          <i class="fa-regular fa-file-image"></i>
+        </div>
+        <p class="text-slate-500 font-medium">Bản xem trước đang được tải...</p>
+        <p class="text-xs text-slate-400 mt-2">Hỗ trợ PDF, Image, Video</p>
+      </div>
+      <!-- In a real app, an iframe or object tag would go here -->
+      <iframe
+        src="about:blank"
+        class="absolute inset-0 w-full h-full opacity-50 pointer-events-none"
+      ></iframe>
+    </div>
+    <div class="p-4 border-t border-slate-100 bg-white flex justify-end gap-3">
+      <button
+        onclick="document.getElementById('preview-modal').classList.add('hidden')"
+        class="px-4 py-2 rounded-lg text-slate-600 font-bold hover:bg-slate-50 transition text-sm"
+      >
+        Đóng
+      </button>
+      <button
+        class="px-4 py-2 rounded-lg bg-blue-600 text-white font-bold hover:bg-blue-700 transition text-sm flex items-center gap-2"
+      >
+        <i class="fa-solid fa-download"></i> Tải xuống
+      </button>
+    </div>
+  </div>
+</div>
