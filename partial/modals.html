@@ -1044,3 +1044,112 @@
     </form>
   </div>
 </div>
+<!-- User Management Modal -->
+<div
+  id="user-modal"
+  class="fixed inset-0 z-[60] hidden flex items-center justify-center"
+>
+  <!-- Backdrop -->
+  <div
+    class="absolute inset-0 bg-slate-900/20 backdrop-blur-sm transition-opacity"
+    onclick="closeUserModal()"
+  ></div>
+
+  <!-- Modal Content -->
+  <div
+    class="glass-panel w-full max-w-lg p-8 rounded-[32px] shadow-2xl relative z-10 bg-white transform transition-all scale-100 m-4"
+  >
+    <div class="text-center mb-6">
+      <div
+        class="w-16 h-16 bg-blue-50 text-blue-600 rounded-full flex items-center justify-center text-2xl mx-auto mb-4 shadow-inner border border-blue-100"
+      >
+        <i class="fa-solid fa-user-gear"></i>
+      </div>
+      <h3 id="user-modal-title" class="text-2xl font-black text-slate-800">
+        Thêm người dùng mới
+      </h3>
+      <p class="text-slate-500 mt-2 text-sm font-medium">
+        Quản lý thông tin tài khoản và phân quyền.
+      </p>
+    </div>
+
+    <form id="user-form" class="space-y-5" onsubmit="submitUserForm(event)">
+      <input type="hidden" id="user-id" />
+      <div>
+        <label
+          class="text-xs font-bold text-slate-500 uppercase ml-1 mb-1 block"
+          >Họ và Tên</label
+        >
+        <input
+          type="text"
+          id="user-name"
+          class="w-full p-3 rounded-xl border border-slate-200 bg-white/50 focus:outline-none focus:border-blue-500 transition font-bold text-slate-700"
+          placeholder="Nhập họ tên..."
+          required
+        />
+      </div>
+
+      <div>
+        <label
+          class="text-xs font-bold text-slate-500 uppercase ml-1 mb-1 block"
+          >Email</label
+        >
+        <input
+          type="email"
+          id="user-email"
+          class="w-full p-3 rounded-xl border border-slate-200 bg-white/50 focus:outline-none focus:border-blue-500 transition font-medium text-slate-700"
+          placeholder="email@hcmut.edu.vn"
+          required
+        />
+      </div>
+
+      <div class="grid grid-cols-2 gap-4">
+        <div>
+          <label
+            class="text-xs font-bold text-slate-500 uppercase ml-1 mb-1 block"
+            >Vai trò</label
+          >
+          <select
+            id="user-role"
+            class="w-full p-3 rounded-xl border border-slate-200 bg-white/50 focus:outline-none focus:border-blue-500 transition font-bold text-slate-700"
+          >
+            <option value="student">Sinh viên</option>
+            <option value="tutor">Giảng viên</option>
+            <option value="admin">Quản trị viên</option>
+            <option value="academic">Giáo vụ</option>
+            <option value="department">Khoa/Bộ môn</option>
+          </select>
+        </div>
+        <div>
+          <label
+            class="text-xs font-bold text-slate-500 uppercase ml-1 mb-1 block"
+            >Trạng thái</label
+          >
+          <select
+            id="user-status"
+            class="w-full p-3 rounded-xl border border-slate-200 bg-white/50 focus:outline-none focus:border-blue-500 transition font-bold text-slate-700"
+          >
+            <option value="active">Hoạt động</option>
+            <option value="inactive">Đã khóa</option>
+          </select>
+        </div>
+      </div>
+
+      <div class="grid grid-cols-2 gap-4 pt-2">
+        <button
+          type="button"
+          onclick="closeUserModal()"
+          class="w-full py-3 bg-slate-100 text-slate-600 font-bold rounded-xl hover:bg-slate-200 transition text-sm"
+        >
+          Hủy bỏ
+        </button>
+        <button
+          type="submit"
+          class="w-full py-3 bg-blue-600 text-white font-bold rounded-xl hover:bg-blue-700 shadow-lg shadow-blue-500/30 transition text-sm"
+        >
+          <i class="fa-solid fa-save mr-1"></i> Lưu thông tin
+        </button>
+      </div>
+    </form>
+  </div>
+</div>

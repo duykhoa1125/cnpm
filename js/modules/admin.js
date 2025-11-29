@@ -228,34 +228,83 @@ export function renderUserTable() {
     .join("");
 }
 
-// Add User
+// Add User (Open Modal)
 export function addUser() {
-  const name = prompt("Nhập tên người dùng mới:");
-  if (name) {
-    const id = "U" + Date.now().toString().slice(-4);
-    mockUsers.push({
-      id: id,
-      name: name,
-      role: "student",
-      email: "new.user@hcmut.edu.vn",
-      status: "active",
-    });
-    renderUserTable();
-    showToast("Đã thêm người dùng mới thành công", "success");
+  const modal = document.getElementById("user-modal");
+  const form = document.getElementById("user-form");
+  const title = document.getElementById("user-modal-title");
+
+  if (modal && form) {
+    form.reset();
+    document.getElementById("user-id").value = ""; // Empty for new user
+    document.getElementById("user-role").value = "student";
+    document.getElementById("user-status").value = "active";
+    title.innerText = "Thêm người dùng mới";
+    modal.classList.remove("hidden");
   }
 }
 
-// Edit User
+// Edit User (Open Modal)
 export function editUser(id) {
   const user = mockUsers.find((u) => u.id === id);
-  if (user) {
-    const newName = prompt("Chỉnh sửa tên người dùng:", user.name);
-    if (newName) {
-      user.name = newName;
-      renderUserTable();
+  if (!user) return;
+
+  const modal = document.getElementById("user-modal");
+  const form = document.getElementById("user-form");
+  const title = document.getElementById("user-modal-title");
+
+  if (modal && form) {
+    document.getElementById("user-id").value = user.id;
+    document.getElementById("user-name").value = user.name;
+    document.getElementById("user-email").value = user.email;
+    document.getElementById("user-role").value = user.role;
+    document.getElementById("user-status").value = user.status;
+
+    title.innerText = "Chỉnh sửa người dùng";
+    modal.classList.remove("hidden");
+  }
+}
+
+// Close User Modal
+export function closeUserModal() {
+  const modal = document.getElementById("user-modal");
+  if (modal) modal.classList.add("hidden");
+}
+
+// Submit User Form
+export function submitUserForm(e) {
+  e.preventDefault();
+  const id = document.getElementById("user-id").value;
+  const name = document.getElementById("user-name").value;
+  const email = document.getElementById("user-email").value;
+  const role = document.getElementById("user-role").value;
+  const status = document.getElementById("user-status").value;
+
+  if (id) {
+    // Edit existing
+    const user = mockUsers.find((u) => u.id === id);
+    if (user) {
+      user.name = name;
+      user.email = email;
+      user.role = role;
+      user.status = status;
       showToast("Đã cập nhật thông tin người dùng", "success");
     }
+  } else {
+    // Add new
+    const newId = "U" + Date.now().toString().slice(-4);
+    mockUsers.push({
+      id: newId,
+      name: name,
+      email: email,
+      role: role,
+      status: status,
+    });
+    showToast("Đã thêm người dùng mới thành công", "success");
   }
+
+  renderUserTable();
+  closeUserModal();
 }
 
 // Delete User
@@ -309,6 +358,8 @@ window.exportSystemLogs = exportSystemLogs;
 window.renderUserTable = renderUserTable;
 window.addUser = addUser;
 window.editUser = editUser;
+window.closeUserModal = closeUserModal;
+window.submitUserForm = submitUserForm;
 window.deleteUser = deleteUser;
 window.triggerBackup = triggerBackup;
 window.restoreBackup = restoreBackup;
