@@ -94,13 +94,14 @@
                 class="fa-solid fa-book absolute left-4 top-1/2 -translate-y-1/2 text-slate-400"
               ></i>
               <select
+                id="ai-subject-select"
                 class="w-full pl-11 pr-4 py-3.5 bg-slate-50 border-none rounded-xl font-bold text-slate-700 focus:ring-2 focus:ring-indigo-500 transition appearance-none cursor-pointer"
               >
-                <option>Giải tích 1 & 2</option>
-                <option>Đại số tuyến tính</option>
-                <option>Vật lý đại cương</option>
-                <option>Nhập môn Lập trình</option>
-                <option>Cấu trúc dữ liệu</option>
+                <option value="calculus">Giải tích 1 & 2</option>
+                <option value="algebra">Đại số tuyến tính</option>
+                <option value="physics">Vật lý đại cương</option>
+                <option value="programming">Nhập môn Lập trình</option>
+                <option value="dsa">Cấu trúc dữ liệu</option>
               </select>
               <i
                 class="fa-solid fa-chevron-down absolute right-4 top-1/2 -translate-y-1/2 text-slate-400 text-xs pointer-events-none"
@@ -116,12 +117,13 @@
                 class="fa-solid fa-bullseye absolute left-4 top-1/2 -translate-y-1/2 text-slate-400"
               ></i>
               <select
+                id="ai-goal-select"
                 class="w-full pl-11 pr-4 py-3.5 bg-slate-50 border-none rounded-xl font-bold text-slate-700 focus:ring-2 focus:ring-indigo-500 transition appearance-none cursor-pointer"
               >
-                <option>Cải thiện điểm số (GPA)</option>
-                <option>Ôn thi cuối kỳ cấp tốc</option>
-                <option>Hiểu sâu kiến thức nền tảng</option>
-                <option>Giải quyết bài tập khó</option>
+                <option value="gpa">Cải thiện điểm số (GPA)</option>
+                <option value="exam">Ôn thi cuối kỳ cấp tốc</option>
+                <option value="deep">Hiểu sâu kiến thức nền tảng</option>
+                <option value="hard">Giải quyết bài tập khó</option>
               </select>
               <i
                 class="fa-solid fa-chevron-down absolute right-4 top-1/2 -translate-y-1/2 text-slate-400 text-xs pointer-events-none"
@@ -368,25 +370,57 @@
     </div>
   </div>
 
-  <!-- Loading State (Hidden by default) -->
-  <div id="ai-matching-loading" class="hidden py-20 text-center">
-    <div class="relative w-24 h-24 mx-auto mb-8">
+  <!-- Loading State (Enhanced) -->
+  <div id="ai-matching-loading" class="hidden py-20 text-center relative">
+    <!-- Background Elements -->
+    <div
+      class="absolute inset-0 flex items-center justify-center overflow-hidden pointer-events-none"
+    >
       <div
-        class="absolute inset-0 border-4 border-slate-100 rounded-full"
+        class="w-[500px] h-[500px] border border-indigo-100 rounded-full animate-ping opacity-20"
+        style="animation-duration: 3s"
       ></div>
       <div
-        class="absolute inset-0 border-4 border-indigo-600 rounded-full border-t-transparent animate-spin"
+        class="w-[350px] h-[350px] border border-indigo-200 rounded-full animate-ping opacity-30 absolute"
+        style="animation-duration: 2s; animation-delay: 0.5s"
       ></div>
-      <div class="absolute inset-0 flex items-center justify-center">
-        <i class="fa-solid fa-robot text-3xl text-indigo-600 animate-pulse"></i>
+    </div>
+
+    <div class="relative w-32 h-32 mx-auto mb-8">
+      <!-- Central Hexagon/Icon -->
+      <div
+        class="absolute inset-0 bg-indigo-50 rounded-full animate-pulse"
+      ></div>
+      <div class="absolute inset-0 flex items-center justify-center z-10">
+        <i
+          class="fa-solid fa-brain text-5xl text-indigo-600 animate-bounce"
+        ></i>
+      </div>
+
+      <!-- Orbiting Dots -->
+      <div class="absolute inset-0 animate-spin-slow">
+        <div
+          class="absolute top-0 left-1/2 -translate-x-1/2 w-3 h-3 bg-blue-500 rounded-full shadow-lg shadow-blue-500/50"
+        ></div>
+      </div>
+      <div
+        class="absolute inset-0 animate-spin-slow"
+        style="animation-direction: reverse; animation-duration: 4s"
+      >
+        <div
+          class="absolute bottom-0 left-1/2 -translate-x-1/2 w-2 h-2 bg-purple-500 rounded-full shadow-lg shadow-purple-500/50"
+        ></div>
       </div>
     </div>
-    <h3 class="text-2xl font-black text-slate-800 mb-2">
+
+    <h3 class="text-2xl font-black text-slate-800 mb-2 relative z-10">
       AI đang phân tích hồ sơ...
     </h3>
-    <p class="text-slate-500" id="ai-loading-text">
-      Đang quét cơ sở dữ liệu Tutor...
-    </p>
+    <div class="h-6 overflow-hidden relative z-10">
+      <p class="text-indigo-600 font-bold animate-pulse" id="ai-loading-text">
+        Đang quét cơ sở dữ liệu Tutor...
+      </p>
+    </div>
   </div>
 
   <!-- Results Section (Hidden by default) -->
@@ -404,9 +438,9 @@
     </div>
 
     <div class="grid grid-cols-1 md:grid-cols-3 gap-6">
-      <!-- Result Card 1 -->
+      <!-- Result Card 1 (Enhanced) -->
       <div
-        class="glass-card p-0 rounded-[28px] overflow-hidden hover-lift border-2 border-indigo-500/20 relative group"
+        class="glass-card p-0 rounded-[28px] overflow-hidden hover-lift border-2 border-indigo-500/20 relative group flex flex-col"
       >
         <div class="absolute top-4 right-4 z-10">
           <span
@@ -416,7 +450,7 @@
           </span>
         </div>
         <div
-          class="h-32 bg-gradient-to-br from-indigo-500 to-purple-600 relative"
+          class="h-32 bg-gradient-to-br from-indigo-500 to-purple-600 relative shrink-0"
         >
           <div class="absolute -bottom-10 left-6">
             <img
@@ -426,7 +460,7 @@
             />
           </div>
         </div>
-        <div class="pt-12 px-6 pb-6">
+        <div class="pt-12 px-6 pb-6 flex-1 flex flex-col">
           <div class="mb-4">
             <h4 class="text-lg font-black text-slate-800">Nguyễn Minh Anh</h4>
             <p class="text-sm text-slate-500 font-medium">
@@ -434,7 +468,7 @@
             </p>
           </div>
 
-          <div class="flex flex-wrap gap-2 mb-6">
+          <div class="flex flex-wrap gap-2 mb-4">
             <span
               class="px-2 py-1 rounded-lg bg-indigo-50 text-indigo-600 text-[10px] font-bold"
               >Visual Learner</span
@@ -449,14 +483,36 @@
             >
           </div>
 
-          <div class="p-3 bg-slate-50 rounded-xl mb-6">
+          <!-- Match Breakdown (NEW) -->
+          <div class="space-y-2 mb-6">
+            <div
+              class="flex items-center justify-between text-[10px] font-bold text-slate-500"
+            >
+              <span>Phong cách dạy</span>
+              <span class="text-indigo-600">100%</span>
+            </div>
+            <div class="w-full h-1.5 bg-slate-100 rounded-full overflow-hidden">
+              <div class="h-full w-full bg-indigo-500 rounded-full"></div>
+            </div>
+
+            <div
+              class="flex items-center justify-between text-[10px] font-bold text-slate-500 mt-1"
+            >
+              <span>Chuyên môn</span>
+              <span class="text-indigo-600">95%</span>
+            </div>
+            <div class="w-full h-1.5 bg-slate-100 rounded-full overflow-hidden">
+              <div class="h-full w-[95%] bg-indigo-500 rounded-full"></div>
+            </div>
+          </div>
+
+          <div class="p-3 bg-slate-50 rounded-xl mb-6 mt-auto">
             <p class="text-xs font-bold text-slate-400 uppercase mb-1">
               AI Phân tích
             </p>
             <p class="text-xs text-slate-600 italic">
               "Minh Anh có phương pháp giảng dạy trực quan rất phù hợp với phong
-              cách học Visual của bạn. Tutor này chuyên về Giải tích và có tỉ lệ
-              sinh viên cải thiện điểm số cao nhất."
+              cách học Visual của bạn."
             </p>
           </div>
 

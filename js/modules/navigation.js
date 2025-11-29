@@ -23,6 +23,7 @@ import { renderAdminSystem } from "./admin.js";
 import { renderLibrary } from "./library.js";
 import { renderAdminProgress } from "./progress.js";
 import { renderBonusSessions, renderBonusRsvps } from "./bonus-session.js";
+import { setupCustomSelect } from "./ui.js";
 
 // Generate Sidebar based on role
 export function generateSidebar(role) {
@@ -78,6 +79,21 @@ export function switchTab(tabId) {
     renderBonusRsvps();
   }
   if (tabId === "feedback_student") initStudentFeedback();
+  if (tabId === "ai_tutor_matching") {
+    setupCustomSelect("ai-subject-select", {
+      calculus: "fa-calculator",
+      algebra: "fa-table-cells",
+      physics: "fa-atom",
+      programming: "fa-code",
+      dsa: "fa-network-wired",
+    });
+    setupCustomSelect("ai-goal-select", {
+      gpa: "fa-arrow-trend-up",
+      exam: "fa-stopwatch",
+      deep: "fa-book-open",
+      hard: "fa-puzzle-piece",
+    });
+  }
 
   updateBreadcrumbs(tabId);
 
