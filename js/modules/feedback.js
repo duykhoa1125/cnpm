@@ -26,9 +26,9 @@ export function renderTutorFeedback() {
   document.getElementById("tutor-5star-rate").innerText = fiveStarRate;
 
   // Populate Course Filter
-  const courses = [...new Set(feedbacks.map((f) => f.course))];
   const courseSelect = document.getElementById("tutor-course-filter");
   if (courseSelect && courseSelect.options.length === 1) {
+    const courses = [...new Set(feedbacks.map((f) => f.course))];
     courses.forEach((c) => {
       const opt = document.createElement("option");
       opt.value = c;
@@ -60,9 +60,9 @@ export function filterTutorFeedback() {
 
   const container = document.getElementById("tutor-feedback-container");
   const empty = document.getElementById("tutor-feedback-empty");
-  
+
   if (!container) return;
-  
+
   container.innerHTML = "";
 
   if (data.length === 0) {
@@ -72,38 +72,57 @@ export function filterTutorFeedback() {
 
     // Group by Course
     const grouped = data.reduce((acc, curr) => {
-        (acc[curr.course] = acc[curr.course] || []).push(curr);
-        return acc;
+      (acc[curr.course] = acc[curr.course] || []).push(curr);
+      return acc;
     }, {});
 
-    Object.keys(grouped).forEach(courseName => {
-        const items = grouped[courseName];
-        
-        // Calculate stats for this course group
-        const courseAvg = (items.reduce((a, b) => a + b.rating, 0) / items.length).toFixed(1);
-        
-        const section = document.createElement("div");
-        section.className = "glass-card p-6 rounded-[28px] animate-fade-in-up";
-        
-        let tableRows = items.map(f => {
-             let starsHtml = "";
-            for (let i = 1; i <= 5; i++) {
-                starsHtml += `<i class="fa-solid fa-star ${
-                i <= f.rating ? "text-yellow-400" : "text-slate-200"
-                } text-[10px]"></i>`;
-            }
-            
-            return `
+    Object.keys(grouped).forEach((courseName) => {
+      const items = grouped[courseName];
+
+      // Calculate stats for this course group
+      const courseAvg = (
+        items.reduce((a, b) => a + b.rating, 0) / items.length
+      ).toFixed(1);
+
+      const section = document.createElement("div");
+      section.className =
+        "glass-card p-6 rounded-[28px] animate-fade-in-up mb-6";
+
+      let tableRows = items
+        .map((f) => {
+          let starsHtml = "";
+          for (let i = 1; i <= 5; i++) {
+            starsHtml += `<i class="fa-solid fa-star ${
+              i <= f.rating ? "text-yellow-400" : "text-slate-200"
+            } text-[10px]"></i>`;
+          }
+
+          // Detailed criteria tooltip or small display
+          let criteriaHtml = "";
+          if (f.criteria) {
+            criteriaHtml = `
+                <div class="mt-1 flex gap-2 text-[10px] text-slate-400">
+                    <span title="Giảng dạy"><i class="fa-solid fa-chalkboard-user"></i> ${f.criteria.teaching}%</span>
+                    <span title="Tài liệu"><i class="fa-solid fa-book"></i> ${f.criteria.materials}%</span>
+                </div>
+                `;
+          }
+
+          return `
             <tr class="border-b border-slate-50 hover:bg-blue-50/50 transition group/row">
                 <td class="py-4 pl-4 font-bold text-slate-700 text-sm">${f.student}</td>
-                <td class="py-4 whitespace-nowrap">${starsHtml}</td>
+                <td class="py-4 whitespace-nowrap">
+                    ${starsHtml}
+                    ${criteriaHtml}
+                </td>
                 <td class="py-4 text-slate-600 text-sm italic">"${f.comment}"</td>
                 <td class="py-4 text-slate-400 text-xs text-right pr-4">${f.date}</td>
             </tr>
             `;
-        }).join("");
+        })
+        .join("");
 
-        section.innerHTML = `
+      section.innerHTML = `
             <div class="flex justify-between items-center mb-4 pb-4 border-b border-slate-100">
                 <div class="flex items-center gap-3">
                     <div class="w-10 h-10 rounded-xl bg-blue-100 text-blue-600 flex items-center justify-center text-lg">
@@ -135,8 +154,8 @@ export function filterTutorFeedback() {
                 </table>
             </div>
         `;
-        
-        container.appendChild(section);
+
+      container.appendChild(section);
     });
   }
 }
@@ -186,6 +205,8 @@ export function filterAdminFeedback() {
 
   const tbody = document.getElementById("admin-feedback-list");
   const empty = document.getElementById("admin-feedback-empty");
+
+  if (!tbody) return;
   tbody.innerHTML = "";
 
   if (data.length === 0) {
@@ -217,21 +238,224 @@ export function filterAdminFeedback() {
   }
 }
 
+// --- NEW FEATURES FOR STUDENT FEEDBACK ---
+
+// Init Student Feedback
+export function initStudentFeedback() {
+  renderStudentFeedbackHistory();
+  setupStarRating();
+}
+
+// Setup Star Rating
+function setupStarRating() {
+  const container = document.getElementById("star-rating-group");
+  if (!container) return;
+
+  const stars = container.querySelectorAll(".star-interactive");
+  const ratingInput = document.getElementById("feedback-rating-value");
+  const ratingText = document.getElementById("rating-text");
+  const emojiDisplay = document.getElementById("emoji-display");
+
+  let currentRating = 0;
+
+  stars.forEach((star) => {
+    // Clone to remove old listeners if any
+    const newStar = star.cloneNode(true);
+    star.parentNode.replaceChild(newStar, star);
+  });
+
+  // Re-select after cloning
+  const newStars = container.querySelectorAll(".star-interactive");
+  newStars.forEach((star) => {
+    star.addEventListener("mouseenter", () => {
+      const value = parseInt(star.dataset.value);
+      highlightStars(value);
+      updateEmoji(value);
+    });
+
+    star.addEventListener("click", () => {
+      currentRating = parseInt(star.dataset.value);
+      ratingInput.value = currentRating;
+      highlightStars(currentRating);
+      updateEmoji(currentRating);
+
+      // Update text
+      const texts = [
+        "Rất tệ 😡",
+        "Tệ 😞",
+        "Bình thường 😐",
+        "Tốt 🙂",
+        "Tuyệt vời 🤩",
+      ];
+      if (ratingText) {
+        ratingText.innerText = texts[currentRating - 1];
+        ratingText.className =
+          "text-sm font-bold text-blue-600 transition-colors";
+      }
+    });
+  });
+
+  container.addEventListener("mouseleave", () => {
+    if (currentRating === 0) {
+      highlightStars(0);
+      updateEmoji(0);
+      if (ratingText) {
+        ratingText.innerText = "Hãy chọn mức độ hài lòng";
+        ratingText.className =
+          "text-sm font-bold text-slate-500 transition-colors";
+      }
+    } else {
+      highlightStars(currentRating);
+      updateEmoji(currentRating);
+    }
+  });
+}
+
+function highlightStars(count) {
+  const stars = document.querySelectorAll(".star-interactive");
+  stars.forEach((star) => {
+    const value = parseInt(star.dataset.value);
+    star.className =
+      "fa-solid fa-star star-interactive transition-all duration-200"; // Reset
+
+    if (value <= count) {
+      star.classList.add("active");
+      if (count <= 2) star.classList.add("text-red-500"); // star-gradient-1
+      else if (count === 3)
+        star.classList.add("text-yellow-400"); // star-gradient-3
+      else if (count === 4)
+        star.classList.add("text-lime-500"); // star-gradient-4
+      else star.classList.add("text-green-500"); // star-gradient-5
+    } else {
+      star.classList.add("text-slate-200");
+    }
+  });
+}
+
+function updateEmoji(count) {
+  const emojiDisplay = document.getElementById("emoji-display");
+  if (!emojiDisplay) return;
+
+  const emojis = ["😡", "😞", "😐", "🙂", "🤩"];
+
+  // Reset animation
+  emojiDisplay.style.animation = "none";
+  emojiDisplay.offsetHeight; /* trigger reflow */
+  emojiDisplay.style.animation =
+    "popIn 0.4s cubic-bezier(0.175, 0.885, 0.32, 1.275)";
+
+  if (count > 0) {
+    emojiDisplay.innerText = emojis[count - 1];
+  } else {
+    emojiDisplay.innerText = "😐";
+  }
+}
+
+// Update Slider Value
+export function updateSliderValue(id, value) {
+  const display = document.getElementById(`val-${id}`);
+  if (display) {
+    display.innerText = `${value}%`;
+    // Color change based on value
+    if (value < 50) display.className = "text-sm font-bold text-red-500";
+    else if (value < 80)
+      display.className = "text-sm font-bold text-yellow-500";
+    else display.className = "text-sm font-bold text-green-600";
+  }
+}
+
+// Render Feedback History
+export function renderStudentFeedbackHistory() {
+  const container = document.getElementById("student-feedback-history");
+  if (!container) return;
+
+  const currentStudent = "Trần Thị B"; // Mock
+  const history = mockFeedbacks
+    .filter((f) => f.student === currentStudent)
+    .sort((a, b) => new Date(b.date) - new Date(a.date));
+
+  container.innerHTML = "";
+
+  if (history.length === 0) {
+    container.innerHTML = `<div class="text-center text-slate-400 py-4">Chưa có đánh giá nào</div>`;
+    return;
+  }
+
+  history.forEach((f) => {
+    const card = document.createElement("div");
+    card.className =
+      "bg-white border border-slate-100 p-4 rounded-2xl shadow-sm hover:shadow-md transition-all group mb-3";
+
+    let emoji = "😐";
+    if (f.rating >= 5) emoji = "🤩";
+    else if (f.rating >= 4) emoji = "🙂";
+    else if (f.rating <= 2) emoji = "😞";
+
+    card.innerHTML = `
+            <div class="flex justify-between items-start mb-2">
+                <div>
+                    <h4 class="font-bold text-slate-700 text-sm">${f.course}</h4>
+                    <p class="text-xs text-slate-400">${f.tutor}</p>
+                </div>
+                <div class="text-2xl">${emoji}</div>
+            </div>
+            <div class="flex items-center gap-1 mb-2">
+                <span class="font-bold text-slate-800">${f.rating}</span>
+                <i class="fa-solid fa-star text-yellow-400 text-xs"></i>
+                <span class="text-xs text-slate-300 mx-1">•</span>
+                <span class="text-xs text-slate-400">${f.date}</span>
+            </div>
+            <p class="text-xs text-slate-500 italic line-clamp-2">"${f.comment}"</p>
+        `;
+    container.appendChild(card);
+  });
+}
+
 // Submit Feedback (Student)
 export function submitFeedback(e) {
   e.preventDefault();
 
   const courseId = document.getElementById("selected-feedback-course")?.value;
+  const rating = document.getElementById("feedback-rating-value")?.value;
+
   if (!courseId) {
     showToast("Vui lòng chọn môn học để đánh giá!", "error");
     return;
   }
+  if (!rating || rating == 0) {
+    showToast("Vui lòng chọn mức độ hài lòng!", "error");
+    return;
+  }
+
+  // Capture slider values
+  const teaching = document.getElementById("range-teaching").value;
+  const materials = document.getElementById("range-materials").value;
+  const support = document.getElementById("range-support").value;
+  const facilities = document.getElementById("range-facilities").value;
 
   showToast("Cảm ơn phản hồi của bạn!", "success");
+
+  // Add to mock data (in memory)
+  mockFeedbacks.unshift({
+    id: Date.now(),
+    tutor: "Nguyễn Văn A", // Mock
+    student: "Trần Thị B", // Mock
+    course: "Môn học mới", // Should map code to name
+    rating: parseInt(rating),
+    criteria: {
+      teaching: parseInt(teaching),
+      materials: parseInt(materials),
+      support: parseInt(support),
+      facilities: parseInt(facilities),
+    },
+    comment: e.target.querySelector("textarea").value,
+    date: new Date().toISOString().split("T")[0],
+  });
 
   // Reset form
   e.target.reset();
   document.getElementById("selected-feedback-course").value = "";
+  document.getElementById("feedback-rating-value").value = "0";
 
   // Reset UI selection
   document.querySelectorAll(".course-select-card").forEach((card) => {
@@ -249,18 +473,16 @@ export function submitFeedback(e) {
     }
   });
 
-  // Reset star rating
-  const stars = document.querySelectorAll(".star-btn");
-  stars.forEach((star) => {
-    star.classList.remove("text-yellow-400");
-    star.classList.add("text-slate-200");
+  // Reset sliders
+  document.querySelectorAll(".custom-range").forEach((r) => {
+    r.value = 50;
+    updateSliderValue(r.id.replace("range-", ""), 50);
   });
-  const ratingText = document.getElementById("rating-text");
-  if (ratingText) {
-    ratingText.innerText = "Chưa chọn mức độ";
-    ratingText.classList.remove("text-slate-600");
-    ratingText.classList.add("text-slate-400");
-  }
+
+  // Reset stars
+  setupStarRating();
+
+  renderStudentFeedbackHistory();
 }
 
 // Select Feedback Course
@@ -306,3 +528,5 @@ window.filterAdminFeedback = filterAdminFeedback;
 window.submitFeedback = submitFeedback;
 window.selectFeedbackCourse = selectFeedbackCourse;
 window.exportFeedback = exportFeedback;
+window.initStudentFeedback = initStudentFeedback;
+window.updateSliderValue = updateSliderValue;

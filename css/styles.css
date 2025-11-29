@@ -304,3 +304,102 @@ body {
 .stagger-group > *:nth-child(8) {
   animation-delay: 0.4s;
 }
+
+/* Interactive Star Rating */
+.star-rating-group {
+  display: inline-flex;
+  flex-direction: row; /* Changed from row-reverse to row */
+  gap: 0.5rem;
+}
+
+/* We will use JS for the gradient and hover effects to be more precise with the "red -> yellow -> green" requirement */
+.star-interactive {
+  font-size: 2.5rem;
+  cursor: pointer;
+  transition: transform 0.4s cubic-bezier(0.175, 0.885, 0.32, 1.275), color 0.4s; /* Slowed down from 0.2s */
+  color: #e2e8f0; /* slate-200 */
+}
+
+.star-interactive:hover,
+.star-interactive.active {
+  transform: scale(1.2);
+}
+
+/* Gradient Colors for Stars */
+.star-gradient-1 {
+  color: #ef4444;
+} /* Red */
+.star-gradient-2 {
+  color: #f97316;
+} /* Orange */
+.star-gradient-3 {
+  color: #eab308;
+} /* Yellow */
+.star-gradient-4 {
+  color: #84cc16;
+} /* Lime */
+.star-gradient-5 {
+  color: #22c55e;
+} /* Green */
+
+/* Emoji Animation */
+.emoji-display {
+  font-size: 4rem;
+  height: 5rem;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  animation: popIn 0.5s cubic-bezier(0.175, 0.885, 0.32, 1.275);
+}
+
+@keyframes popIn {
+  0% {
+    transform: scale(0) rotate(-45deg);
+    opacity: 0;
+  }
+  80% {
+    transform: scale(1.2) rotate(10deg);
+    opacity: 1;
+  }
+  100% {
+    transform: scale(1) rotate(0);
+  }
+}
+
+/* Custom Range Slider */
+.custom-range {
+  -webkit-appearance: none;
+  width: 100%;
+  height: 8px;
+  border-radius: 4px;
+  background: #e2e8f0;
+  outline: none;
+  transition: background 0.2s;
+}
+
+.custom-range::-webkit-slider-thumb {
+  -webkit-appearance: none;
+  appearance: none;
+  width: 20px;
+  height: 20px;
+  border-radius: 50%;
+  background: #3b82f6;
+  cursor: pointer;
+  box-shadow: 0 0 0 4px rgba(59, 130, 246, 0.2);
+  transition: all 0.2s;
+}
+
+.custom-range::-webkit-slider-thumb:hover {
+  transform: scale(1.1);
+  box-shadow: 0 0 0 6px rgba(59, 130, 246, 0.3);
+}
+
+.custom-range::-moz-range-thumb {
+  width: 20px;
+  height: 20px;
+  border-radius: 50%;
+  background: #3b82f6;
+  cursor: pointer;
+  box-shadow: 0 0 0 4px rgba(59, 130, 246, 0.2);
+  transition: all 0.2s;
+}

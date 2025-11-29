@@ -1,109 +1,279 @@
-          <div id="feedback_student" class="section-view">
-            <div class="glass-card p-10 rounded-[32px] max-w-2xl mx-auto">
-              <h3 class="text-2xl font-bold text-slate-800 mb-6 text-center">
-                Đánh giá môn học
-              </h3>
-              <form onsubmit="submitFeedback(event)">
-                <div class="mb-8">
-                  <label
-                    class="block text-xs font-bold text-slate-500 uppercase mb-2 ml-1"
-                    >Chọn môn học / Buổi học</label
+<div id="feedback_student" class="section-view">
+  <div class="grid grid-cols-1 lg:grid-cols-3 gap-8">
+    <!-- Feedback Form -->
+    <div class="lg:col-span-2">
+      <div class="glass-card p-8 rounded-[32px]">
+        <h3
+          class="text-2xl font-bold text-slate-800 mb-6 flex items-center gap-3"
+        >
+          <span
+            class="w-10 h-10 rounded-xl bg-blue-100 text-blue-600 flex items-center justify-center text-lg"
+          >
+            <i class="fa-solid fa-pen-nib"></i>
+          </span>
+          Đánh giá môn học
+        </h3>
+
+        <form onsubmit="submitFeedback(event)">
+          <!-- Course Selection -->
+          <div class="mb-8">
+            <label
+              class="block text-xs font-bold text-slate-500 uppercase mb-3 ml-1"
+              >Chọn môn học / Buổi học</label
+            >
+            <input
+              type="hidden"
+              id="selected-feedback-course"
+              name="course"
+              required
+            />
+            <div
+              id="course-feedback-list"
+              class="grid grid-cols-1 md:grid-cols-2 gap-3"
+            >
+              <!-- Option 1 -->
+              <div
+                onclick="selectFeedbackCourse(this, 'CO1023')"
+                class="course-select-card p-4 rounded-2xl border border-slate-200 bg-white cursor-pointer transition-all duration-200 hover:shadow-md hover:border-blue-300 group flex items-center justify-between"
+              >
+                <div>
+                  <p
+                    class="font-bold text-slate-800 text-sm group-hover:text-blue-600 transition"
                   >
-                  <input type="hidden" id="selected-feedback-course" name="course" required>
-                  <div id="course-feedback-list" class="grid grid-cols-1 gap-3">
-                    <!-- Option 1 -->
-                    <div onclick="selectFeedbackCourse(this, 'CO1023')" class="course-select-card p-4 rounded-2xl border border-slate-200 bg-white cursor-pointer transition-all duration-200 hover:shadow-md hover:border-blue-300 group flex items-center justify-between">
-                        <div>
-                            <p class="font-bold text-slate-800 text-sm group-hover:text-blue-600 transition">Giải tích 1 (CO1023)</p>
-                            <div class="flex items-center gap-2 mt-1">
-                                <span class="text-xs font-bold bg-slate-100 text-slate-500 px-2 py-0.5 rounded group-hover:bg-blue-50 group-hover:text-blue-500 transition">Buổi 12</span>
-                                <span class="text-xs text-slate-400"><i class="fa-regular fa-calendar mr-1"></i> 24/10</span>
-                            </div>
-                        </div>
-                        <div class="check-icon w-6 h-6 rounded-full border-2 border-slate-200 flex items-center justify-center text-transparent transition-all">
-                            <i class="fa-solid fa-check text-xs"></i>
-                        </div>
-                    </div>
-                    <!-- Option 2 -->
-                    <div onclick="selectFeedbackCourse(this, 'CO2011')" class="course-select-card p-4 rounded-2xl border border-slate-200 bg-white cursor-pointer transition-all duration-200 hover:shadow-md hover:border-blue-300 group flex items-center justify-between">
-                        <div>
-                            <p class="font-bold text-slate-800 text-sm group-hover:text-blue-600 transition">Lập trình Python (CO2011)</p>
-                            <div class="flex items-center gap-2 mt-1">
-                                <span class="text-xs font-bold bg-slate-100 text-slate-500 px-2 py-0.5 rounded group-hover:bg-blue-50 group-hover:text-blue-500 transition">Lab 3</span>
-                                <span class="text-xs text-slate-400"><i class="fa-regular fa-calendar mr-1"></i> 26/10</span>
-                            </div>
-                        </div>
-                        <div class="check-icon w-6 h-6 rounded-full border-2 border-slate-200 flex items-center justify-center text-transparent transition-all">
-                            <i class="fa-solid fa-check text-xs"></i>
-                        </div>
-                    </div>
-                    <!-- Option 3 -->
-                    <div onclick="selectFeedbackCourse(this, 'PH1003')" class="course-select-card p-4 rounded-2xl border border-slate-200 bg-white cursor-pointer transition-all duration-200 hover:shadow-md hover:border-blue-300 group flex items-center justify-between">
-                        <div>
-                            <p class="font-bold text-slate-800 text-sm group-hover:text-blue-600 transition">Vật lý Đại cương 1 (PH1003)</p>
-                            <div class="flex items-center gap-2 mt-1">
-                                <span class="text-xs font-bold bg-slate-100 text-slate-500 px-2 py-0.5 rounded group-hover:bg-blue-50 group-hover:text-blue-500 transition">Buổi 8</span>
-                                <span class="text-xs text-slate-400"><i class="fa-regular fa-calendar mr-1"></i> 28/10</span>
-                            </div>
-                        </div>
-                        <div class="check-icon w-6 h-6 rounded-full border-2 border-slate-200 flex items-center justify-center text-transparent transition-all">
-                            <i class="fa-solid fa-check text-xs"></i>
-                        </div>
-                    </div>
-                  </div>
-                </div>
-                <div class="text-center mb-8">
-                  <div class="flex justify-center gap-3 text-4xl mb-2">
-                    <button
-                      type="button"
-                      onclick="setRating(1)"
-                      class="star-btn text-slate-200 hover:text-yellow-400 transition"
-                    >
-                      <i class="fa-solid fa-star"></i>
-                    </button>
-                    <button
-                      type="button"
-                      onclick="setRating(2)"
-                      class="star-btn text-slate-200 hover:text-yellow-400 transition"
-                    >
-                      <i class="fa-solid fa-star"></i>
-                    </button>
-                    <button
-                      type="button"
-                      onclick="setRating(3)"
-                      class="star-btn text-slate-200 hover:text-yellow-400 transition"
-                    >
-                      <i class="fa-solid fa-star"></i>
-                    </button>
-                    <button
-                      type="button"
-                      onclick="setRating(4)"
-                      class="star-btn text-slate-200 hover:text-yellow-400 transition"
-                    >
-                      <i class="fa-solid fa-star"></i>
-                    </button>
-                    <button
-                      type="button"
-                      onclick="setRating(5)"
-                      class="star-btn text-slate-200 hover:text-yellow-400 transition"
-                    >
-                      <i class="fa-solid fa-star"></i>
-                    </button>
-                  </div>
-                  <p id="rating-text" class="text-sm font-bold text-slate-500">
-                    Chưa chọn mức độ
+                    Giải tích 1 (CO1023)
                   </p>
+                  <div class="flex items-center gap-2 mt-1">
+                    <span
+                      class="text-xs font-bold bg-slate-100 text-slate-500 px-2 py-0.5 rounded group-hover:bg-blue-50 group-hover:text-blue-500 transition"
+                      >Buổi 12</span
+                    >
+                    <span class="text-xs text-slate-400"
+                      ><i class="fa-regular fa-calendar mr-1"></i> 24/10</span
+                    >
+                  </div>
                 </div>
-                <textarea
-                  class="w-full p-4 rounded-xl bg-white border border-slate-200 h-32 outline-none focus:border-blue-500 mb-6 font-medium"
-                  placeholder="Nhận xét chi tiết về giảng viên, tài liệu..."
-                ></textarea>
-                <button
-                  type="submit"
-                  class="w-full py-4 rounded-xl bg-slate-800 text-white font-bold hover:bg-slate-900 transition shadow-xl"
+                <div
+                  class="check-icon w-6 h-6 rounded-full border-2 border-slate-200 flex items-center justify-center text-transparent transition-all"
                 >
-                  Gửi đánh giá
-                </button>
-              </form>
+                  <i class="fa-solid fa-check text-xs"></i>
+                </div>
+              </div>
+              <!-- Option 2 -->
+              <div
+                onclick="selectFeedbackCourse(this, 'CO2011')"
+                class="course-select-card p-4 rounded-2xl border border-slate-200 bg-white cursor-pointer transition-all duration-200 hover:shadow-md hover:border-blue-300 group flex items-center justify-between"
+              >
+                <div>
+                  <p
+                    class="font-bold text-slate-800 text-sm group-hover:text-blue-600 transition"
+                  >
+                    Lập trình Python (CO2011)
+                  </p>
+                  <div class="flex items-center gap-2 mt-1">
+                    <span
+                      class="text-xs font-bold bg-slate-100 text-slate-500 px-2 py-0.5 rounded group-hover:bg-blue-50 group-hover:text-blue-500 transition"
+                      >Lab 3</span
+                    >
+                    <span class="text-xs text-slate-400"
+                      ><i class="fa-regular fa-calendar mr-1"></i> 26/10</span
+                    >
+                  </div>
+                </div>
+                <div
+                  class="check-icon w-6 h-6 rounded-full border-2 border-slate-200 flex items-center justify-center text-transparent transition-all"
+                >
+                  <i class="fa-solid fa-check text-xs"></i>
+                </div>
+              </div>
+              <!-- Option 3 -->
+              <div
+                onclick="selectFeedbackCourse(this, 'PH1003')"
+                class="course-select-card p-4 rounded-2xl border border-slate-200 bg-white cursor-pointer transition-all duration-200 hover:shadow-md hover:border-blue-300 group flex items-center justify-between"
+              >
+                <div>
+                  <p
+                    class="font-bold text-slate-800 text-sm group-hover:text-blue-600 transition"
+                  >
+                    Vật lý Đại cương 1 (PH1003)
+                  </p>
+                  <div class="flex items-center gap-2 mt-1">
+                    <span
+                      class="text-xs font-bold bg-slate-100 text-slate-500 px-2 py-0.5 rounded group-hover:bg-blue-50 group-hover:text-blue-500 transition"
+                      >Buổi 8</span
+                    >
+                    <span class="text-xs text-slate-400"
+                      ><i class="fa-regular fa-calendar mr-1"></i> 28/10</span
+                    >
+                  </div>
+                </div>
+                <div
+                  class="check-icon w-6 h-6 rounded-full border-2 border-slate-200 flex items-center justify-center text-transparent transition-all"
+                >
+                  <i class="fa-solid fa-check text-xs"></i>
+                </div>
+              </div>
             </div>
           </div>
+
+          <!-- Interactive Rating Section -->
+          <div class="mb-8 p-6 bg-slate-50 rounded-2xl border border-slate-100">
+            <div class="flex flex-col items-center justify-center">
+              <div id="emoji-display" class="emoji-display mb-4">😐</div>
+
+              <div class="star-rating-group mb-2" id="star-rating-group">
+                <!-- Stars will be injected or handled by JS, but let's put static HTML for structure and JS will attach events -->
+                <!-- Note: Flex-direction row-reverse means 5 is first in DOM but last visually. 
+                               However, for JS control, we might stick to normal order and use JS for hover. 
+                               Let's use normal order and JS mouseover/mouseout. -->
+                <i class="fa-solid fa-star star-interactive" data-value="1"></i>
+                <i class="fa-solid fa-star star-interactive" data-value="2"></i>
+                <i class="fa-solid fa-star star-interactive" data-value="3"></i>
+                <i class="fa-solid fa-star star-interactive" data-value="4"></i>
+                <i class="fa-solid fa-star star-interactive" data-value="5"></i>
+              </div>
+              <p
+                id="rating-text"
+                class="text-sm font-bold text-slate-500 transition-colors"
+              >
+                Hãy chọn mức độ hài lòng
+              </p>
+              <input
+                type="hidden"
+                id="feedback-rating-value"
+                name="rating"
+                value="0"
+              />
+            </div>
+          </div>
+
+          <!-- Detailed Criteria Sliders -->
+          <div class="mb-8 grid grid-cols-1 md:grid-cols-2 gap-6">
+            <!-- Criteria 1 -->
+            <div>
+              <div class="flex justify-between mb-2">
+                <label class="text-sm font-bold text-slate-700"
+                  >Chất lượng giảng dạy</label
+                >
+                <span class="text-sm font-bold text-blue-600" id="val-teaching"
+                  >50%</span
+                >
+              </div>
+              <input
+                type="range"
+                min="0"
+                max="100"
+                value="50"
+                class="custom-range"
+                id="range-teaching"
+                oninput="updateSliderValue('teaching', this.value)"
+              />
+            </div>
+            <!-- Criteria 2 -->
+            <div>
+              <div class="flex justify-between mb-2">
+                <label class="text-sm font-bold text-slate-700"
+                  >Tài liệu học tập</label
+                >
+                <span class="text-sm font-bold text-blue-600" id="val-materials"
+                  >50%</span
+                >
+              </div>
+              <input
+                type="range"
+                min="0"
+                max="100"
+                value="50"
+                class="custom-range"
+                id="range-materials"
+                oninput="updateSliderValue('materials', this.value)"
+              />
+            </div>
+            <!-- Criteria 3 -->
+            <div>
+              <div class="flex justify-between mb-2">
+                <label class="text-sm font-bold text-slate-700"
+                  >Sự hỗ trợ</label
+                >
+                <span class="text-sm font-bold text-blue-600" id="val-support"
+                  >50%</span
+                >
+              </div>
+              <input
+                type="range"
+                min="0"
+                max="100"
+                value="50"
+                class="custom-range"
+                id="range-support"
+                oninput="updateSliderValue('support', this.value)"
+              />
+            </div>
+            <!-- Criteria 4 -->
+            <div>
+              <div class="flex justify-between mb-2">
+                <label class="text-sm font-bold text-slate-700"
+                  >Cơ sở vật chất</label
+                >
+                <span
+                  class="text-sm font-bold text-blue-600"
+                  id="val-facilities"
+                  >50%</span
+                >
+              </div>
+              <input
+                type="range"
+                min="0"
+                max="100"
+                value="50"
+                class="custom-range"
+                id="range-facilities"
+                oninput="updateSliderValue('facilities', this.value)"
+              />
+            </div>
+          </div>
+
+          <!-- Comment -->
+          <div class="mb-6">
+            <label
+              class="block text-xs font-bold text-slate-500 uppercase mb-2 ml-1"
+              >Nhận xét chi tiết</label
+            >
+            <textarea
+              class="w-full p-4 rounded-xl bg-white border border-slate-200 h-32 outline-none focus:border-blue-500 font-medium transition focus:shadow-md"
+              placeholder="Chia sẻ thêm về trải nghiệm của bạn..."
+            ></textarea>
+          </div>
+
+          <button
+            type="submit"
+            class="w-full py-4 rounded-xl bg-slate-800 text-white font-bold hover:bg-slate-900 transition shadow-xl hover:shadow-2xl hover:-translate-y-1"
+          >
+            Gửi đánh giá
+          </button>
+        </form>
+      </div>
+    </div>
+
+    <!-- Feedback History Sidebar -->
+    <div class="lg:col-span-1">
+      <div class="glass-card p-6 rounded-[32px] h-full">
+        <h3
+          class="text-xl font-bold text-slate-800 mb-4 flex items-center gap-2"
+        >
+          <i class="fa-solid fa-clock-rotate-left text-slate-400"></i>
+          Lịch sử đánh giá
+        </h3>
+        <div
+          id="student-feedback-history"
+          class="space-y-4 max-h-[600px] overflow-y-auto custom-scroll pr-2"
+        >
+          <!-- History items will be injected here -->
+          <div class="text-center py-8 text-slate-400">
+            <i class="fa-solid fa-spinner fa-spin text-2xl mb-2"></i>
+            <p class="text-sm">Đang tải...</p>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>

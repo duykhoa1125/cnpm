@@ -9,11 +9,16 @@ import {
   initTutorCharts,
   initDeptCharts,
   initAcademicCharts,
+  initStudentGPAChart,
 } from "./charts.js";
 import { renderTutorCourses } from "./courses.js";
 import { renderNotifications } from "./notifications.js";
 import { renderCourseCancellationRules } from "./cancellation.js";
-import { renderTutorFeedback, renderAdminFeedback } from "./feedback.js";
+import {
+  renderTutorFeedback,
+  renderAdminFeedback,
+  initStudentFeedback,
+} from "./feedback.js";
 import { renderAdminSystem } from "./admin.js";
 import { renderLibrary } from "./library.js";
 import { renderAdminProgress } from "./progress.js";
@@ -46,6 +51,7 @@ export function switchTab(tabId) {
   });
 
   // Initialize specific views
+  if (tabId === "dashboard_student") initStudentGPAChart();
   if (tabId === "dashboard_admin") initAdminCharts();
   if (tabId === "dashboard_tutor") initTutorCharts();
   if (tabId === "courses_tutor") renderTutorCourses();
@@ -62,6 +68,7 @@ export function switchTab(tabId) {
     renderBonusSessions();
     renderBonusRsvps();
   }
+  if (tabId === "feedback_student") initStudentFeedback();
 
   updateBreadcrumbs(tabId);
 
