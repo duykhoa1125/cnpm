@@ -6,6 +6,31 @@
 import { mockFeedbacks } from "./config.js";
 import { showToast } from "./ui.js";
 
+// Helper to generate criteria HTML
+function generateCriteriaHtml(criteria) {
+  if (!criteria) return "";
+  return `
+        <div class="mt-2 grid grid-cols-2 gap-x-3 gap-y-1 text-[10px] text-slate-500 bg-slate-50 p-2 rounded-lg border border-slate-100">
+            <div class="flex items-center justify-between" title="Giảng dạy">
+                <span><i class="fa-solid fa-chalkboard-user w-4 text-blue-400"></i> Dạy:</span>
+                <span class="font-bold text-slate-700">${criteria.teaching}%</span>
+            </div>
+            <div class="flex items-center justify-between" title="Tài liệu">
+                <span><i class="fa-solid fa-book w-4 text-indigo-400"></i> Liệu:</span>
+                <span class="font-bold text-slate-700">${criteria.materials}%</span>
+            </div>
+            <div class="flex items-center justify-between" title="Hỗ trợ">
+                <span><i class="fa-solid fa-headset w-4 text-green-400"></i> Hỗ trợ:</span>
+                <span class="font-bold text-slate-700">${criteria.support}%</span>
+            </div>
+            <div class="flex items-center justify-between" title="Cơ sở vật chất">
+                <span><i class="fa-solid fa-wifi w-4 text-orange-400"></i> CSVC:</span>
+                <span class="font-bold text-slate-700">${criteria.facilities}%</span>
+            </div>
+        </div>
+    `;
+}
+
 // Render Tutor Feedback View
 export function renderTutorFeedback() {
   const currentTutorName = "Nguyễn Văn A";
@@ -97,26 +122,17 @@ export function filterTutorFeedback() {
             } text-[10px]"></i>`;
           }
 
-          // Detailed criteria tooltip or small display
-          let criteriaHtml = "";
-          if (f.criteria) {
-            criteriaHtml = `
-                <div class="mt-1 flex gap-2 text-[10px] text-slate-400">
-                    <span title="Giảng dạy"><i class="fa-solid fa-chalkboard-user"></i> ${f.criteria.teaching}%</span>
-                    <span title="Tài liệu"><i class="fa-solid fa-book"></i> ${f.criteria.materials}%</span>
-                </div>
-                `;
-          }
+          const criteriaHtml = generateCriteriaHtml(f.criteria);
 
           return `
             <tr class="border-b border-slate-50 hover:bg-blue-50/50 transition group/row">
-                <td class="py-4 pl-4 font-bold text-slate-700 text-sm">${f.student}</td>
-                <td class="py-4 whitespace-nowrap">
-                    ${starsHtml}
+                <td class="py-4 pl-4 font-bold text-slate-700 text-sm align-top">${f.student}</td>
+                <td class="py-4 whitespace-nowrap align-top">
+                    <div class="mb-1">${starsHtml}</div>
                     ${criteriaHtml}
                 </td>
-                <td class="py-4 text-slate-600 text-sm italic">"${f.comment}"</td>
-                <td class="py-4 text-slate-400 text-xs text-right pr-4">${f.date}</td>
+                <td class="py-4 text-slate-600 text-sm italic align-top">"${f.comment}"</td>
+                <td class="py-4 text-slate-400 text-xs text-right pr-4 align-top">${f.date}</td>
             </tr>
             `;
         })
@@ -143,7 +159,7 @@ export function filterTutorFeedback() {
                     <thead>
                         <tr class="text-slate-400 text-[10px] uppercase tracking-wider">
                             <th class="pb-2 pl-4 w-1/4">Sinh viên</th>
-                            <th class="pb-2 w-32">Đánh giá</th>
+                            <th class="pb-2 w-48">Đánh giá chi tiết</th>
                             <th class="pb-2">Nội dung</th>
                             <th class="pb-2 text-right pr-4 w-32">Ngày</th>
                         </tr>
@@ -219,19 +235,26 @@ export function filterAdminFeedback() {
 
       let ratingBadge = "";
       if (f.rating >= 4)
-        ratingBadge = `<span class="px-2 py-1 bg-green-100 text-green-600 rounded-lg text-xs font-bold">${f.rating} <i class="fa-solid fa-star"></i></span>`;
+        ratingBadge = `<span class="px-2 py-1 bg-green-100 text-green-600 rounded-lg text-xs font-bold inline-block mb-2">${f.rating} <i class="fa-solid fa-star"></i></span>`;
       else if (f.rating === 3)
-        ratingBadge = `<span class="px-2 py-1 bg-yellow-100 text-yellow-600 rounded-lg text-xs font-bold">${f.rating} <i class="fa-solid fa-star"></i></span>`;
+        ratingBadge = `<span class="px-2 py-1 bg-yellow-100 text-yellow-600 rounded-lg text-xs font-bold inline-block mb-2">${f.rating} <i class="fa-solid fa-star"></i></span>`;
       else
-        ratingBadge = `<span class="px-2 py-1 bg-red-100 text-red-600 rounded-lg text-xs font-bold">${f.rating} <i class="fa-solid fa-star"></i></span>`;
+        ratingBadge = `<span class="px-2 py-1 bg-red-100 text-red-600 rounded-lg text-xs font-bold inline-block mb-2">${f.rating} <i class="fa-solid fa-star"></i></span>`;
+
+      const criteriaHtml = generateCriteriaHtml(f.criteria);
 
       tr.innerHTML = `
-                <td class="py-4 pl-4 font-bold text-blue-600">${f.tutor}</td>
-                <td class="py-4 font-bold text-slate-700">${f.student}</td>
-                <td class="py-4 text-slate-600">${f.course}</td>
-                <td class="py-4 text-center">${ratingBadge}</td>
-                <td class="py-4 text-slate-600 truncate max-w-xs" title="${f.comment}">${f.comment}</td>
-                <td class="py-4 text-slate-500 text-xs">${f.date}</td>
+                <td class="py-4 pl-4 font-bold text-blue-600 align-top">${f.tutor}</td>
+                <td class="py-4 font-bold text-slate-700 align-top">${f.student}</td>
+                <td class="py-4 text-slate-600 align-top">${f.course}</td>
+                <td class="py-4 text-center align-top w-48">
+                    ${ratingBadge}
+                    ${criteriaHtml}
+                </td>
+                <td class="py-4 text-slate-600 truncate max-w-xs align-top" title="${f.comment}">
+                    <div class="whitespace-normal">"${f.comment}"</div>
+                </td>
+                <td class="py-4 text-slate-500 text-xs align-top">${f.date}</td>
             `;
       tbody.appendChild(tr);
     });
