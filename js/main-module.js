@@ -181,6 +181,13 @@ import {
   exportStudentReport,
 } from "./modules/dashboard-utils.js";
 
+import {
+  scrollToMatchingForm,
+  startAIMatching,
+  resetAIMatching,
+  connectWithTutor,
+} from "./modules/ai-matching.js";
+
 // Make all functions globally available for HTML onclick handlers
 // UI Functions
 window.showToast = showToast;
@@ -301,6 +308,12 @@ window.viewCreditDetails = viewCreditDetails;
 window.viewTrainingScoreDetails = viewTrainingScoreDetails;
 window.sendAutomatedReminder = sendAutomatedReminder;
 window.exportStudentReport = exportStudentReport;
+
+// AI Tutor Matching Functions
+window.scrollToMatchingForm = scrollToMatchingForm;
+window.startAIMatching = startAIMatching;
+window.resetAIMatching = resetAIMatching;
+window.connectWithTutor = connectWithTutor;
 
 // Initialize Application when partials are loaded
 document.addEventListener("partialsLoaded", () => {

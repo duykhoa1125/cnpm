@@ -8,6 +8,7 @@ export const roleMenus = {
   student: [
     { id: "dashboard_student", icon: "fa-chart-pie", text: "Tổng quan" },
     { id: "courses_student", icon: "fa-book-open", text: "Môn học" },
+    { id: "ai_tutor_matching", icon: "fa-robot", text: "AI Tutor Matching" },
     { id: "library_view", icon: "fa-book-bookmark", text: "Thư viện số" },
     { id: "progress_student", icon: "fa-chart-line", text: "Tiến độ học tập" },
     { id: "feedback_student", icon: "fa-comment-dots", text: "Đánh giá" },
@@ -79,6 +80,10 @@ export const breadcrumbMap = {
   progress_department: [
     { label: "Trang chủ", icon: "fa-home" },
     { label: "Tiến độ Khoa", icon: "fa-chart-pie" },
+  ],
+  ai_tutor_matching: [
+    { label: "Trang chủ", icon: "fa-home" },
+    { label: "AI Tutor Matching", icon: "fa-robot" },
   ],
   feedback_student: [
     { label: "Trang chủ", icon: "fa-home" },

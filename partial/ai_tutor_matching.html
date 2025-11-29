@@ -1,0 +1,554 @@
+<div id="ai_tutor_matching" class="section-view space-y-8">
+  <!-- Hero Section -->
+  <div
+    class="relative rounded-[32px] overflow-hidden p-8 md:p-12 text-white shadow-2xl"
+  >
+    <!-- Animated Background -->
+    <div
+      class="absolute inset-0 bg-gradient-to-r from-violet-600 via-indigo-600 to-blue-600 animate-gradient-x"
+    ></div>
+    <div
+      class="absolute inset-0 bg-[url('https://grainy-gradients.vercel.app/noise.svg')] opacity-20"
+    ></div>
+    <div
+      class="absolute -top-24 -right-24 w-64 h-64 bg-purple-400 rounded-full mix-blend-multiply filter blur-3xl opacity-30 animate-blob"
+    ></div>
+    <div
+      class="absolute -bottom-24 -left-24 w-64 h-64 bg-blue-400 rounded-full mix-blend-multiply filter blur-3xl opacity-30 animate-blob animation-delay-2000"
+    ></div>
+
+    <div
+      class="relative z-10 flex flex-col md:flex-row items-center justify-between gap-8"
+    >
+      <div class="max-w-2xl">
+        <div
+          class="inline-flex items-center gap-2 px-3 py-1 rounded-full bg-white/10 backdrop-blur-md border border-white/20 text-xs font-bold mb-4"
+        >
+          <i class="fa-solid fa-sparkles text-yellow-300"></i>
+          <span>Powered by Gemini AI</span>
+        </div>
+        <h1 class="text-4xl md:text-5xl font-black mb-4 leading-tight">
+          Tìm Gia sư AI <br />Phù hợp nhất với bạn
+        </h1>
+        <p class="text-indigo-100 text-lg mb-8 leading-relaxed">
+          Hệ thống sử dụng AI để phân tích phong cách học tập, mục tiêu và lịch
+          trình của bạn để kết nối với Tutor hoàn hảo nhất.
+        </p>
+        <button
+          onclick="scrollToMatchingForm()"
+          class="px-8 py-4 bg-white text-indigo-600 rounded-2xl font-bold shadow-lg shadow-indigo-900/20 hover:bg-indigo-50 hover:scale-105 transition transform flex items-center gap-3"
+        >
+          <i class="fa-solid fa-wand-magic-sparkles"></i>
+          Bắt đầu Matching ngay
+        </button>
+      </div>
+      <div class="hidden md:block relative">
+        <div
+          class="w-64 h-64 bg-white/10 backdrop-blur-md rounded-full flex items-center justify-center border border-white/20 shadow-inner animate-float"
+        >
+          <i class="fa-solid fa-robot text-8xl text-white/80"></i>
+        </div>
+        <!-- Floating Elements -->
+        <div
+          class="absolute -top-4 -right-4 px-4 py-2 bg-white rounded-xl shadow-lg text-indigo-600 font-bold text-sm animate-bounce-slow"
+        >
+          🎯 98% Match
+        </div>
+        <div
+          class="absolute bottom-8 -left-12 px-4 py-2 bg-white rounded-xl shadow-lg text-purple-600 font-bold text-sm animate-bounce-slow animation-delay-1000"
+        >
+          ⚡ Fast Learning
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- Matching Form Section -->
+  <div id="matching-form-section" class="grid grid-cols-1 lg:grid-cols-3 gap-8">
+    <!-- Left: Form -->
+    <div class="lg:col-span-2 glass-card p-8 rounded-[32px]">
+      <h3
+        class="text-2xl font-black text-slate-800 mb-6 flex items-center gap-3"
+      >
+        <div
+          class="w-10 h-10 rounded-xl bg-indigo-50 text-indigo-600 flex items-center justify-center"
+        >
+          <i class="fa-solid fa-sliders"></i>
+        </div>
+        Thiết lập Hồ sơ Matching
+      </h3>
+
+      <form
+        id="ai-matching-form"
+        onsubmit="startAIMatching(event)"
+        class="space-y-6"
+      >
+        <!-- Subject & Goal -->
+        <div class="grid grid-cols-1 md:grid-cols-2 gap-6">
+          <div class="space-y-2">
+            <label class="text-xs font-bold text-slate-500 uppercase ml-1"
+              >Môn học cần hỗ trợ</label
+            >
+            <div class="relative">
+              <i
+                class="fa-solid fa-book absolute left-4 top-1/2 -translate-y-1/2 text-slate-400"
+              ></i>
+              <select
+                class="w-full pl-11 pr-4 py-3.5 bg-slate-50 border-none rounded-xl font-bold text-slate-700 focus:ring-2 focus:ring-indigo-500 transition appearance-none cursor-pointer"
+              >
+                <option>Giải tích 1 & 2</option>
+                <option>Đại số tuyến tính</option>
+                <option>Vật lý đại cương</option>
+                <option>Nhập môn Lập trình</option>
+                <option>Cấu trúc dữ liệu</option>
+              </select>
+              <i
+                class="fa-solid fa-chevron-down absolute right-4 top-1/2 -translate-y-1/2 text-slate-400 text-xs pointer-events-none"
+              ></i>
+            </div>
+          </div>
+          <div class="space-y-2">
+            <label class="text-xs font-bold text-slate-500 uppercase ml-1"
+              >Mục tiêu hiện tại</label
+            >
+            <div class="relative">
+              <i
+                class="fa-solid fa-bullseye absolute left-4 top-1/2 -translate-y-1/2 text-slate-400"
+              ></i>
+              <select
+                class="w-full pl-11 pr-4 py-3.5 bg-slate-50 border-none rounded-xl font-bold text-slate-700 focus:ring-2 focus:ring-indigo-500 transition appearance-none cursor-pointer"
+              >
+                <option>Cải thiện điểm số (GPA)</option>
+                <option>Ôn thi cuối kỳ cấp tốc</option>
+                <option>Hiểu sâu kiến thức nền tảng</option>
+                <option>Giải quyết bài tập khó</option>
+              </select>
+              <i
+                class="fa-solid fa-chevron-down absolute right-4 top-1/2 -translate-y-1/2 text-slate-400 text-xs pointer-events-none"
+              ></i>
+            </div>
+          </div>
+        </div>
+
+        <!-- Learning Style -->
+        <div class="space-y-3">
+          <label class="text-xs font-bold text-slate-500 uppercase ml-1"
+            >Phong cách học tập ưa thích</label
+          >
+          <div class="grid grid-cols-2 md:grid-cols-4 gap-4">
+            <label class="cursor-pointer group">
+              <input type="radio" name="style" class="peer hidden" checked />
+              <div
+                class="p-4 rounded-2xl border-2 border-slate-100 bg-white hover:border-indigo-200 peer-checked:border-indigo-500 peer-checked:bg-indigo-50 transition text-center h-full flex flex-col items-center justify-center gap-2"
+              >
+                <i
+                  class="fa-solid fa-eye text-2xl text-slate-400 peer-checked:text-indigo-600 group-hover:scale-110 transition"
+                ></i>
+                <span
+                  class="text-xs font-bold text-slate-600 peer-checked:text-indigo-700"
+                  >Visual<br />(Hình ảnh)</span
+                >
+              </div>
+            </label>
+            <label class="cursor-pointer group">
+              <input type="radio" name="style" class="peer hidden" />
+              <div
+                class="p-4 rounded-2xl border-2 border-slate-100 bg-white hover:border-indigo-200 peer-checked:border-indigo-500 peer-checked:bg-indigo-50 transition text-center h-full flex flex-col items-center justify-center gap-2"
+              >
+                <i
+                  class="fa-solid fa-ear-listen text-2xl text-slate-400 peer-checked:text-indigo-600 group-hover:scale-110 transition"
+                ></i>
+                <span
+                  class="text-xs font-bold text-slate-600 peer-checked:text-indigo-700"
+                  >Auditory<br />(Nghe giảng)</span
+                >
+              </div>
+            </label>
+            <label class="cursor-pointer group">
+              <input type="radio" name="style" class="peer hidden" />
+              <div
+                class="p-4 rounded-2xl border-2 border-slate-100 bg-white hover:border-indigo-200 peer-checked:border-indigo-500 peer-checked:bg-indigo-50 transition text-center h-full flex flex-col items-center justify-center gap-2"
+              >
+                <i
+                  class="fa-solid fa-book-open-reader text-2xl text-slate-400 peer-checked:text-indigo-600 group-hover:scale-110 transition"
+                ></i>
+                <span
+                  class="text-xs font-bold text-slate-600 peer-checked:text-indigo-700"
+                  >Reading<br />(Đọc/Viết)</span
+                >
+              </div>
+            </label>
+            <label class="cursor-pointer group">
+              <input type="radio" name="style" class="peer hidden" />
+              <div
+                class="p-4 rounded-2xl border-2 border-slate-100 bg-white hover:border-indigo-200 peer-checked:border-indigo-500 peer-checked:bg-indigo-50 transition text-center h-full flex flex-col items-center justify-center gap-2"
+              >
+                <i
+                  class="fa-solid fa-hands-holding-circle text-2xl text-slate-400 peer-checked:text-indigo-600 group-hover:scale-110 transition"
+                ></i>
+                <span
+                  class="text-xs font-bold text-slate-600 peer-checked:text-indigo-700"
+                  >Kinesthetic<br />(Thực hành)</span
+                >
+              </div>
+            </label>
+          </div>
+        </div>
+
+        <!-- Additional Preferences -->
+        <div class="space-y-3">
+          <label class="text-xs font-bold text-slate-500 uppercase ml-1"
+            >Tiêu chí ưu tiên (Chọn tối đa 3)</label
+          >
+          <div class="flex flex-wrap gap-3">
+            <label class="cursor-pointer">
+              <input type="checkbox" class="peer hidden" />
+              <span
+                class="px-4 py-2 rounded-xl bg-slate-100 text-slate-600 text-sm font-bold border border-transparent hover:bg-slate-200 peer-checked:bg-indigo-600 peer-checked:text-white peer-checked:shadow-lg peer-checked:shadow-indigo-500/30 transition select-none"
+              >
+                Nhiệt tình & Kiên nhẫn
+              </span>
+            </label>
+            <label class="cursor-pointer">
+              <input type="checkbox" class="peer hidden" checked />
+              <span
+                class="px-4 py-2 rounded-xl bg-slate-100 text-slate-600 text-sm font-bold border border-transparent hover:bg-slate-200 peer-checked:bg-indigo-600 peer-checked:text-white peer-checked:shadow-lg peer-checked:shadow-indigo-500/30 transition select-none"
+              >
+                Giải thích dễ hiểu
+              </span>
+            </label>
+            <label class="cursor-pointer">
+              <input type="checkbox" class="peer hidden" />
+              <span
+                class="px-4 py-2 rounded-xl bg-slate-100 text-slate-600 text-sm font-bold border border-transparent hover:bg-slate-200 peer-checked:bg-indigo-600 peer-checked:text-white peer-checked:shadow-lg peer-checked:shadow-indigo-500/30 transition select-none"
+              >
+                Có nhiều bài tập thực tế
+              </span>
+            </label>
+            <label class="cursor-pointer">
+              <input type="checkbox" class="peer hidden" checked />
+              <span
+                class="px-4 py-2 rounded-xl bg-slate-100 text-slate-600 text-sm font-bold border border-transparent hover:bg-slate-200 peer-checked:bg-indigo-600 peer-checked:text-white peer-checked:shadow-lg peer-checked:shadow-indigo-500/30 transition select-none"
+              >
+                Phản hồi nhanh
+              </span>
+            </label>
+            <label class="cursor-pointer">
+              <input type="checkbox" class="peer hidden" />
+              <span
+                class="px-4 py-2 rounded-xl bg-slate-100 text-slate-600 text-sm font-bold border border-transparent hover:bg-slate-200 peer-checked:bg-indigo-600 peer-checked:text-white peer-checked:shadow-lg peer-checked:shadow-indigo-500/30 transition select-none"
+              >
+                GPA cao (>3.6)
+              </span>
+            </label>
+          </div>
+        </div>
+
+        <button
+          type="submit"
+          class="w-full py-4 bg-gradient-to-r from-indigo-600 to-violet-600 text-white font-black rounded-2xl shadow-xl shadow-indigo-500/30 hover:scale-[1.02] active:scale-[0.98] transition flex items-center justify-center gap-3 text-lg group"
+        >
+          <i
+            class="fa-solid fa-magnifying-glass-chart group-hover:animate-bounce"
+          ></i>
+          Phân tích & Tìm kiếm Tutor
+        </button>
+      </form>
+    </div>
+
+    <!-- Right: AI Insight (Static) -->
+    <div
+      class="glass-card p-8 rounded-[32px] bg-gradient-to-br from-slate-900 to-slate-800 text-white relative overflow-hidden"
+    >
+      <div
+        class="absolute top-0 right-0 w-64 h-64 bg-indigo-500 rounded-full mix-blend-overlay filter blur-3xl opacity-20"
+      ></div>
+
+      <h3 class="text-xl font-bold mb-6 flex items-center gap-2">
+        <i class="fa-solid fa-brain text-indigo-400"></i>
+        AI Learning Insight
+      </h3>
+
+      <div class="space-y-6 relative z-10">
+        <div
+          class="p-4 rounded-2xl bg-white/10 backdrop-blur-sm border border-white/10"
+        >
+          <p class="text-xs font-bold text-indigo-300 uppercase mb-2">
+            Phân tích lịch sử
+          </p>
+          <p class="text-sm leading-relaxed text-slate-300">
+            Dựa trên điểm số môn
+            <span class="text-white font-bold">Giải tích 1</span> (8.8), bạn có
+            tư duy logic tốt nhưng cần cải thiện tốc độ giải đề để đạt điểm tối
+            đa.
+          </p>
+        </div>
+
+        <div
+          class="p-4 rounded-2xl bg-white/10 backdrop-blur-sm border border-white/10"
+        >
+          <p class="text-xs font-bold text-purple-300 uppercase mb-2">
+            Gợi ý lộ trình
+          </p>
+          <div class="flex items-center gap-3 mb-2">
+            <div
+              class="w-8 h-8 rounded-full bg-purple-500/20 flex items-center justify-center text-purple-400 text-xs font-bold"
+            >
+              1
+            </div>
+            <p class="text-sm font-bold">Ôn tập Lý thuyết (2h)</p>
+          </div>
+          <div class="flex items-center gap-3">
+            <div
+              class="w-8 h-8 rounded-full bg-purple-500/20 flex items-center justify-center text-purple-400 text-xs font-bold"
+            >
+              2
+            </div>
+            <p class="text-sm font-bold">Luyện đề thực chiến (4h)</p>
+          </div>
+        </div>
+
+        <div class="pt-4 border-t border-white/10">
+          <div class="flex items-center justify-between mb-2">
+            <span class="text-xs font-bold text-slate-400"
+              >Độ sẵn sàng học tập</span
+            >
+            <span class="text-xs font-bold text-green-400">Cao</span>
+          </div>
+          <div class="w-full h-2 bg-white/10 rounded-full overflow-hidden">
+            <div
+              class="h-full w-[85%] bg-gradient-to-r from-green-400 to-emerald-500 rounded-full"
+            ></div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- Loading State (Hidden by default) -->
+  <div id="ai-matching-loading" class="hidden py-20 text-center">
+    <div class="relative w-24 h-24 mx-auto mb-8">
+      <div
+        class="absolute inset-0 border-4 border-slate-100 rounded-full"
+      ></div>
+      <div
+        class="absolute inset-0 border-4 border-indigo-600 rounded-full border-t-transparent animate-spin"
+      ></div>
+      <div class="absolute inset-0 flex items-center justify-center">
+        <i class="fa-solid fa-robot text-3xl text-indigo-600 animate-pulse"></i>
+      </div>
+    </div>
+    <h3 class="text-2xl font-black text-slate-800 mb-2">
+      AI đang phân tích hồ sơ...
+    </h3>
+    <p class="text-slate-500" id="ai-loading-text">
+      Đang quét cơ sở dữ liệu Tutor...
+    </p>
+  </div>
+
+  <!-- Results Section (Hidden by default) -->
+  <div id="ai-matching-results" class="hidden space-y-8 animate-fade-in-up">
+    <div class="flex items-center justify-between">
+      <h3 class="text-2xl font-black text-slate-800">
+        <span class="text-indigo-600">3 Tutor</span> phù hợp nhất với bạn
+      </h3>
+      <button
+        onclick="resetAIMatching()"
+        class="text-sm font-bold text-slate-500 hover:text-indigo-600 transition"
+      >
+        <i class="fa-solid fa-rotate-right mr-1"></i> Tìm kiếm lại
+      </button>
+    </div>
+
+    <div class="grid grid-cols-1 md:grid-cols-3 gap-6">
+      <!-- Result Card 1 -->
+      <div
+        class="glass-card p-0 rounded-[28px] overflow-hidden hover-lift border-2 border-indigo-500/20 relative group"
+      >
+        <div class="absolute top-4 right-4 z-10">
+          <span
+            class="px-3 py-1 rounded-full bg-indigo-600 text-white text-xs font-bold shadow-lg shadow-indigo-500/30"
+          >
+            <i class="fa-solid fa-star mr-1 text-yellow-300"></i> 98% Match
+          </span>
+        </div>
+        <div
+          class="h-32 bg-gradient-to-br from-indigo-500 to-purple-600 relative"
+        >
+          <div class="absolute -bottom-10 left-6">
+            <img
+              src="https://ui-avatars.com/api/?name=Minh+Anh&background=random"
+              class="w-20 h-20 rounded-2xl border-4 border-white shadow-lg"
+              alt="Avatar"
+            />
+          </div>
+        </div>
+        <div class="pt-12 px-6 pb-6">
+          <div class="mb-4">
+            <h4 class="text-lg font-black text-slate-800">Nguyễn Minh Anh</h4>
+            <p class="text-sm text-slate-500 font-medium">
+              Khoa Khoa học Máy tính • K20
+            </p>
+          </div>
+
+          <div class="flex flex-wrap gap-2 mb-6">
+            <span
+              class="px-2 py-1 rounded-lg bg-indigo-50 text-indigo-600 text-[10px] font-bold"
+              >Visual Learner</span
+            >
+            <span
+              class="px-2 py-1 rounded-lg bg-indigo-50 text-indigo-600 text-[10px] font-bold"
+              >Kiên nhẫn</span
+            >
+            <span
+              class="px-2 py-1 rounded-lg bg-green-50 text-green-600 text-[10px] font-bold"
+              >GPA 3.9</span
+            >
+          </div>
+
+          <div class="p-3 bg-slate-50 rounded-xl mb-6">
+            <p class="text-xs font-bold text-slate-400 uppercase mb-1">
+              AI Phân tích
+            </p>
+            <p class="text-xs text-slate-600 italic">
+              "Minh Anh có phương pháp giảng dạy trực quan rất phù hợp với phong
+              cách học Visual của bạn. Tutor này chuyên về Giải tích và có tỉ lệ
+              sinh viên cải thiện điểm số cao nhất."
+            </p>
+          </div>
+
+          <button
+            onclick="connectWithTutor('Minh Anh')"
+            class="w-full py-3 bg-slate-900 text-white font-bold rounded-xl hover:bg-indigo-600 transition shadow-lg shadow-slate-900/20"
+          >
+            Kết nối ngay
+          </button>
+        </div>
+      </div>
+
+      <!-- Result Card 2 -->
+      <div
+        class="glass-card p-0 rounded-[28px] overflow-hidden hover-lift border border-slate-200 relative group"
+      >
+        <div class="absolute top-4 right-4 z-10">
+          <span
+            class="px-3 py-1 rounded-full bg-green-500 text-white text-xs font-bold shadow-lg shadow-green-500/30"
+          >
+            95% Match
+          </span>
+        </div>
+        <div class="h-32 bg-gradient-to-br from-blue-400 to-cyan-500 relative">
+          <div class="absolute -bottom-10 left-6">
+            <img
+              src="https://ui-avatars.com/api/?name=Tran+Hung&background=random"
+              class="w-20 h-20 rounded-2xl border-4 border-white shadow-lg"
+              alt="Avatar"
+            />
+          </div>
+        </div>
+        <div class="pt-12 px-6 pb-6">
+          <div class="mb-4">
+            <h4 class="text-lg font-black text-slate-800">Trần Hùng</h4>
+            <p class="text-sm text-slate-500 font-medium">
+              Khoa Điện - Điện tử • K19
+            </p>
+          </div>
+
+          <div class="flex flex-wrap gap-2 mb-6">
+            <span
+              class="px-2 py-1 rounded-lg bg-slate-100 text-slate-600 text-[10px] font-bold"
+              >Thực hành</span
+            >
+            <span
+              class="px-2 py-1 rounded-lg bg-slate-100 text-slate-600 text-[10px] font-bold"
+              >Giải đề</span
+            >
+            <span
+              class="px-2 py-1 rounded-lg bg-green-50 text-green-600 text-[10px] font-bold"
+              >GPA 3.8</span
+            >
+          </div>
+
+          <div class="p-3 bg-slate-50 rounded-xl mb-6">
+            <p class="text-xs font-bold text-slate-400 uppercase mb-1">
+              AI Phân tích
+            </p>
+            <p class="text-xs text-slate-600 italic">
+              "Phù hợp nếu bạn muốn tập trung vào giải bài tập khó. Hùng có kho
+              ngân hàng đề thi phong phú và phương pháp giải nhanh."
+            </p>
+          </div>
+
+          <button
+            onclick="connectWithTutor('Trần Hùng')"
+            class="w-full py-3 bg-white border border-slate-200 text-slate-700 font-bold rounded-xl hover:bg-slate-50 transition"
+          >
+            Kết nối ngay
+          </button>
+        </div>
+      </div>
+
+      <!-- Result Card 3 -->
+      <div
+        class="glass-card p-0 rounded-[28px] overflow-hidden hover-lift border border-slate-200 relative group"
+      >
+        <div class="absolute top-4 right-4 z-10">
+          <span
+            class="px-3 py-1 rounded-full bg-purple-500 text-white text-xs font-bold shadow-lg shadow-purple-500/30"
+          >
+            92% Match
+          </span>
+        </div>
+        <div class="h-32 bg-gradient-to-br from-pink-400 to-rose-500 relative">
+          <div class="absolute -bottom-10 left-6">
+            <img
+              src="https://ui-avatars.com/api/?name=Le+Vy&background=random"
+              class="w-20 h-20 rounded-2xl border-4 border-white shadow-lg"
+              alt="Avatar"
+            />
+          </div>
+        </div>
+        <div class="pt-12 px-6 pb-6">
+          <div class="mb-4">
+            <h4 class="text-lg font-black text-slate-800">Lê Vy</h4>
+            <p class="text-sm text-slate-500 font-medium">
+              Khoa Quản lý Công nghiệp • K21
+            </p>
+          </div>
+
+          <div class="flex flex-wrap gap-2 mb-6">
+            <span
+              class="px-2 py-1 rounded-lg bg-slate-100 text-slate-600 text-[10px] font-bold"
+              >Nhiệt tình</span
+            >
+            <span
+              class="px-2 py-1 rounded-lg bg-slate-100 text-slate-600 text-[10px] font-bold"
+              >Dễ hiểu</span
+            >
+            <span
+              class="px-2 py-1 rounded-lg bg-green-50 text-green-600 text-[10px] font-bold"
+              >GPA 3.75</span
+            >
+          </div>
+
+          <div class="p-3 bg-slate-50 rounded-xl mb-6">
+            <p class="text-xs font-bold text-slate-400 uppercase mb-1">
+              AI Phân tích
+            </p>
+            <p class="text-xs text-slate-600 italic">
+              "Vy được đánh giá rất cao về sự kiên nhẫn và khả năng giải thích
+              các khái niệm trừu tượng một cách đơn giản."
+            </p>
+          </div>
+
+          <button
+            onclick="connectWithTutor('Lê Vy')"
+            class="w-full py-3 bg-white border border-slate-200 text-slate-700 font-bold rounded-xl hover:bg-slate-50 transition"
+          >
+            Kết nối ngay
+          </button>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
