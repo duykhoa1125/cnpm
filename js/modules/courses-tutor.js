@@ -616,24 +616,28 @@ export function submitUpload() {
   }, 1000);
 }
 
-// Save Tutor Schedule
-export function saveTutorSchedule() {
-  // Get form values (if they exist)
-  const form = document.getElementById("tutor-schedule-form");
-
-  // Confirm action with user
-  const confirmed = confirm(
-    "Xác nhận lưu lịch dạy?\n\nLịch dạy đã đăng ký sẽ được cập nhật vào hệ thống và gửi thông báo đến sinh viên."
-  );
-
-  if (!confirmed) {
-    showToast("Đã hủy lưu lịch dạy", "info");
-    return;
+// Save Tutor Schedule Logic
+export function openSaveScheduleModal() {
+  const modal = document.getElementById('save-schedule-modal');
+  if (modal) {
+    modal.classList.remove('hidden');
   }
+}
 
-  // Show loading state
+export function closeSaveScheduleModal() {
+  const modal = document.getElementById('save-schedule-modal');
+  if (modal) {
+    modal.classList.add('hidden');
+  }
+}
+
+export function confirmSaveSchedule() {
+  // Close modal first
+  closeSaveScheduleModal();
+
+  // Show loading state on the main save button
   const saveBtn = document.querySelector(
-    'button[onclick="saveTutorSchedule()"]'
+    'button[onclick="openSaveScheduleModal()"]'
   );
   if (saveBtn) {
     setButtonLoading(saveBtn, true, "Đang lưu...");
@@ -651,13 +655,14 @@ export function saveTutorSchedule() {
       "Lịch dạy đã được lưu thành công! Sinh viên sẽ nhận được thông báo.",
       "success"
     );
-
-    // Optional: Reset form if it exists
-    if (form) {
-      // Don't reset, keep data for reference
-      console.log("Schedule saved successfully");
-    }
+    
+    console.log("Schedule saved successfully");
   }, 1200);
+}
+
+// Deprecated: kept for backward compatibility if needed, but now redirects to modal
+export function saveTutorSchedule() {
+  openSaveScheduleModal();
 }
 
 // Window assignments
@@ -677,3 +682,6 @@ window.closeUploadModal = closeUploadModal;
 window.handleFileSelect = handleFileSelect;
 window.submitUpload = submitUpload;
 window.saveTutorSchedule = saveTutorSchedule;
+window.openSaveScheduleModal = openSaveScheduleModal;
+window.closeSaveScheduleModal = closeSaveScheduleModal;
+window.confirmSaveSchedule = confirmSaveSchedule;

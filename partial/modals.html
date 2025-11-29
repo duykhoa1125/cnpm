@@ -1432,3 +1432,49 @@
     </form>
   </div>
 </div>
+
+<!-- Save Schedule Confirmation Modal -->
+<div
+  id="save-schedule-modal"
+  class="fixed inset-0 z-[60] hidden flex items-center justify-center"
+>
+  <!-- Backdrop -->
+  <div
+    class="absolute inset-0 bg-slate-900/20 backdrop-blur-sm transition-opacity"
+    onclick="closeSaveScheduleModal()"
+  ></div>
+
+  <!-- Modal Content -->
+  <div
+    class="glass-panel w-full max-w-md p-8 rounded-[32px] shadow-2xl relative z-10 bg-white/90 transform transition-all scale-100 m-4"
+  >
+    <div class="text-center mb-6">
+      <div
+        class="w-16 h-16 bg-blue-50 text-blue-600 rounded-full flex items-center justify-center text-2xl mx-auto mb-4 shadow-inner border border-blue-100"
+      >
+        <i class="fa-solid fa-floppy-disk"></i>
+      </div>
+      <h3 class="text-2xl font-black text-slate-800">Lưu cấu hình?</h3>
+      <p class="text-slate-500 mt-2 text-sm font-medium">
+        Lịch dạy đã đăng ký sẽ được cập nhật vào hệ thống và gửi thông báo đến sinh viên.
+      </p>
+    </div>
+
+    <div class="grid grid-cols-2 gap-4">
+      <button
+        type="button"
+        onclick="closeSaveScheduleModal()"
+        class="w-full py-3 bg-slate-100 text-slate-600 font-bold rounded-xl hover:bg-slate-200 transition text-sm"
+      >
+        Hủy bỏ
+      </button>
+      <button
+        type="button"
+        onclick="confirmSaveSchedule()"
+        class="w-full py-3 bg-blue-600 text-white font-bold rounded-xl hover:bg-blue-700 shadow-lg shadow-blue-500/30 transition text-sm"
+      >
+        <i class="fa-solid fa-check mr-1"></i> Xác nhận
+      </button>
+    </div>
+  </div>
+</div>

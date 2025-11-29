@@ -115,6 +115,9 @@ import {
   viewDetailedReport,
   toggleClassDetails,
   saveTutorSchedule,
+  openSaveScheduleModal,
+  closeSaveScheduleModal,
+  confirmSaveSchedule,
   openAssignmentModal,
   closeAssignmentModal,
   openForumModal,
@@ -254,6 +257,9 @@ window.searchCourses = searchCourses;
 window.viewDetailedReport = viewDetailedReport;
 window.toggleClassDetails = toggleClassDetails;
 window.saveTutorSchedule = saveTutorSchedule;
+window.openSaveScheduleModal = openSaveScheduleModal;
+window.closeSaveScheduleModal = closeSaveScheduleModal;
+window.confirmSaveSchedule = confirmSaveSchedule;
 window.openAssignmentModal = openAssignmentModal;
 window.closeAssignmentModal = closeAssignmentModal;
 window.openForumModal = openForumModal;
