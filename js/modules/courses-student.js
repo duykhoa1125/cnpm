@@ -1084,3 +1084,4 @@ window.renderStudentCourses = renderStudentCourses;
 window.openContactModal = openContactModal;
 window.closeContactModal = closeContactModal;
 window.submitContactEmail = submitContactEmail;
+window.cancelCurrentCourse = cancelCurrentCourse;
