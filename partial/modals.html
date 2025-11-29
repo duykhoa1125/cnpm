@@ -1478,3 +1478,137 @@
     </div>
   </div>
 </div>
+
+<!-- Cancellation Rule Modal -->
+<div
+  id="cancellation-rule-modal"
+  class="fixed inset-0 z-[60] hidden flex items-center justify-center"
+>
+  <!-- Backdrop -->
+  <div
+    class="absolute inset-0 bg-slate-900/20 backdrop-blur-sm transition-opacity"
+    onclick="closeCancellationRuleModal()"
+  ></div>
+
+  <!-- Modal Content -->
+  <div
+    class="glass-panel w-full max-w-lg p-8 rounded-[32px] shadow-2xl relative z-10 bg-white/90 transform transition-all scale-100 m-4"
+  >
+    <div class="text-center mb-6">
+      <div
+        class="w-16 h-16 bg-blue-50 text-blue-600 rounded-full flex items-center justify-center text-2xl mx-auto mb-4 shadow-inner border border-blue-100"
+      >
+        <i class="fa-solid fa-scale-balanced"></i>
+      </div>
+      <h3 id="cancellation-rule-modal-title" class="text-2xl font-black text-slate-800">
+        Thêm quy tắc mới
+      </h3>
+      <p class="text-slate-500 mt-2 text-sm font-medium">
+        Thiết lập điều kiện và chế tài cho việc hủy môn.
+      </p>
+    </div>
+
+    <form
+      id="cancellation-rule-form"
+      class="space-y-5"
+      onsubmit="submitCancellationRule(event)"
+    >
+      <input type="hidden" id="rule-id" />
+
+      <div>
+        <label
+          class="text-xs font-bold text-slate-500 uppercase ml-1 mb-1 block"
+          >Điều kiện</label
+        >
+        <input
+          type="text"
+          id="rule-condition"
+          class="w-full p-3 rounded-xl border border-slate-200 bg-white/50 focus:outline-none focus:border-blue-500 transition font-bold text-slate-700"
+          placeholder="VD: Hủy trước 2 tuần..."
+          required
+        />
+      </div>
+
+      <div>
+        <label
+          class="text-xs font-bold text-slate-500 uppercase ml-1 mb-1 block"
+          >Khung thời gian</label
+        >
+        <input
+          type="text"
+          id="rule-timeframe"
+          class="w-full p-3 rounded-xl border border-slate-200 bg-white/50 focus:outline-none focus:border-blue-500 transition font-medium text-slate-700"
+          placeholder="VD: Tuần 1 - Tuần 2"
+          required
+        />
+      </div>
+
+      <div>
+        <label
+          class="text-xs font-bold text-slate-500 uppercase ml-1 mb-1 block"
+          >Hậu quả / Xử lý</label
+        >
+        <textarea
+          id="rule-consequence"
+          rows="2"
+          class="w-full p-3 rounded-xl border border-slate-200 bg-white/50 focus:outline-none focus:border-blue-500 transition font-medium text-slate-700"
+          placeholder="VD: Ghi nhận điểm W..."
+          required
+        ></textarea>
+      </div>
+
+      <div class="grid grid-cols-2 gap-4">
+        <div>
+          <label
+            class="text-xs font-bold text-slate-500 uppercase ml-1 mb-1 block"
+            >% Hoàn học phí</label
+          >
+          <div class="relative">
+            <input
+              type="number"
+              id="rule-refund"
+              min="0"
+              max="100"
+              class="w-full p-3 rounded-xl border border-slate-200 bg-white/50 focus:outline-none focus:border-blue-500 transition font-bold text-slate-700 pl-3 pr-8"
+              value="0"
+              required
+            />
+            <span
+              class="absolute right-3 top-1/2 -translate-y-1/2 text-slate-400 font-bold"
+              >%</span
+            >
+          </div>
+        </div>
+        <div>
+          <label
+            class="text-xs font-bold text-slate-500 uppercase ml-1 mb-1 block"
+            >Tính vi phạm?</label
+          >
+          <select
+            id="rule-penalty"
+            class="w-full p-3 rounded-xl border border-slate-200 bg-white/50 focus:outline-none focus:border-blue-500 transition font-bold text-slate-700"
+          >
+            <option value="false">Không</option>
+            <option value="true">Có (Cảnh cáo)</option>
+          </select>
+        </div>
+      </div>
+
+      <div class="grid grid-cols-2 gap-4 pt-2">
+        <button
+          type="button"
+          onclick="closeCancellationRuleModal()"
+          class="w-full py-3 bg-slate-100 text-slate-600 font-bold rounded-xl hover:bg-slate-200 transition text-sm"
+        >
+          Hủy bỏ
+        </button>
+        <button
+          type="submit"
+          class="w-full py-3 bg-blue-600 text-white font-bold rounded-xl hover:bg-blue-700 shadow-lg shadow-blue-500/30 transition text-sm"
+        >
+          <i class="fa-solid fa-save mr-1"></i> Lưu quy tắc
+        </button>
+      </div>
+    </form>
+  </div>
+</div>

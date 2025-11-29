@@ -112,62 +112,95 @@ export function renderCourseCancellationRules() {
     .join("");
 }
 
-// Add Cancellation Rule
-export function addCancellationRule() {
-  const condition = prompt("Nhập điều kiện (VD: Hủy trước 2 tuần):");
-  if (!condition) return;
+// Open Cancellation Rule Modal (Add/Edit)
+export function openCancellationRuleModal(ruleId = null) {
+  const modal = document.getElementById("cancellation-rule-modal");
+  const form = document.getElementById("cancellation-rule-form");
+  const title = document.getElementById("cancellation-rule-modal-title");
 
-  const timeframe = prompt(
-    "Nhập khung thời gian (VD: >= 14 ngày trước khai giảng):"
-  );
-  if (!timeframe) return;
+  if (!modal || !form) return;
 
-  const consequence = prompt(
-    "Nhập hậu quả (VD: Được hoàn học phí, không bị phạt):"
-  );
-  if (!consequence) return;
+  // Reset form
+  form.reset();
+  document.getElementById("rule-id").value = "";
 
-  const refundRate = parseInt(prompt("Nhập % hoàn học phí (0-100):") || "0");
-  const isPenalty = confirm("Có bị phạt/cảnh cáo không?");
+  if (ruleId) {
+    // Edit Mode
+    const rule = mockCancellationRules.find((r) => r.id === ruleId);
+    if (!rule) return;
 
-  const newRule = {
-    id: mockCancellationRules.length + 1,
-    condition,
-    timeframe,
-    consequence,
-    refundRate: Math.min(100, Math.max(0, refundRate)),
-    isPenalty,
-  };
+    title.innerText = "Chỉnh sửa quy tắc";
+    document.getElementById("rule-id").value = rule.id;
+    document.getElementById("rule-condition").value = rule.condition;
+    document.getElementById("rule-timeframe").value = rule.timeframe || "";
+    document.getElementById("rule-consequence").value = rule.consequence;
+    document.getElementById("rule-refund").value = rule.refundRate;
+    document.getElementById("rule-penalty").value = rule.isPenalty.toString();
+  } else {
+    // Add Mode
+    title.innerText = "Thêm quy tắc mới";
+  }
 
-  mockCancellationRules.push(newRule);
-  renderCourseCancellationRules();
-  showToast("Đã thêm quy tắc mới thành công!", "success");
+  modal.classList.remove("hidden");
 }
 
-// Edit Cancellation Rule
-export function editCancellationRule(id) {
-  const rule = mockCancellationRules.find((r) => r.id === id);
-  if (!rule) return;
+// Close Cancellation Rule Modal
+export function closeCancellationRuleModal() {
+  const modal = document.getElementById("cancellation-rule-modal");
+  if (modal) modal.classList.add("hidden");
+}
 
-  const condition = prompt("Điều kiện:", rule.condition);
-  if (condition) rule.condition = condition;
+// Submit Cancellation Rule Form
+export function submitCancellationRule(e) {
+  e.preventDefault();
 
-  const timeframe = prompt("Khung thời gian:", rule.timeframe);
-  if (timeframe) rule.timeframe = timeframe;
+  const id = document.getElementById("rule-id").value;
+  const condition = document.getElementById("rule-condition").value;
+  const timeframe = document.getElementById("rule-timeframe").value;
+  const consequence = document.getElementById("rule-consequence").value;
+  const refundRate = parseInt(document.getElementById("rule-refund").value);
+  const isPenalty = document.getElementById("rule-penalty").value === "true";
 
-  const consequence = prompt("Hậu quả:", rule.consequence);
-  if (consequence) rule.consequence = consequence;
-
-  const refundRate = prompt("% Hoàn học phí:", rule.refundRate);
-  if (refundRate) rule.refundRate = parseInt(refundRate);
-
-  const isPenalty = confirm(
-    `Có bị phạt? (Hiện tại: ${rule.isPenalty ? "Có" : "Không"})`
-  );
-  rule.isPenalty = isPenalty;
+  if (id) {
+    // Update existing rule
+    const rule = mockCancellationRules.find((r) => r.id == id);
+    if (rule) {
+      rule.condition = condition;
+      rule.timeframe = timeframe;
+      rule.consequence = consequence;
+      rule.refundRate = refundRate;
+      rule.isPenalty = isPenalty;
+      showToast("Đã cập nhật quy tắc!", "success");
+    }
+  } else {
+    // Create new rule
+    const newRule = {
+      id:
+        mockCancellationRules.length > 0
+          ? Math.max(...mockCancellationRules.map((r) => r.id)) + 1
+          : 1,
+      condition,
+      timeframe,
+      consequence,
+      refundRate,
+      isPenalty,
+    };
+    mockCancellationRules.push(newRule);
+    showToast("Đã thêm quy tắc mới thành công!", "success");
+  }
 
   renderCourseCancellationRules();
-  showToast("Đã cập nhật quy tắc!", "success");
+  closeCancellationRuleModal();
+}
+
+// Add Cancellation Rule (Proxy)
+export function addCancellationRule() {
+  openCancellationRuleModal();
+}
+
+// Edit Cancellation Rule (Proxy)
+export function editCancellationRule(id) {
+  openCancellationRuleModal(id);
 }
 
 // Delete Cancellation Rule
@@ -206,3 +239,6 @@ window.addCancellationRule = addCancellationRule;
 window.editCancellationRule = editCancellationRule;
 window.deleteCancellationRule = deleteCancellationRule;
 window.filterProgressBySemester = filterProgressBySemester;
+window.openCancellationRuleModal = openCancellationRuleModal;
+window.closeCancellationRuleModal = closeCancellationRuleModal;
+window.submitCancellationRule = submitCancellationRule;
