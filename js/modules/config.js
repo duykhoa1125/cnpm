@@ -8,6 +8,7 @@
 
 // Re-export State Management
 export * from "./state.js";
+export { initStudentGPAChart } from "./charts.js";
 
 // Re-export Mock Data
 export * from "./mock-data/feedbacks.js";

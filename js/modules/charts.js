@@ -329,3 +329,64 @@ export function createAdminProgressCharts() {
     setAdminGradeChart(newGradeChart);
   }
 }
+// Initialize Student Dashboard Charts
+export function initStudentGPAChart() {
+  const ctx = document.getElementById("studentGPAChart");
+  if (ctx) {
+    new Chart(ctx, {
+      type: "line",
+      data: {
+        labels: ["HK221", "HK222", "HK231", "HK232", "HK241"],
+        datasets: [
+          {
+            label: "GPA",
+            data: [3.2, 3.4, 3.5, 3.55, 3.68],
+            borderColor: "#3b82f6",
+            backgroundColor: "rgba(59, 130, 246, 0.1)",
+            tension: 0.4,
+            fill: true,
+            pointBackgroundColor: "#fff",
+            pointBorderColor: "#3b82f6",
+            pointBorderWidth: 2,
+            pointRadius: 4,
+            pointHoverRadius: 6,
+          },
+        ],
+      },
+      options: {
+        responsive: true,
+        maintainAspectRatio: false,
+        plugins: {
+          legend: { display: false },
+          tooltip: {
+            backgroundColor: "rgba(255, 255, 255, 0.9)",
+            titleColor: "#1e293b",
+            bodyColor: "#3b82f6",
+            borderColor: "#e2e8f0",
+            borderWidth: 1,
+            padding: 10,
+            displayColors: false,
+            callbacks: {
+              label: function (context) {
+                return "GPA: " + context.parsed.y;
+              },
+            },
+          },
+        },
+        scales: {
+          y: {
+            beginAtZero: false,
+            min: 2.0,
+            max: 4.0,
+            grid: { color: "#f1f5f9", borderDash: [5, 5] },
+            ticks: { color: "#64748b", font: { size: 10, weight: "bold" } },
+          },
+          x: {
+            grid: { display: false },
+            ticks: { color: "#64748b", font: { size: 10, weight: "bold" } },
+          },
+        },
+      },
+    });
+  }
+}

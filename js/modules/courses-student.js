@@ -700,20 +700,123 @@ export function openAssignmentModal(type, id) {
       "px-2.5 py-1 rounded-lg bg-slate-100 text-slate-500 text-xs font-bold";
     status.innerText = "Chưa nộp";
 
-    submissionArea.innerHTML = `
-            <div class="text-center py-4">
-                <div class="w-12 h-12 bg-blue-50 text-blue-600 rounded-full flex items-center justify-center mx-auto mb-3 text-xl">
-                    <i class="fa-solid fa-cloud-arrow-up"></i>
-                </div>
-                <p class="text-sm font-bold text-slate-700">Nộp bài làm của bạn</p>
-                <p class="text-xs text-slate-500 mt-1">Hỗ trợ: PDF, DOCX, ZIP (Max 20MB)</p>
-            </div>
-        `;
     actionBtn.classList.remove("hidden");
     actionBtn.innerText = type === "assignment" ? "Nộp bài" : "Làm bài ngay";
-    actionBtn.onclick = () => {
-      showToast("Chức năng nộp bài đang được phát triển", "info");
-    };
+
+    if (type === "assignment") {
+      // Drag & Drop UI
+      submissionArea.innerHTML = `
+            <div id="drop-zone" class="border-2 border-dashed border-slate-300 rounded-2xl p-8 text-center hover:border-blue-500 hover:bg-blue-50 transition cursor-pointer relative group">
+                <input type="file" id="file-upload" class="absolute inset-0 w-full h-full opacity-0 cursor-pointer" multiple>
+                <div class="w-16 h-16 bg-blue-100 text-blue-600 rounded-full flex items-center justify-center mx-auto mb-4 group-hover:scale-110 transition">
+                    <i class="fa-solid fa-cloud-arrow-up text-2xl"></i>
+                </div>
+                <p class="text-sm font-bold text-slate-700">Kéo thả file vào đây hoặc click để chọn</p>
+                <p class="text-xs text-slate-400 mt-2">Hỗ trợ: PDF, DOCX, ZIP (Max 20MB)</p>
+                <div id="file-list" class="mt-4 space-y-2 hidden"></div>
+            </div>
+            
+            <!-- Progress Bar (Hidden initially) -->
+            <div id="upload-progress" class="hidden mt-4">
+                <div class="flex justify-between text-xs font-bold text-slate-500 mb-1">
+                    <span>Đang tải lên...</span>
+                    <span id="progress-percent">0%</span>
+                </div>
+                <div class="h-2 bg-slate-100 rounded-full overflow-hidden">
+                    <div id="progress-bar" class="h-full bg-blue-600 w-0 transition-all duration-300"></div>
+                </div>
+            </div>
+        `;
+
+      // Handle File Selection
+      setTimeout(() => {
+        const fileInput = document.getElementById("file-upload");
+        const fileList = document.getElementById("file-list");
+
+        if (fileInput) {
+          fileInput.addEventListener("change", (e) => {
+            if (e.target.files.length > 0) {
+              fileList.classList.remove("hidden");
+              fileList.innerHTML = Array.from(e.target.files)
+                .map(
+                  (file) => `
+                            <div class="flex items-center justify-between p-2 bg-slate-50 rounded-lg border border-slate-200 text-left">
+                                <div class="flex items-center gap-2 min-w-0">
+                                    <i class="fa-solid fa-file text-slate-400"></i>
+                                    <span class="text-xs font-bold text-slate-700 truncate">${
+                                      file.name
+                                    }</span>
+                                </div>
+                                <span class="text-[10px] text-slate-400">${(
+                                  file.size /
+                                  1024 /
+                                  1024
+                                ).toFixed(2)} MB</span>
+                            </div>
+                        `
+                )
+                .join("");
+            }
+          });
+        }
+      }, 100);
+
+      actionBtn.onclick = () => {
+        const fileInput = document.getElementById("file-upload");
+        if (!fileInput || fileInput.files.length === 0) {
+          showToast("Vui lòng chọn file để nộp!", "error");
+          return;
+        }
+
+        // Simulate Upload
+        setButtonLoading(actionBtn, true);
+        const progressDiv = document.getElementById("upload-progress");
+        const progressBar = document.getElementById("progress-bar");
+        const progressText = document.getElementById("progress-percent");
+
+        progressDiv.classList.remove("hidden");
+        let width = 0;
+        const interval = setInterval(() => {
+          width += Math.random() * 10;
+          if (width > 100) width = 100;
+
+          progressBar.style.width = width + "%";
+          progressText.innerText = Math.round(width) + "%";
+
+          if (width === 100) {
+            clearInterval(interval);
+            setTimeout(() => {
+              setButtonLoading(actionBtn, false);
+              showToast("Nộp bài thành công!", "success");
+              closeAssignmentModal();
+
+              // Update UI Status (Mock)
+              item.status = "submitted";
+              item.score = null; // Pending grading
+
+              // Re-render
+              const details = mockCourseDetails[currentCourseName];
+              renderCourseAssignments(details.assignments, details.quizzes);
+              renderCourseOverview(details); // Update overview deadlines
+            }, 500);
+          }
+        }, 200);
+      };
+    } else {
+      // Quiz Logic (Keep as is or update later)
+      submissionArea.innerHTML = `
+            <div class="text-center py-4">
+                <div class="w-12 h-12 bg-orange-50 text-orange-600 rounded-full flex items-center justify-center mx-auto mb-3 text-xl">
+                    <i class="fa-solid fa-stopwatch"></i>
+                </div>
+                <p class="text-sm font-bold text-slate-700">Bài kiểm tra trắc nghiệm</p>
+                <p class="text-xs text-slate-500 mt-1">Thời gian làm bài: 45 phút</p>
+            </div>
+        `;
+      actionBtn.onclick = () => {
+        showToast("Chức năng làm bài kiểm tra đang được phát triển", "info");
+      };
+    }
   }
 
   // Files

@@ -1,188 +1,390 @@
-          <div id="profile_student" class="section-view">
-            <div class="glass-card rounded-[32px] overflow-hidden p-1 bg-white/40">
-              <div class="bg-white/50 rounded-[28px] overflow-hidden relative pb-10">
-                <!-- Header Background -->
-                <div class="h-48 bg-gradient-to-r from-indigo-500 via-purple-500 to-pink-500"></div>
-                
-                <div class="px-8 relative">
-                  <!-- Avatar & Edit Button -->
-                  <div class="flex flex-col md:flex-row justify-between items-end -mt-16 mb-6 gap-4">
-                    <div class="relative group">
-                      <img
-                        id="student-avatar-display"
-                        src="https://ui-avatars.com/api/?name=User&background=fff&color=2563eb&size=128"
-                        class="w-32 h-32 rounded-3xl border-4 border-white shadow-xl object-cover bg-white"
-                      />
-                      <div class="absolute bottom-1 right-1 w-5 h-5 bg-green-500 border-2 border-white rounded-full shadow-md"></div>
+<div id="profile_student" class="section-view">
+  <div class="glass-card rounded-[32px] overflow-hidden p-1 bg-white/40">
+    <div class="bg-white/50 rounded-[28px] overflow-hidden relative pb-10">
+      <!-- Header Background -->
+      <div
+        class="h-48 bg-gradient-to-r from-indigo-500 via-purple-500 to-pink-500"
+      ></div>
+
+      <div class="px-8 relative">
+        <!-- Avatar & Edit Button -->
+        <div
+          class="flex flex-col md:flex-row justify-between items-end -mt-16 mb-6 gap-4"
+        >
+          <div class="relative group">
+            <img
+              id="student-avatar-display"
+              src="https://ui-avatars.com/api/?name=User&background=fff&color=2563eb&size=128"
+              class="w-32 h-32 rounded-3xl border-4 border-white shadow-xl object-cover bg-white"
+            />
+            <div
+              class="absolute bottom-1 right-1 w-6 h-6 bg-green-500 border-4 border-white rounded-full shadow-md"
+              title="Online"
+            ></div>
+          </div>
+          <div class="flex gap-3">
+            <div class="hidden md:flex gap-2">
+              <div
+                class="w-10 h-10 rounded-xl bg-yellow-100 text-yellow-600 flex items-center justify-center text-lg shadow-sm border border-yellow-200"
+                title="Sinh viên 5 tốt"
+              >
+                <i class="fa-solid fa-star"></i>
+              </div>
+              <div
+                class="w-10 h-10 rounded-xl bg-blue-100 text-blue-600 flex items-center justify-center text-lg shadow-sm border border-blue-200"
+                title="Top 10% GPA"
+              >
+                <i class="fa-solid fa-trophy"></i>
+              </div>
+            </div>
+            <button
+              onclick="toggleProfileEdit()"
+              class="px-6 py-3 bg-white/80 hover:bg-white/90 text-slate-700 font-bold rounded-xl shadow-sm transition text-sm backdrop-blur-md border border-white/50"
+            >
+              <i class="fa-solid fa-pen-to-square mr-2 text-blue-600"></i> Chỉnh
+              sửa
+            </button>
+          </div>
+        </div>
+
+        <!-- Main Profile Info (View Mode) -->
+        <div id="student-view-mode">
+          <div class="mb-8">
+            <h1
+              id="student-name-display"
+              class="text-4xl font-black text-slate-800 mb-2"
+            >
+              Nguyen Van A
+            </h1>
+            <div class="flex flex-wrap gap-3 items-center">
+              <span
+                class="px-3 py-1 bg-blue-600 text-white rounded-lg text-xs font-bold uppercase tracking-wide shadow-blue-500/30 shadow-lg"
+                >Sinh viên chính quy</span
+              >
+              <span
+                class="px-3 py-1 bg-slate-100 text-slate-600 rounded-lg text-xs font-bold font-mono border border-slate-200"
+                >MSSV: 1910123</span
+              >
+              <span class="text-slate-300">|</span>
+              <span class="text-sm font-bold text-slate-500"
+                ><i class="fa-solid fa-location-dot mr-1"></i> TP. Hồ Chí
+                Minh</span
+              >
+            </div>
+          </div>
+
+          <div class="grid grid-cols-1 lg:grid-cols-3 gap-6">
+            <!-- Left Column: Personal Info -->
+            <div class="lg:col-span-1 space-y-6">
+              <div
+                class="glass-panel p-6 rounded-2xl border border-white/50 bg-white/30"
+              >
+                <h3
+                  class="text-lg font-bold text-slate-800 mb-4 flex items-center gap-2"
+                >
+                  <i class="fa-solid fa-address-card text-indigo-500"></i> Thông
+                  tin cá nhân
+                </h3>
+                <div class="space-y-4">
+                  <div class="flex items-center gap-3">
+                    <div
+                      class="w-8 h-8 rounded-lg bg-blue-50 text-blue-500 flex items-center justify-center"
+                    >
+                      <i class="fa-solid fa-envelope"></i>
                     </div>
-                    <button onclick="toggleProfileEdit()" class="px-6 py-3 bg-white/80 hover:bg-white/70 text-slate-700 font-bold rounded-xl shadow-sm transition text-sm backdrop-blur-md border border-white/50">
-                      <i class="fa-solid fa-pen-to-square mr-2 text-blue-600"></i> Chỉnh sửa
-                    </button>
-                  </div>
-
-                  <!-- Main Profile Info (View Mode) -->
-                  <div id="student-view-mode">
-                      <div class="mb-8">
-                          <h1 id="student-name-display" class="text-3xl font-black text-slate-800 mb-1">Nguyen Van A</h1>
-                          <div class="flex flex-wrap gap-3">
-                              <span class="px-3 py-1 bg-blue-100 text-blue-600 rounded-lg text-xs font-bold uppercase tracking-wide">Sinh viên</span>
-                              <span class="px-3 py-1 bg-slate-100 text-slate-600 rounded-lg text-xs font-bold font-mono">MSSV: 1910123</span>
-                          </div>
-                      </div>
-
-                      <div class="grid grid-cols-1 lg:grid-cols-3 gap-6">
-                          <!-- Left Column: Personal Info -->
-                          <div class="lg:col-span-1 space-y-6">
-                              <div class="glass-panel p-6 rounded-2xl border border-white/50 bg-white/30">
-                                  <h3 class="text-lg font-bold text-slate-800 mb-4 flex items-center gap-2">
-                                      <i class="fa-solid fa-address-card text-indigo-500"></i> Thông tin cá nhân
-                                  </h3>
-                                  <div class="space-y-4">
-                                      <div class="flex items-center gap-3">
-                                          <div class="w-8 h-8 rounded-lg bg-blue-50 text-blue-500 flex items-center justify-center"><i class="fa-solid fa-envelope"></i></div>
-                                          <div>
-                                              <p class="text-[10px] font-bold text-slate-400 uppercase">Email</p>
-                                              <p id="student-email-display" class="text-sm font-bold text-slate-700">student.hcmut@hcmut.edu.vn</p>
-                                          </div>
-                                      </div>
-                                      <div class="flex items-center gap-3">
-                                          <div class="w-8 h-8 rounded-lg bg-green-50 text-green-500 flex items-center justify-center"><i class="fa-solid fa-phone"></i></div>
-                                          <div>
-                                              <p class="text-[10px] font-bold text-slate-400 uppercase">Số điện thoại</p>
-                                              <p id="student-phone-display" class="text-sm font-bold text-slate-700">0909 123 456</p>
-                                          </div>
-                                      </div>
-                                      <div class="flex items-center gap-3">
-                                          <div class="w-8 h-8 rounded-lg bg-purple-50 text-purple-500 flex items-center justify-center"><i class="fa-solid fa-cake-candles"></i></div>
-                                          <div>
-                                              <p class="text-[10px] font-bold text-slate-400 uppercase">Ngày sinh</p>
-                                              <p class="text-sm font-bold text-slate-700">01/01/2001</p>
-                                          </div>
-                                      </div>
-                                  </div>
-                              </div>
-
-                              <div class="glass-panel p-6 rounded-2xl border border-white/50 bg-white/30">
-                                  <h3 class="text-lg font-bold text-slate-800 mb-4 flex items-center gap-2">
-                                      <i class="fa-solid fa-graduation-cap text-purple-500"></i> Học vấn
-                                  </h3>
-                                  <div class="space-y-4">
-                                      <div>
-                                          <p class="text-[10px] font-bold text-slate-400 uppercase">Khoa / Chuyên ngành</p>
-                                          <p class="text-sm font-bold text-slate-700">Khoa học & Kỹ thuật Máy tính</p>
-                                      </div>
-                                      <div>
-                                          <p class="text-[10px] font-bold text-slate-400 uppercase">Lớp sinh hoạt</p>
-                                          <p class="text-sm font-bold text-slate-700">MT19KH1</p>
-                                      </div>
-                                      <div>
-                                          <p class="text-[10px] font-bold text-slate-400 uppercase">Điểm TB Tích lũy (GPA)</p>
-                                          <div class="flex items-center gap-2">
-                                              <span class="text-xl font-black text-blue-600">3.58</span>
-                                              <span class="text-xs font-bold text-slate-400">/ 4.0</span>
-                                          </div>
-                                      </div>
-                                  </div>
-                              </div>
-                          </div>
-
-                          <!-- Right Column: Courses Info -->
-                          <div class="lg:col-span-2 space-y-6">
-                              <!-- Active Courses -->
-                              <div class="glass-panel p-6 rounded-2xl border border-white/50 bg-white/30">
-                                  <h3 class="text-lg font-bold text-slate-800 mb-4 flex items-center gap-2">
-                                      <i class="fa-solid fa-book-open-reader text-blue-500"></i> Các khóa đang học
-                                  </h3>
-                                  <div class="grid grid-cols-1 md:grid-cols-2 gap-4">
-                                      <div class="bg-white p-4 rounded-xl border border-slate-100 shadow-sm flex items-start gap-3">
-                                          <div class="w-10 h-10 rounded-lg bg-blue-100 text-blue-600 flex items-center justify-center text-lg font-bold">C</div>
-                                          <div>
-                                              <h4 class="font-bold text-slate-800 text-sm">Giải tích 1</h4>
-                                              <p class="text-xs text-slate-500">CO1023 - T2, T4 (7:00 - 9:00)</p>
-                                              <div class="mt-2 w-full bg-slate-100 h-1.5 rounded-full overflow-hidden">
-                                                  <div class="bg-blue-500 h-full w-[80%]"></div>
-                                              </div>
-                                          </div>
-                                      </div>
-                                      <div class="bg-white p-4 rounded-xl border border-slate-100 shadow-sm flex items-start gap-3">
-                                          <div class="w-10 h-10 rounded-lg bg-indigo-100 text-indigo-600 flex items-center justify-center text-lg font-bold">P</div>
-                                          <div>
-                                              <h4 class="font-bold text-slate-800 text-sm">Nhập môn Lập trình</h4>
-                                              <p class="text-xs text-slate-500">CO2011 - T3, T5 (13:00 - 15:00)</p>
-                                              <div class="mt-2 w-full bg-slate-100 h-1.5 rounded-full overflow-hidden">
-                                                  <div class="bg-indigo-500 h-full w-[45%]"></div>
-                                              </div>
-                                          </div>
-                                      </div>
-                                  </div>
-                              </div>
-
-                              <!-- Completed Courses -->
-                              <div class="glass-panel p-6 rounded-2xl border border-white/50 bg-white/30">
-                                  <h3 class="text-lg font-bold text-slate-800 mb-4 flex items-center gap-2">
-                                      <i class="fa-solid fa-circle-check text-green-500"></i> Các khóa đã hoàn thành
-                                  </h3>
-                                  <div class="flex flex-wrap gap-3">
-                                      <span class="px-3 py-2 bg-green-50 text-green-700 rounded-xl text-xs font-bold border border-green-100 flex items-center gap-2">
-                                          <i class="fa-solid fa-check"></i> Vật lý Đại cương 1 <span class="bg-white px-1.5 py-0.5 rounded text-[10px] shadow-sm ml-1">9.0</span>
-                                      </span>
-                                      <span class="px-3 py-2 bg-green-50 text-green-700 rounded-xl text-xs font-bold border border-green-100 flex items-center gap-2">
-                                          <i class="fa-solid fa-check"></i> Đại số Tuyến tính <span class="bg-white px-1.5 py-0.5 rounded text-[10px] shadow-sm ml-1">8.5</span>
-                                      </span>
-                                      <span class="px-3 py-2 bg-green-50 text-green-700 rounded-xl text-xs font-bold border border-green-100 flex items-center gap-2">
-                                          <i class="fa-solid fa-check"></i> Pháp luật đại cương <span class="bg-white px-1.5 py-0.5 rounded text-[10px] shadow-sm ml-1">8.0</span>
-                                      </span>
-                                  </div>
-                              </div>
-                          </div>
-                      </div>
-                  </div>
-
-                  <!-- Edit Mode (Hidden by default) -->
-                  <form id="student-edit-mode" class="hidden space-y-6 animate-float mt-6 pb-6" onsubmit="updateProfile(event)">
-                    <div class="p-6 rounded-2xl bg-white border border-slate-200 shadow-lg">
-                        <h3 class="text-lg font-bold text-slate-800 mb-4 flex items-center gap-2">
-                           <i class="fa-solid fa-user-pen text-blue-600"></i> Cập nhật thông tin
-                        </h3>
-                        
-                        <div class="flex flex-col md:flex-row gap-6">
-                            <!-- Avatar Upload -->
-                            <div class="flex flex-col items-center gap-3">
-                                <div class="w-32 h-32 rounded-3xl border-2 border-dashed border-slate-300 flex items-center justify-center overflow-hidden relative bg-slate-50 group cursor-pointer">
-                                    <img id="student-avatar-preview" src="" class="w-full h-full object-cover hidden">
-                                    <div id="student-avatar-placeholder" class="text-slate-400 flex flex-col items-center">
-                                        <i class="fa-solid fa-camera text-2xl mb-1"></i>
-                                        <span class="text-[10px] font-bold uppercase">Tải ảnh lên</span>
-                                    </div>
-                                    <input type="file" id="student-avatar-input" accept="image/*" class="absolute inset-0 opacity-0 cursor-pointer" onchange="handleImagePreview(this, 'student-avatar-preview', 'student-avatar-placeholder')">
-                                </div>
-                                <p class="text-[10px] text-slate-400 font-bold text-center">JPG, PNG tối đa 2MB</p>
-                            </div>
-
-                            <!-- Fields -->
-                            <div class="flex-1 grid grid-cols-1 md:grid-cols-2 gap-6">
-                                <div class="space-y-2">
-                                    <label class="text-xs font-bold text-slate-500 uppercase ml-1">Họ và Tên</label>
-                                    <input type="text" id="student-name-input" class="w-full p-3 rounded-xl bg-slate-50 border border-slate-200 font-bold text-slate-700 focus:outline-none focus:border-blue-500 transition" />
-                                </div>
-                                <div class="space-y-2">
-                                    <label class="text-xs font-bold text-slate-500 uppercase ml-1">Số điện thoại</label>
-                                    <input type="text" id="student-phone-input" class="w-full p-3 rounded-xl bg-slate-50 border border-slate-200 font-bold text-slate-700 focus:outline-none focus:border-blue-500 transition" />
-                                </div>
-                                <div class="col-span-1 md:col-span-2 space-y-2">
-                                    <label class="text-xs font-bold text-slate-500 uppercase ml-1">Email</label>
-                                    <input type="email" id="student-email-input" class="w-full p-3 rounded-xl bg-slate-50 border border-slate-200 font-bold text-slate-700 focus:outline-none focus:border-blue-500 transition" />
-                                </div>
-                            </div>
-                        </div>
-
-                        <div class="mt-6 flex justify-end gap-4 pt-4 border-t border-slate-100">
-                            <button type="button" onclick="toggleProfileEdit()" class="px-6 py-2 rounded-xl bg-slate-100 text-slate-600 font-bold hover:bg-slate-200 transition">Hủy bỏ</button>
-                            <button type="submit" class="px-6 py-2 rounded-xl bg-blue-600 text-white font-bold hover:bg-blue-700 shadow-lg transition">Lưu thay đổi</button>
-                        </div>
+                    <div>
+                      <p class="text-[10px] font-bold text-slate-400 uppercase">
+                        Email
+                      </p>
+                      <p
+                        id="student-email-display"
+                        class="text-sm font-bold text-slate-700"
+                      >
+                        student.hcmut@hcmut.edu.vn
+                      </p>
                     </div>
-                  </form>
+                  </div>
+                  <div class="flex items-center gap-3">
+                    <div
+                      class="w-8 h-8 rounded-lg bg-green-50 text-green-500 flex items-center justify-center"
+                    >
+                      <i class="fa-solid fa-phone"></i>
+                    </div>
+                    <div>
+                      <p class="text-[10px] font-bold text-slate-400 uppercase">
+                        Số điện thoại
+                      </p>
+                      <p
+                        id="student-phone-display"
+                        class="text-sm font-bold text-slate-700"
+                      >
+                        0909 123 456
+                      </p>
+                    </div>
+                  </div>
+                  <div class="flex items-center gap-3">
+                    <div
+                      class="w-8 h-8 rounded-lg bg-purple-50 text-purple-500 flex items-center justify-center"
+                    >
+                      <i class="fa-solid fa-cake-candles"></i>
+                    </div>
+                    <div>
+                      <p class="text-[10px] font-bold text-slate-400 uppercase">
+                        Ngày sinh
+                      </p>
+                      <p class="text-sm font-bold text-slate-700">01/01/2001</p>
+                    </div>
+                  </div>
+                </div>
+              </div>
+
+              <div
+                class="glass-panel p-6 rounded-2xl border border-white/50 bg-white/30"
+              >
+                <h3
+                  class="text-lg font-bold text-slate-800 mb-4 flex items-center gap-2"
+                >
+                  <i class="fa-solid fa-graduation-cap text-purple-500"></i> Học
+                  vấn
+                </h3>
+                <div class="space-y-4">
+                  <div>
+                    <p class="text-[10px] font-bold text-slate-400 uppercase">
+                      Khoa / Chuyên ngành
+                    </p>
+                    <p class="text-sm font-bold text-slate-700">
+                      Khoa học & Kỹ thuật Máy tính
+                    </p>
+                  </div>
+                  <div>
+                    <p class="text-[10px] font-bold text-slate-400 uppercase">
+                      Lớp sinh hoạt
+                    </p>
+                    <p class="text-sm font-bold text-slate-700">MT19KH1</p>
+                  </div>
+                  <div>
+                    <p class="text-[10px] font-bold text-slate-400 uppercase">
+                      Điểm TB Tích lũy (GPA)
+                    </p>
+                    <div class="flex items-center gap-2">
+                      <span class="text-xl font-black text-blue-600">3.58</span>
+                      <span class="text-xs font-bold text-slate-400"
+                        >/ 4.0</span
+                      >
+                    </div>
+                  </div>
+                </div>
+              </div>
+            </div>
+
+            <!-- Right Column: Courses Info -->
+            <div class="lg:col-span-2 space-y-6">
+              <!-- Active Courses -->
+              <div
+                class="glass-panel p-6 rounded-2xl border border-white/50 bg-white/30"
+              >
+                <h3
+                  class="text-lg font-bold text-slate-800 mb-4 flex items-center gap-2"
+                >
+                  <i class="fa-solid fa-book-open-reader text-blue-500"></i> Các
+                  khóa đang học
+                </h3>
+                <div class="grid grid-cols-1 md:grid-cols-2 gap-4">
+                  <div
+                    class="bg-white p-4 rounded-xl border border-slate-100 shadow-sm flex items-start gap-3"
+                  >
+                    <div
+                      class="w-10 h-10 rounded-lg bg-blue-100 text-blue-600 flex items-center justify-center text-lg font-bold"
+                    >
+                      C
+                    </div>
+                    <div>
+                      <h4 class="font-bold text-slate-800 text-sm">
+                        Giải tích 1
+                      </h4>
+                      <p class="text-xs text-slate-500">
+                        CO1023 - T2, T4 (7:00 - 9:00)
+                      </p>
+                      <div
+                        class="mt-2 w-full bg-slate-100 h-1.5 rounded-full overflow-hidden"
+                      >
+                        <div class="bg-blue-500 h-full w-[80%]"></div>
+                      </div>
+                    </div>
+                  </div>
+                  <div
+                    class="bg-white p-4 rounded-xl border border-slate-100 shadow-sm flex items-start gap-3"
+                  >
+                    <div
+                      class="w-10 h-10 rounded-lg bg-indigo-100 text-indigo-600 flex items-center justify-center text-lg font-bold"
+                    >
+                      P
+                    </div>
+                    <div>
+                      <h4 class="font-bold text-slate-800 text-sm">
+                        Nhập môn Lập trình
+                      </h4>
+                      <p class="text-xs text-slate-500">
+                        CO2011 - T3, T5 (13:00 - 15:00)
+                      </p>
+                      <div
+                        class="mt-2 w-full bg-slate-100 h-1.5 rounded-full overflow-hidden"
+                      >
+                        <div class="bg-indigo-500 h-full w-[45%]"></div>
+                      </div>
+                    </div>
+                  </div>
+                </div>
+              </div>
+
+              <!-- Completed Courses -->
+              <div
+                class="glass-panel p-6 rounded-2xl border border-white/50 bg-white/30"
+              >
+                <h3
+                  class="text-lg font-bold text-slate-800 mb-4 flex items-center gap-2"
+                >
+                  <i class="fa-solid fa-circle-check text-green-500"></i> Các
+                  khóa đã hoàn thành
+                </h3>
+                <div class="flex flex-wrap gap-3">
+                  <span
+                    class="px-3 py-2 bg-green-50 text-green-700 rounded-xl text-xs font-bold border border-green-100 flex items-center gap-2"
+                  >
+                    <i class="fa-solid fa-check"></i> Vật lý Đại cương 1
+                    <span
+                      class="bg-white px-1.5 py-0.5 rounded text-[10px] shadow-sm ml-1"
+                      >9.0</span
+                    >
+                  </span>
+                  <span
+                    class="px-3 py-2 bg-green-50 text-green-700 rounded-xl text-xs font-bold border border-green-100 flex items-center gap-2"
+                  >
+                    <i class="fa-solid fa-check"></i> Đại số Tuyến tính
+                    <span
+                      class="bg-white px-1.5 py-0.5 rounded text-[10px] shadow-sm ml-1"
+                      >8.5</span
+                    >
+                  </span>
+                  <span
+                    class="px-3 py-2 bg-green-50 text-green-700 rounded-xl text-xs font-bold border border-green-100 flex items-center gap-2"
+                  >
+                    <i class="fa-solid fa-check"></i> Pháp luật đại cương
+                    <span
+                      class="bg-white px-1.5 py-0.5 rounded text-[10px] shadow-sm ml-1"
+                      >8.0</span
+                    >
+                  </span>
                 </div>
               </div>
             </div>
           </div>
+        </div>
+
+        <!-- Edit Mode (Hidden by default) -->
+        <form
+          id="student-edit-mode"
+          class="hidden space-y-6 animate-float mt-6 pb-6"
+          onsubmit="updateProfile(event)"
+        >
+          <div
+            class="p-6 rounded-2xl bg-white border border-slate-200 shadow-lg"
+          >
+            <h3
+              class="text-lg font-bold text-slate-800 mb-4 flex items-center gap-2"
+            >
+              <i class="fa-solid fa-user-pen text-blue-600"></i> Cập nhật thông
+              tin
+            </h3>
+
+            <div class="flex flex-col md:flex-row gap-6">
+              <!-- Avatar Upload -->
+              <div class="flex flex-col items-center gap-3">
+                <div
+                  class="w-32 h-32 rounded-3xl border-2 border-dashed border-slate-300 flex items-center justify-center overflow-hidden relative bg-slate-50 group cursor-pointer"
+                >
+                  <img
+                    id="student-avatar-preview"
+                    src=""
+                    class="w-full h-full object-cover hidden"
+                  />
+                  <div
+                    id="student-avatar-placeholder"
+                    class="text-slate-400 flex flex-col items-center"
+                  >
+                    <i class="fa-solid fa-camera text-2xl mb-1"></i>
+                    <span class="text-[10px] font-bold uppercase"
+                      >Tải ảnh lên</span
+                    >
+                  </div>
+                  <input
+                    type="file"
+                    id="student-avatar-input"
+                    accept="image/*"
+                    class="absolute inset-0 opacity-0 cursor-pointer"
+                    onchange="handleImagePreview(this, 'student-avatar-preview', 'student-avatar-placeholder')"
+                  />
+                </div>
+                <p class="text-[10px] text-slate-400 font-bold text-center">
+                  JPG, PNG tối đa 2MB
+                </p>
+              </div>
+
+              <!-- Fields -->
+              <div class="flex-1 grid grid-cols-1 md:grid-cols-2 gap-6">
+                <div class="space-y-2">
+                  <label class="text-xs font-bold text-slate-500 uppercase ml-1"
+                    >Họ và Tên</label
+                  >
+                  <input
+                    type="text"
+                    id="student-name-input"
+                    class="w-full p-3 rounded-xl bg-slate-50 border border-slate-200 font-bold text-slate-700 focus:outline-none focus:border-blue-500 transition"
+                  />
+                </div>
+                <div class="space-y-2">
+                  <label class="text-xs font-bold text-slate-500 uppercase ml-1"
+                    >Số điện thoại</label
+                  >
+                  <input
+                    type="text"
+                    id="student-phone-input"
+                    class="w-full p-3 rounded-xl bg-slate-50 border border-slate-200 font-bold text-slate-700 focus:outline-none focus:border-blue-500 transition"
+                  />
+                </div>
+                <div class="col-span-1 md:col-span-2 space-y-2">
+                  <label class="text-xs font-bold text-slate-500 uppercase ml-1"
+                    >Email</label
+                  >
+                  <input
+                    type="email"
+                    id="student-email-input"
+                    class="w-full p-3 rounded-xl bg-slate-50 border border-slate-200 font-bold text-slate-700 focus:outline-none focus:border-blue-500 transition"
+                  />
+                </div>
+              </div>
+            </div>
+
+            <div
+              class="mt-6 flex justify-end gap-4 pt-4 border-t border-slate-100"
+            >
+              <button
+                type="button"
+                onclick="toggleProfileEdit()"
+                class="px-6 py-2 rounded-xl bg-slate-100 text-slate-600 font-bold hover:bg-slate-200 transition"
+              >
+                Hủy bỏ
+              </button>
+              <button
+                type="submit"
+                class="px-6 py-2 rounded-xl bg-blue-600 text-white font-bold hover:bg-blue-700 shadow-lg transition"
+              >
+                Lưu thay đổi
+              </button>
+            </div>
+          </div>
+        </form>
+      </div>
+    </div>
+  </div>
+</div>

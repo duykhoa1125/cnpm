@@ -227,6 +227,8 @@ window.closeAssignmentModal = closeAssignmentModal;
 window.openForumModal = openForumModal;
 window.closeForumModal = closeForumModal;
 window.submitForumReply = submitForumReply;
+window.openScheduleModal = () =>
+  document.getElementById("schedule-modal").classList.remove("hidden");
 
 // Profile Functions
 window.toggleProfileEdit = toggleProfileEdit;
@@ -274,6 +276,16 @@ document.addEventListener("partialsLoaded", () => {
 
   // Initialize Student Courses
   if (window.renderStudentCourses) window.renderStudentCourses();
+
+  // Initialize Student Chart
+  const userRole = localStorage.getItem("currentUserRole");
+  if (userRole === "student") {
+    setTimeout(() => {
+      import("./modules/charts.js").then((module) => {
+        if (module.initStudentGPAChart) module.initStudentGPAChart();
+      });
+    }, 500);
+  }
 
   // Setup Feedback Select
   const feedbackSelect = document.querySelector("#feedback_student select");

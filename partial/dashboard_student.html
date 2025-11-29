@@ -98,6 +98,25 @@
     </div>
   </div>
 
+  <!-- GPA Chart Section -->
+  <div class="glass-card p-6 rounded-[28px]">
+    <div class="flex justify-between items-center mb-4">
+      <h3 class="font-bold text-slate-800 flex items-center gap-2">
+        <i class="fa-solid fa-chart-line text-blue-500"></i> Phân tích kết quả
+        học tập
+      </h3>
+      <select
+        class="text-xs font-bold text-slate-500 bg-slate-100 rounded-lg px-2 py-1 border-none outline-none"
+      >
+        <option>Tất cả học kỳ</option>
+        <option>Năm học 2024-2025</option>
+      </select>
+    </div>
+    <div class="h-64 w-full">
+      <canvas id="studentGPAChart"></canvas>
+    </div>
+  </div>
+
   <div class="grid grid-cols-1 lg:grid-cols-3 gap-8">
     <!-- Schedule -->
     <div class="glass-card p-6 rounded-[28px] lg:col-span-2">
@@ -106,8 +125,11 @@
           <i class="fa-regular fa-calendar-check text-blue-500"></i> Thời khóa
           biểu hôm nay
         </h3>
-        <button class="text-xs text-blue-600 font-bold hover:underline">
-          Xem tất cả
+        <button
+          onclick="openScheduleModal()"
+          class="text-xs text-blue-600 font-bold hover:underline"
+        >
+          Xem lịch tuần
         </button>
       </div>
 
