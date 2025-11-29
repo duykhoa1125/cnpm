@@ -372,5 +372,6 @@ export function handleImagePreview(input, imgId, placeholderId) {
   }
 }
 
+// Custom Cursor Logic
 // Make closeConfirmationModal globally available
 window.closeConfirmationModal = closeConfirmationModal;
