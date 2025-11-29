@@ -1,0 +1,220 @@
+<div id="scheduling_academic" class="section-view space-y-6 animate-fade-in">
+  <!-- Header -->
+  <div class="flex flex-col md:flex-row md:items-center justify-between gap-4">
+    <div>
+      <h2 class="text-2xl font-bold text-slate-800">Xếp Thời khóa biểu</h2>
+      <p class="text-slate-500">
+        Phân công giảng viên và phòng học cho các lớp
+      </p>
+    </div>
+    <div class="flex gap-3">
+      <select
+        class="px-4 py-2.5 bg-white border border-slate-200 rounded-xl text-sm font-bold text-slate-600 focus:outline-none focus:border-blue-500 transition shadow-sm"
+      >
+        <option value="241">Học kỳ 1 - 2024/2025</option>
+        <option value="232">Học kỳ 2 - 2023/2024</option>
+      </select>
+      <button
+        onclick="autoSchedule()"
+        class="px-5 py-2.5 bg-purple-600 hover:bg-purple-700 text-white font-bold rounded-xl shadow-lg shadow-purple-500/30 transition flex items-center gap-2"
+      >
+        <i class="fa-solid fa-wand-magic-sparkles"></i> Xếp tự động
+      </button>
+    </div>
+  </div>
+
+  <!-- Main Content -->
+  <div class="grid grid-cols-1 lg:grid-cols-3 gap-6">
+    <!-- Class List -->
+    <div class="lg:col-span-2 space-y-4">
+      <div
+        class="bg-white p-4 rounded-2xl border border-slate-200 shadow-sm flex gap-3"
+      >
+        <div class="relative flex-1">
+          <input
+            type="text"
+            id="schedule-search"
+            placeholder="Tìm lớp, môn học..."
+            class="w-full pl-10 pr-4 py-2 bg-slate-50 border border-slate-200 rounded-xl text-sm font-medium focus:outline-none focus:border-blue-500 transition"
+          />
+          <i
+            class="fa-solid fa-magnifying-glass absolute left-3 top-1/2 -translate-y-1/2 text-slate-400"
+          ></i>
+        </div>
+        <select
+          id="schedule-filter-status"
+          class="px-4 py-2 bg-slate-50 border border-slate-200 rounded-xl text-sm font-bold text-slate-600 focus:outline-none focus:border-blue-500 transition"
+        >
+          <option value="ALL">Tất cả</option>
+          <option value="UNASSIGNED">Chưa xếp GV</option>
+          <option value="NO_ROOM">Chưa xếp Phòng</option>
+          <option value="CONFLICT">Xung đột</option>
+        </select>
+      </div>
+
+      <div
+        id="schedule-class-list"
+        class="space-y-3 max-h-[600px] overflow-y-auto custom-scroll pr-2"
+      >
+        <!-- JS Populated -->
+      </div>
+    </div>
+
+    <!-- Conflict / Stats Panel -->
+    <div class="space-y-6">
+      <div class="bg-white p-6 rounded-2xl border border-slate-200 shadow-sm">
+        <h3 class="font-bold text-slate-800 mb-4 flex items-center gap-2">
+          <i class="fa-solid fa-triangle-exclamation text-orange-500"></i> Cảnh
+          báo Xung đột
+        </h3>
+        <div id="schedule-conflicts" class="space-y-3">
+          <p class="text-sm text-slate-500 italic text-center py-4">
+            Không có xung đột nào.
+          </p>
+        </div>
+      </div>
+
+      <div
+        class="bg-gradient-to-br from-blue-500 to-indigo-600 p-6 rounded-2xl shadow-lg text-white relative overflow-hidden"
+      >
+        <div
+          class="absolute top-0 right-0 w-32 h-32 bg-white/10 rounded-bl-full -mr-8 -mt-8"
+        ></div>
+        <h3 class="font-bold text-lg mb-1">Tiến độ Xếp lịch</h3>
+        <p class="text-blue-100 text-xs mb-4">Học kỳ 1 - 2024/2025</p>
+
+        <div class="flex items-end gap-2 mb-1">
+          <span class="text-4xl font-black" id="schedule-progress-percent"
+            >0%</span
+          >
+          <span class="text-sm text-blue-200 mb-1">hoàn thành</span>
+        </div>
+
+        <div class="w-full bg-black/20 rounded-full h-2 mb-4">
+          <div
+            id="schedule-progress-bar"
+            class="bg-white h-2 rounded-full transition-all duration-1000"
+            style="width: 0%"
+          ></div>
+        </div>
+
+        <div class="grid grid-cols-2 gap-4 text-xs">
+          <div>
+            <p class="text-blue-200">Đã xếp GV</p>
+            <p class="font-bold text-lg" id="stat-assigned-tutor">0/0</p>
+          </div>
+          <div>
+            <p class="text-blue-200">Đã xếp Phòng</p>
+            <p class="font-bold text-lg" id="stat-assigned-room">0/0</p>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+
+<!-- Scheduling Modal -->
+<div
+  id="scheduling-modal"
+  class="fixed inset-0 z-[70] hidden flex items-center justify-center"
+>
+  <div
+    class="absolute inset-0 bg-slate-900/20 backdrop-blur-sm transition-opacity"
+    onclick="closeSchedulingModal()"
+  ></div>
+  <div
+    class="glass-panel w-full max-w-lg p-8 rounded-[32px] shadow-2xl relative z-10 bg-white/95 transform transition-all scale-100 m-4"
+  >
+    <div class="flex justify-between items-start mb-6">
+      <div>
+        <h3 class="text-xl font-black text-slate-800" id="sched-modal-title">
+          Xếp lịch lớp L01
+        </h3>
+        <p class="text-slate-500 text-sm font-medium" id="sched-modal-course">
+          Môn: Cấu trúc dữ liệu
+        </p>
+      </div>
+      <button
+        onclick="closeSchedulingModal()"
+        class="w-8 h-8 rounded-full bg-slate-50 hover:bg-red-50 hover:text-red-500 flex items-center justify-center text-slate-400 transition-all"
+      >
+        <i class="fa-solid fa-times"></i>
+      </button>
+    </div>
+
+    <form onsubmit="submitScheduleForm(event)" class="space-y-5">
+      <input type="hidden" id="sched-class-id" />
+
+      <div>
+        <label
+          class="text-xs font-bold text-slate-500 uppercase ml-1 mb-1 block"
+          >Giảng viên</label
+        >
+        <select
+          id="sched-tutor"
+          class="w-full p-3 rounded-xl border border-slate-200 bg-white/50 focus:outline-none focus:border-blue-500 transition font-bold text-slate-700"
+        >
+          <option value="">-- Chọn giảng viên --</option>
+          <!-- Populated by JS -->
+        </select>
+      </div>
+
+      <div class="grid grid-cols-2 gap-4">
+        <div>
+          <label
+            class="text-xs font-bold text-slate-500 uppercase ml-1 mb-1 block"
+            >Thứ</label
+          >
+          <select
+            id="sched-day"
+            class="w-full p-3 rounded-xl border border-slate-200 bg-white/50 focus:outline-none focus:border-blue-500 transition font-bold text-slate-700"
+          >
+            <option value="2">Thứ 2</option>
+            <option value="3">Thứ 3</option>
+            <option value="4">Thứ 4</option>
+            <option value="5">Thứ 5</option>
+            <option value="6">Thứ 6</option>
+            <option value="7">Thứ 7</option>
+          </select>
+        </div>
+        <div>
+          <label
+            class="text-xs font-bold text-slate-500 uppercase ml-1 mb-1 block"
+            >Ca học</label
+          >
+          <select
+            id="sched-shift"
+            class="w-full p-3 rounded-xl border border-slate-200 bg-white/50 focus:outline-none focus:border-blue-500 transition font-bold text-slate-700"
+          >
+            <option value="1">Ca 1 (7:00 - 9:00)</option>
+            <option value="2">Ca 2 (9:00 - 11:00)</option>
+            <option value="3">Ca 3 (13:00 - 15:00)</option>
+            <option value="4">Ca 4 (15:00 - 17:00)</option>
+          </select>
+        </div>
+      </div>
+
+      <div>
+        <label
+          class="text-xs font-bold text-slate-500 uppercase ml-1 mb-1 block"
+          >Phòng học</label
+        >
+        <input
+          type="text"
+          id="sched-room"
+          class="w-full p-3 rounded-xl border border-slate-200 bg-white/50 focus:outline-none focus:border-blue-500 transition font-bold text-slate-700"
+          placeholder="VD: H6-301"
+        />
+      </div>
+
+      <div class="pt-2">
+        <button
+          type="submit"
+          class="w-full py-3 bg-blue-600 text-white font-bold rounded-xl hover:bg-blue-700 shadow-lg shadow-blue-500/30 transition text-sm"
+        >
+          <i class="fa-solid fa-save mr-1"></i> Lưu thay đổi
+        </button>
+      </div>
+    </form>
+  </div>
+</div>

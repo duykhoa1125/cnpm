@@ -1617,3 +1617,96 @@
     </form>
   </div>
 </div>
+
+<!-- Grade Entry Modal -->
+<div
+  id="grade-entry-modal"
+  class="fixed inset-0 z-[60] hidden flex items-center justify-center"
+>
+  <!-- Backdrop -->
+  <div
+    class="absolute inset-0 bg-slate-900/20 backdrop-blur-sm transition-opacity"
+    onclick="closeGradeModal()"
+  ></div>
+
+  <!-- Modal Content -->
+  <div
+    class="glass-panel w-full max-w-4xl p-0 rounded-[32px] shadow-2xl transform transition-all scale-100 relative z-10 overflow-hidden m-4 bg-white/95 flex flex-col max-h-[90vh]"
+  >
+    <!-- Header -->
+    <div
+      class="p-6 border-b border-slate-100 flex justify-between items-center bg-white/50 backdrop-blur-md flex-shrink-0"
+    >
+      <div class="flex items-center gap-4">
+        <div
+          class="w-12 h-12 rounded-2xl bg-blue-50 text-blue-600 flex items-center justify-center text-xl shadow-sm border border-blue-100"
+        >
+          <i class="fa-solid fa-pen-to-square"></i>
+        </div>
+        <div>
+          <h3
+            id="grade-course-name"
+            class="font-black text-slate-800 text-xl leading-tight"
+          >
+            Nhập điểm
+          </h3>
+          <p class="text-sm font-medium text-slate-500">
+            Nhập điểm Giữa kỳ và Cuối kỳ cho sinh viên
+          </p>
+        </div>
+      </div>
+      <button
+        onclick="closeGradeModal()"
+        class="w-8 h-8 rounded-full bg-slate-50 hover:bg-red-50 hover:text-red-500 flex items-center justify-center text-slate-400 transition-all"
+      >
+        <i class="fa-solid fa-times"></i>
+      </button>
+    </div>
+
+    <!-- Body (Scrollable Table) -->
+    <div class="flex-1 overflow-y-auto custom-scroll p-6 bg-slate-50/50">
+      <div
+        class="bg-white rounded-2xl border border-slate-200 shadow-sm overflow-hidden"
+      >
+        <table class="w-full text-left border-collapse">
+          <thead
+            class="bg-slate-50 text-xs text-slate-500 uppercase font-bold sticky top-0 z-10 shadow-sm"
+          >
+            <tr>
+              <th class="p-4 w-16 text-center">#</th>
+              <th class="p-4 w-32">MSSV</th>
+              <th class="p-4">Họ và Tên</th>
+              <th class="p-4 w-32 text-center">Giữa kỳ (30%)</th>
+              <th class="p-4 w-32 text-center">Cuối kỳ (70%)</th>
+              <th class="p-4 w-32 text-center">Tổng kết</th>
+            </tr>
+          </thead>
+          <tbody
+            id="grade-entry-list"
+            class="divide-y divide-slate-100 text-sm text-slate-700"
+          >
+            <!-- Rows injected via JS -->
+          </tbody>
+        </table>
+      </div>
+    </div>
+
+    <!-- Footer -->
+    <div
+      class="p-4 bg-white border-t border-slate-100 flex justify-end gap-3 flex-shrink-0"
+    >
+      <button
+        onclick="closeGradeModal()"
+        class="px-5 py-2.5 rounded-xl bg-slate-100 text-slate-600 text-sm font-bold hover:bg-slate-200 transition"
+      >
+        Hủy bỏ
+      </button>
+      <button
+        onclick="saveGrades()"
+        class="px-5 py-2.5 rounded-xl bg-blue-600 text-white text-sm font-bold hover:bg-blue-700 shadow-lg shadow-blue-500/30 transition flex items-center gap-2"
+      >
+        <i class="fa-solid fa-save"></i> Lưu bảng điểm
+      </button>
+    </div>
+  </div>
+</div>

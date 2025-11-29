@@ -31,6 +31,7 @@ export const roleMenus = {
     { id: "dashboard_department", icon: "fa-building", text: "Tổng quan Khoa" },
     { id: "feedback_view_admin", icon: "fa-comments", text: "Phản hồi Khoa" },
     { id: "progress_department", icon: "fa-chart-pie", text: "Tiến độ Khoa" },
+    { id: "department_management", icon: "fa-users", text: "Quản lý Nhân sự" },
   ],
   academic: [
     { id: "dashboard_academic", icon: "fa-school", text: "Tổng quan Đào tạo" },
@@ -44,7 +45,17 @@ export const roleMenus = {
       icon: "fa-chart-column",
       text: "Báo cáo Chất lượng",
     },
+    {
+      id: "scheduling_academic",
+      icon: "fa-calendar-days",
+      text: "Xếp Thời khóa biểu",
+    },
     { id: "feedback_view_admin", icon: "fa-star", text: "Quản lý Đánh giá" },
+    {
+      id: "curriculum_academic",
+      icon: "fa-book-open",
+      text: "Quản lý Đào tạo",
+    },
     { id: "library_view", icon: "fa-book", text: "Kho Tài liệu" },
   ],
   admin: [
@@ -142,6 +153,10 @@ export const breadcrumbMap = {
     { label: "Trang chủ", icon: "fa-home" },
     { label: "Tổng quan Khoa", icon: "fa-building" },
   ],
+  department_management: [
+    { label: "Trang chủ", icon: "fa-home" },
+    { label: "Quản lý Nhân sự", icon: "fa-users" },
+  ],
   dashboard_academic: [
     { label: "Trang chủ", icon: "fa-home" },
     { label: "Tổng quan Đào tạo", icon: "fa-school" },
@@ -149,6 +164,14 @@ export const breadcrumbMap = {
   course_cancellation_rules: [
     { label: "Trang chủ", icon: "fa-home" },
     { label: "Quy tắc Hủy khóa học", icon: "fa-ban" },
+  ],
+  curriculum_academic: [
+    { label: "Trang chủ", icon: "fa-home" },
+    { label: "Quản lý Đào tạo", icon: "fa-book-open" },
+  ],
+  scheduling_academic: [
+    { label: "Trang chủ", icon: "fa-home" },
+    { label: "Xếp Thời khóa biểu", icon: "fa-calendar-days" },
   ],
   courses_student_detail: [
     { label: "Trang chủ", icon: "fa-home", id: "dashboard_student" },

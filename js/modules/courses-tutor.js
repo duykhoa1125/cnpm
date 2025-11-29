@@ -140,11 +140,18 @@ function renderClassDetailTabs(c) {
                     <input type="text" placeholder="Tìm sinh viên..." class="pl-8 pr-4 py-2 bg-slate-50 rounded-xl text-xs font-medium focus:outline-none focus:ring-1 focus:ring-blue-500 w-48">
                     <i class="fa-solid fa-magnifying-glass absolute left-3 top-1/2 -translate-y-1/2 text-slate-400 text-xs"></i>
                 </div>
-                <button onclick="exportClassData('${
-                  c.id
-                }')" class="px-3 py-1.5 rounded-lg bg-green-100 text-green-700 text-xs font-bold hover:bg-green-200 transition">
-                    <i class="fa-solid fa-file-excel mr-1"></i>Xuất Excel
-                </button>
+                <div class="flex gap-2">
+                    <button onclick="openGradeModal('${
+                      c.id
+                    }')" class="px-3 py-1.5 rounded-lg bg-blue-100 text-blue-700 text-xs font-bold hover:bg-blue-200 transition">
+                        <i class="fa-solid fa-pen-to-square mr-1"></i>Nhập điểm
+                    </button>
+                    <button onclick="exportClassData('${
+                      c.id
+                    }')" class="px-3 py-1.5 rounded-lg bg-green-100 text-green-700 text-xs font-bold hover:bg-green-200 transition">
+                        <i class="fa-solid fa-file-excel mr-1"></i>Xuất Excel
+                    </button>
+                </div>
             </div>
 
             <div class="overflow-x-auto border rounded-xl border-slate-200">
@@ -618,16 +625,16 @@ export function submitUpload() {
 
 // Save Tutor Schedule Logic
 export function openSaveScheduleModal() {
-  const modal = document.getElementById('save-schedule-modal');
+  const modal = document.getElementById("save-schedule-modal");
   if (modal) {
-    modal.classList.remove('hidden');
+    modal.classList.remove("hidden");
   }
 }
 
 export function closeSaveScheduleModal() {
-  const modal = document.getElementById('save-schedule-modal');
+  const modal = document.getElementById("save-schedule-modal");
   if (modal) {
-    modal.classList.add('hidden');
+    modal.classList.add("hidden");
   }
 }
 
@@ -655,7 +662,7 @@ export function confirmSaveSchedule() {
       "Lịch dạy đã được lưu thành công! Sinh viên sẽ nhận được thông báo.",
       "success"
     );
-    
+
     console.log("Schedule saved successfully");
   }, 1200);
 }
@@ -685,3 +692,171 @@ window.saveTutorSchedule = saveTutorSchedule;
 window.openSaveScheduleModal = openSaveScheduleModal;
 window.closeSaveScheduleModal = closeSaveScheduleModal;
 window.confirmSaveSchedule = confirmSaveSchedule;
+
+// --- Grade Entry Logic ---
+
+let currentGradeCourseId = null;
+
+export function openGradeModal(courseId) {
+  currentGradeCourseId = courseId;
+  const course = mockTutorClasses.find((c) => c.id === courseId);
+  if (!course) return;
+
+  const modal = document.getElementById("grade-entry-modal");
+  const title = document.getElementById("grade-course-name");
+
+  if (modal && title) {
+    title.innerText = `Nhập điểm: ${course.name} (${course.group})`;
+    renderGradeEntryTable(course);
+    modal.classList.remove("hidden");
+  }
+}
+
+export function closeGradeModal() {
+  const modal = document.getElementById("grade-entry-modal");
+  if (modal) modal.classList.add("hidden");
+  currentGradeCourseId = null;
+}
+
+function renderGradeEntryTable(course) {
+  const tbody = document.getElementById("grade-entry-list");
+  if (!tbody) return;
+
+  tbody.innerHTML = course.students
+    .map((s, index) => {
+      // Parse existing grades or default to empty
+      const mid = s.midterm === "--" ? "" : s.midterm;
+      const fin = s.final === "--" ? "" : s.final;
+      const avg = s.average === "--" ? "--" : s.average;
+
+      return `
+      <tr class="hover:bg-blue-50/30 transition group">
+        <td class="p-4 text-center text-slate-400 font-mono text-xs">${
+          index + 1
+        }</td>
+        <td class="p-4 font-mono font-bold text-slate-600">${s.id}</td>
+        <td class="p-4 font-bold text-slate-700">${s.name}</td>
+        <td class="p-4 text-center">
+          <input 
+            type="number" 
+            min="0" 
+            max="10" 
+            step="0.1" 
+            value="${mid}" 
+            data-student-id="${s.id}"
+            data-type="midterm"
+            class="w-20 p-2 text-center border border-slate-200 rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-blue-500 outline-none font-mono font-bold text-slate-700 bg-white grade-input"
+            onchange="calculateRowAverage(this)"
+          >
+        </td>
+        <td class="p-4 text-center">
+          <input 
+            type="number" 
+            min="0" 
+            max="10" 
+            step="0.1" 
+            value="${fin}" 
+            data-student-id="${s.id}"
+            data-type="final"
+            class="w-20 p-2 text-center border border-slate-200 rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-blue-500 outline-none font-mono font-bold text-slate-700 bg-white grade-input"
+            onchange="calculateRowAverage(this)"
+          >
+        </td>
+        <td class="p-4 text-center">
+          <span class="font-bold font-mono text-blue-600 row-average" id="avg-${
+            s.id
+          }">${avg}</span>
+        </td>
+      </tr>
+    `;
+    })
+    .join("");
+}
+
+// Calculate average instantly when typing
+window.calculateRowAverage = function (input) {
+  const row = input.closest("tr");
+  const midInput = row.querySelector('input[data-type="midterm"]');
+  const finInput = row.querySelector('input[data-type="final"]');
+  const avgSpan = row.querySelector(".row-average");
+
+  const mid = parseFloat(midInput.value);
+  const fin = parseFloat(finInput.value);
+
+  if (!isNaN(mid) && !isNaN(fin)) {
+    // Formula: 30% Midterm + 70% Final
+    const avg = (mid * 0.3 + fin * 0.7).toFixed(1);
+    avgSpan.innerText = avg;
+    avgSpan.classList.remove("text-slate-400");
+    avgSpan.classList.add("text-blue-600");
+  } else {
+    // If one is missing, maybe just show what we have or keep it empty?
+    // Usually average is only valid if both are present or specific rules apply.
+    // Let's keep it simple: need both for total.
+    avgSpan.innerText = "--";
+    avgSpan.classList.add("text-slate-400");
+    avgSpan.classList.remove("text-blue-600");
+  }
+};
+
+export function saveGrades() {
+  if (!currentGradeCourseId) return;
+
+  const course = mockTutorClasses.find((c) => c.id === currentGradeCourseId);
+  if (!course) return;
+
+  const btn = document.querySelector(
+    '#grade-entry-modal button[onclick="saveGrades()"]'
+  );
+  setButtonLoading(btn, true, "Đang lưu...");
+
+  // Collect data
+  const inputs = document.querySelectorAll("#grade-entry-list .grade-input");
+
+  // Update mock data
+  inputs.forEach((input) => {
+    const studentId = input.dataset.studentId;
+    const type = input.dataset.type; // 'midterm' or 'final'
+    const val = input.value.trim();
+
+    const student = course.students.find((s) => s.id === studentId);
+    if (student) {
+      if (type === "midterm") student.midterm = val === "" ? "--" : val;
+      if (type === "final") student.final = val === "" ? "--" : val;
+
+      // Recalculate average in data
+      const m = parseFloat(student.midterm);
+      const f = parseFloat(student.final);
+      if (!isNaN(m) && !isNaN(f)) {
+        student.average = (m * 0.3 + f * 0.7).toFixed(1);
+        // Update status based on average
+        student.status =
+          parseFloat(student.average) >= 5.0 ? "pass" : "warning";
+      } else {
+        student.average = "--";
+      }
+    }
+  });
+
+  setTimeout(() => {
+    setButtonLoading(btn, false);
+    showToast("Đã lưu bảng điểm thành công!", "success");
+    closeGradeModal();
+
+    // Refresh the main view
+    renderTutorCourses();
+
+    // Re-open the details and student tab
+    setTimeout(() => {
+      toggleTutorClassDetail(currentGradeCourseId);
+      const tabBtn = document.querySelector(
+        `button[onclick*="tab-students-${currentGradeCourseId}"]`
+      );
+      if (tabBtn) tabBtn.click();
+    }, 100);
+  }, 1000);
+}
+
+window.openGradeModal = openGradeModal;
+window.closeGradeModal = closeGradeModal;
+window.saveGrades = saveGrades;
