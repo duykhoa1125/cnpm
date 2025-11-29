@@ -963,3 +963,84 @@
     </div>
   </div>
 </div>
+<!-- Contact Tutor Modal -->
+<div
+  id="contact-tutor-modal"
+  class="fixed inset-0 z-[60] hidden flex items-center justify-center"
+>
+  <div
+    class="absolute inset-0 bg-slate-900/20 backdrop-blur-sm transition-opacity"
+    onclick="closeContactModal()"
+  ></div>
+  <div
+    class="glass-panel w-full max-w-lg p-8 rounded-[32px] shadow-2xl relative z-10 bg-white/80 transform transition-all scale-100 m-4"
+  >
+    <div class="text-center mb-6">
+      <div
+        class="w-16 h-16 bg-blue-50 text-blue-600 rounded-full flex items-center justify-center text-2xl mx-auto mb-4 shadow-inner border border-blue-100"
+      >
+        <i class="fa-regular fa-envelope"></i>
+      </div>
+      <h3 class="text-2xl font-black text-slate-800">Liên hệ Giảng viên</h3>
+      <p class="text-slate-500 mt-2 text-sm font-medium">
+        Gửi email trực tiếp đến giảng viên phụ trách.
+      </p>
+    </div>
+    <form onsubmit="submitContactEmail(event)" class="space-y-4">
+      <div>
+        <label
+          class="text-xs font-bold text-slate-500 uppercase ml-1 mb-1 block"
+          >Giảng viên</label
+        >
+        <input
+          type="text"
+          id="contact-tutor-name"
+          class="w-full p-3 rounded-xl border border-slate-200 bg-slate-50 font-bold text-slate-700"
+          readonly
+          value="..."
+        />
+      </div>
+      <div>
+        <label
+          class="text-xs font-bold text-slate-500 uppercase ml-1 mb-1 block"
+          >Tiêu đề</label
+        >
+        <input
+          type="text"
+          id="contact-subject"
+          class="w-full p-3 rounded-xl border border-slate-200 bg-white/50 focus:outline-none focus:border-blue-500 transition font-bold text-slate-700"
+          placeholder="V/v: Thắc mắc về bài tập..."
+          required
+        />
+      </div>
+      <div>
+        <label
+          class="text-xs font-bold text-slate-500 uppercase ml-1 mb-1 block"
+          >Nội dung</label
+        >
+        <textarea
+          id="contact-message"
+          rows="4"
+          class="w-full p-3 rounded-xl border border-slate-200 bg-white/50 focus:outline-none focus:border-blue-500 transition font-medium text-slate-700"
+          placeholder="Nhập nội dung email..."
+          required
+        ></textarea>
+      </div>
+      <div class="grid grid-cols-2 gap-4 mt-6">
+        <button
+          type="button"
+          onclick="closeContactModal()"
+          class="py-3 rounded-xl font-bold text-slate-600 bg-slate-100 hover:bg-slate-200 transition text-sm"
+        >
+          Hủy bỏ
+        </button>
+        <button
+          type="submit"
+          class="py-3 rounded-xl bg-blue-600 text-white font-bold shadow-lg shadow-blue-500/30 hover:bg-blue-700 transition text-sm"
+        >
+          <i class="fa-solid fa-paper-plane mr-2"></i> Gửi Email
+        </button>
+      </div>
+    </form>
+  </div>
+</div>

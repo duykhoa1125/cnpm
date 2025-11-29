@@ -1016,6 +1016,55 @@ export function cancelCurrentCourse() {
   }
 }
 
+// Contact Tutor Modal Logic
+export function openContactModal() {
+  // Fallback if currentCourseName is lost
+  if (!currentCourseName) {
+    const nameEl = document.getElementById("detail-course-name");
+    if (nameEl) {
+      const text = nameEl.innerText;
+      if (text) {
+        currentCourseName = text.split(" - ")[0].trim();
+      }
+    }
+  }
+
+  const details = mockCourseDetails[currentCourseName];
+  if (!details) {
+    showToast("Không tìm thấy thông tin môn học!", "error");
+    return;
+  }
+
+  const modal = document.getElementById("contact-tutor-modal");
+  const tutorInput = document.getElementById("contact-tutor-name");
+  const subjectInput = document.getElementById("contact-subject");
+  const messageInput = document.getElementById("contact-message");
+
+  if (modal && tutorInput && subjectInput && messageInput) {
+    tutorInput.value = details.tutor || "Giảng viên";
+    subjectInput.value = `[${currentCourseName}] Thắc mắc về môn học`;
+    messageInput.value = "";
+    modal.classList.remove("hidden");
+  }
+}
+
+export function closeContactModal() {
+  const modal = document.getElementById("contact-tutor-modal");
+  if (modal) modal.classList.add("hidden");
+}
+
+export function submitContactEmail(e) {
+  e.preventDefault();
+  const btn = e.target.querySelector('button[type="submit"]');
+  setButtonLoading(btn, true);
+
+  setTimeout(() => {
+    setButtonLoading(btn, false);
+    showToast("Đã gửi email thành công!", "success");
+    closeContactModal();
+  }, 1000);
+}
+
 // Window assignments
 window.registerCourse = registerCourse;
 window.confirmRegistration = confirmRegistration;
@@ -1032,3 +1081,6 @@ window.openForumModal = openForumModal;
 window.closeForumModal = closeForumModal;
 window.submitForumReply = submitForumReply;
 window.renderStudentCourses = renderStudentCourses;
+window.openContactModal = openContactModal;
+window.closeContactModal = closeContactModal;
+window.submitContactEmail = submitContactEmail;
