@@ -191,6 +191,17 @@ import {
   connectWithTutor,
 } from "./modules/ai-matching.js";
 
+import {
+  renderUtilities,
+  addSubjectRow,
+  removeSubjectRow,
+  calculateGPA,
+  saveNote,
+  switchPomodoroMode,
+  togglePomodoro,
+  resetPomodoro,
+} from "./modules/utilities.js";
+
 // Make all functions globally available for HTML onclick handlers
 // UI Functions
 window.showToast = showToast;
@@ -320,6 +331,16 @@ window.scrollToMatchingForm = scrollToMatchingForm;
 window.startAIMatching = startAIMatching;
 window.resetAIMatching = resetAIMatching;
 window.connectWithTutor = connectWithTutor;
+
+// Utilities Functions
+window.renderUtilities = renderUtilities;
+window.addSubjectRow = addSubjectRow;
+window.removeSubjectRow = removeSubjectRow;
+window.calculateGPA = calculateGPA;
+window.saveNote = saveNote;
+window.switchPomodoroMode = switchPomodoroMode;
+window.togglePomodoro = togglePomodoro;
+window.resetPomodoro = resetPomodoro;
 
 // Initialize Application when partials are loaded
 document.addEventListener("partialsLoaded", () => {

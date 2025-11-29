@@ -24,6 +24,7 @@ import { renderLibrary } from "./library.js";
 import { renderAdminProgress } from "./progress.js";
 import { renderBonusSessions, renderBonusRsvps } from "./bonus-session.js";
 import { setupCustomSelect } from "./ui.js";
+import { renderUtilities } from "./utilities.js";
 
 // Generate Sidebar based on role
 export function generateSidebar(role) {
@@ -65,6 +66,7 @@ export function switchTab(tabId) {
   if (tabId === "system_admin") renderAdminSystem();
   if (tabId === "library_view") renderLibrary();
   if (tabId === "progress_admin") renderAdminProgress();
+  if (tabId === "utilities_student") renderUtilities();
   if (tabId === "progress_student") {
     // Initialize student progress chart
     setTimeout(() => {
