@@ -178,7 +178,9 @@ export function openLibraryMaterial(id) {
                     <button class="px-4 py-2 rounded-xl bg-white border border-slate-200 text-slate-600 font-bold hover:bg-slate-50 transition shadow-sm">
                         <i class="fa-solid fa-share-nodes mr-2"></i> Chia sẻ
                     </button>
-                    <button class="px-4 py-2 rounded-xl bg-blue-600 text-white font-bold hover:bg-blue-700 transition shadow-lg shadow-blue-500/30">
+                    <button onclick="downloadMaterial(${
+                      item.id
+                    })" class="px-4 py-2 rounded-xl bg-blue-600 text-white font-bold hover:bg-blue-700 transition shadow-lg shadow-blue-500/30">
                         <i class="fa-solid fa-download mr-2"></i> Tải xuống ngay
                     </button>
                 </div>
@@ -187,8 +189,50 @@ export function openLibraryMaterial(id) {
         `;
     }
 
+    // Update Footer Download Button
+    const footerDownloadBtn = document.getElementById("preview-download-btn");
+    if (footerDownloadBtn) {
+      footerDownloadBtn.onclick = () => downloadMaterial(item.id);
+    }
+
     modal.classList.remove("hidden");
     showToast(`Đang xem trước: ${item.title}`, "info");
+  }
+}
+
+// Download Material
+export function downloadMaterial(id) {
+  const item = mockMaterials.find((m) => m.id === id);
+  if (item) {
+    showToast(`Đang chuẩn bị tải xuống: ${item.title}...`, "info");
+
+    setTimeout(() => {
+      // Create dummy content
+      const content = `Đây là nội dung giả lập cho tài liệu: ${item.title}\n\nTác giả: ${item.author}\nMôn học: ${item.course}\nLoại: ${item.type}\n\nCảm ơn bạn đã sử dụng Thư viện Số HCMUT!`;
+      const blob = new Blob([content], { type: "text/plain" });
+      const url = window.URL.createObjectURL(blob);
+      const a = document.createElement("a");
+      a.style.display = "none";
+      a.href = url;
+
+      // Generate a filename
+      // Using .txt for safety and simplicity in this mock environment
+      const safeTitle = item.title.replace(/[^a-z0-9]/gi, "_").toLowerCase();
+      a.download = `${safeTitle}.txt`;
+
+      document.body.appendChild(a);
+      a.click();
+
+      window.URL.revokeObjectURL(url);
+      document.body.removeChild(a);
+
+      showToast(`Đã tải xuống thành công!`, "success");
+
+      // Update mock download count
+      item.downloads++;
+
+      // Optional: Update the UI if the list is visible, but might not be necessary for the immediate user feedback
+    }, 1500);
   }
 }
 
@@ -197,3 +241,4 @@ window.filterLibrary = filterLibrary;
 window.filterLibraryByType = filterLibraryByType;
 window.resetLibraryFilter = resetLibraryFilter;
 window.openLibraryMaterial = openLibraryMaterial;
+window.downloadMaterial = downloadMaterial;

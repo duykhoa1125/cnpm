@@ -589,9 +589,18 @@ function renderCourseMaterials(list) {
       }</p>
                 </div>
             </div>
-            <button class="w-8 h-8 rounded-full hover:bg-slate-100 flex items-center justify-center text-slate-400 hover:text-blue-600 transition">
-                <i class="fa-solid fa-download"></i>
-            </button>
+            <div class="flex gap-2 opacity-0 group-hover/file:opacity-100 transition-opacity">
+                <button onclick="openLibraryMaterial(${
+                  m.id
+                })" class="w-8 h-8 rounded-full hover:bg-slate-100 flex items-center justify-center text-slate-400 hover:text-blue-600 transition" title="Xem trước">
+                    <i class="fa-solid fa-eye"></i>
+                </button>
+                <button onclick="downloadMaterial(${
+                  m.id
+                })" class="w-8 h-8 rounded-full hover:bg-slate-100 flex items-center justify-center text-slate-400 hover:text-blue-600 transition" title="Tải xuống">
+                    <i class="fa-solid fa-download"></i>
+                </button>
+            </div>
         </div>
     `
     )
