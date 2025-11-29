@@ -118,121 +118,328 @@
   </div>
 
   <div class="grid grid-cols-1 lg:grid-cols-3 gap-8">
-    <!-- Schedule -->
-    <div class="glass-card p-6 rounded-[28px] lg:col-span-2">
-      <div class="flex justify-between items-center mb-6">
-        <h3 class="font-bold text-slate-800 flex items-center gap-2">
-          <i class="fa-regular fa-calendar-check text-blue-500"></i> Thời khóa
-          biểu hôm nay
-        </h3>
-        <button
-          onclick="openScheduleModal()"
-          class="text-xs text-blue-600 font-bold hover:underline"
-        >
-          Xem lịch tuần
-        </button>
-      </div>
-
-      <div class="space-y-4">
+    <!-- Left Column: Reminders & Schedule -->
+    <div class="lg:col-span-3 space-y-8">
+      <!-- Important Reminders (Moved Up & Restyled) -->
+      <div class="grid grid-cols-1 xl:grid-cols-2 gap-6">
         <div
-          class="flex gap-4 p-4 rounded-2xl bg-blue-50 border border-blue-100 hover:shadow-md transition"
+          class="p-6 rounded-[28px] bg-gradient-to-br from-indigo-600 to-purple-600 text-white shadow-xl relative overflow-hidden group"
         >
           <div
-            class="flex-shrink-0 flex flex-col items-center justify-center w-16 bg-white rounded-xl border border-blue-100 h-full min-h-[60px]"
-          >
-            <span class="text-xs font-bold text-slate-400">Tiết</span>
-            <span class="text-xl font-black text-blue-600">1-3</span>
-          </div>
-          <div class="flex-1 min-w-0">
-            <h4 class="font-bold text-slate-800 truncate">Giải tích 1</h4>
-            <p class="text-xs text-slate-500 mb-2">
-              <i class="fa-solid fa-location-dot mr-1"></i> Phòng 405 H6 • Lý
-              thuyết
-            </p>
-            <div class="flex items-center gap-2">
-              <img
-                src="https://ui-avatars.com/api/?name=Tutor+A&background=random"
-                class="w-5 h-5 rounded-full"
-              />
-              <span class="text-xs font-bold text-slate-600"
-                >GV: Nguyễn Văn A</span
+            class="absolute top-0 right-0 w-32 h-32 bg-white/10 rounded-bl-full -mr-8 -mt-8 transition-transform group-hover:scale-110"
+          ></div>
+          <div class="relative z-10">
+            <div class="flex justify-between items-center mb-4">
+              <h3 class="font-bold text-lg flex items-center gap-2">
+                <i class="fa-solid fa-bell"></i> Nhắc nhở quan trọng
+              </h3>
+              <span class="bg-white/20 px-2 py-1 rounded-lg text-xs font-bold"
+                >2 mới</span
               >
             </div>
-          </div>
-          <div class="flex flex-col justify-center">
-            <span
-              class="px-3 py-1 rounded-lg bg-blue-600 text-white text-[10px] font-bold"
-              >07:00 - 09:50</span
-            >
+            <div class="space-y-3">
+              <div
+                class="flex items-start gap-3 p-3 bg-white/10 rounded-xl backdrop-blur-sm border border-white/20 hover:bg-white/20 transition cursor-pointer"
+              >
+                <div
+                  class="w-12 h-12 rounded-lg bg-red-500/20 flex items-center justify-center text-red-200 font-bold text-xs flex-shrink-0 border border-red-500/30"
+                >
+                  <div class="text-center leading-tight">
+                    <span>NOV</span><br /><span class="text-lg text-white"
+                      >29</span
+                    >
+                  </div>
+                </div>
+                <div class="min-w-0">
+                  <p
+                    class="text-xs font-bold text-red-200 uppercase mb-0.5 truncate"
+                  >
+                    Hạn chót: 23:59 Hôm nay
+                  </p>
+                  <p class="text-sm font-bold text-white line-clamp-2">
+                    Nộp BTL môn Công nghệ phần mềm
+                  </p>
+                </div>
+              </div>
+              <div
+                class="flex items-start gap-3 p-3 bg-white/10 rounded-xl backdrop-blur-sm border border-white/20 hover:bg-white/20 transition cursor-pointer"
+              >
+                <div
+                  class="w-12 h-12 rounded-lg bg-orange-500/20 flex items-center justify-center text-orange-200 font-bold text-xs flex-shrink-0 border border-orange-500/30"
+                >
+                  <div class="text-center leading-tight">
+                    <span>NOV</span><br /><span class="text-lg text-white"
+                      >30</span
+                    >
+                  </div>
+                </div>
+                <div class="min-w-0">
+                  <p
+                    class="text-xs font-bold text-orange-200 uppercase mb-0.5 truncate"
+                  >
+                    Sắp tới: Ngày mai
+                  </p>
+                  <p class="text-sm font-bold text-white line-clamp-2">
+                    Thi giữa kỳ Giải tích 1
+                  </p>
+                </div>
+              </div>
+            </div>
           </div>
         </div>
 
         <div
-          class="flex gap-4 p-4 rounded-2xl bg-white border border-slate-100 hover:shadow-md transition"
+          class="p-6 rounded-[28px] bg-white border border-slate-100 shadow-sm relative overflow-hidden"
         >
-          <div
-            class="flex-shrink-0 flex flex-col items-center justify-center w-16 bg-slate-50 rounded-xl border border-slate-200 h-full min-h-[60px]"
+          <h3
+            class="font-bold text-lg text-slate-800 mb-4 flex items-center gap-2"
           >
-            <span class="text-xs font-bold text-slate-400">Tiết</span>
-            <span class="text-xl font-black text-slate-600">7-9</span>
-          </div>
-          <div class="flex-1 min-w-0">
-            <h4 class="font-bold text-slate-800 truncate">
-              Nhập môn Lập trình (Lab)
-            </h4>
-            <p class="text-xs text-slate-500 mb-2">
-              <i class="fa-solid fa-location-dot mr-1"></i> Phòng máy 2 • Thực
-              hành
-            </p>
-            <div class="flex items-center gap-2">
-              <img
-                src="https://ui-avatars.com/api/?name=Tutor+B&background=random"
-                class="w-5 h-5 rounded-full"
-              />
-              <span class="text-xs font-bold text-slate-600"
-                >GV: Trần Thị B</span
+            <i class="fa-solid fa-calendar-day text-blue-500"></i> Sự kiện trong
+            ngày
+          </h3>
+          <div class="space-y-4">
+            <div class="flex gap-4 items-center">
+              <div
+                class="w-14 h-14 rounded-xl bg-blue-50 text-blue-600 flex flex-col items-center justify-center border border-blue-100 flex-shrink-0"
               >
+                <span class="text-[10px] font-bold uppercase">Sáng</span>
+                <span class="text-lg font-black leading-none">07:00</span>
+              </div>
+              <div class="min-w-0">
+                <h4 class="font-bold text-slate-800 text-sm truncate">
+                  Giải tích 1
+                </h4>
+                <p class="text-xs text-slate-500 truncate">
+                  <i class="fa-solid fa-location-dot mr-1"></i> Phòng 405 H6
+                </p>
+              </div>
             </div>
-          </div>
-          <div class="flex flex-col justify-center">
-            <span
-              class="px-3 py-1 rounded-lg bg-slate-200 text-slate-600 text-[10px] font-bold"
-              >13:00 - 15:50</span
-            >
+            <div class="w-full h-px bg-slate-100"></div>
+            <div class="flex gap-4 items-center">
+              <div
+                class="w-14 h-14 rounded-xl bg-indigo-50 text-indigo-600 flex flex-col items-center justify-center border border-indigo-100 flex-shrink-0"
+              >
+                <span class="text-[10px] font-bold uppercase">Chiều</span>
+                <span class="text-lg font-black leading-none">13:00</span>
+              </div>
+              <div class="min-w-0">
+                <h4 class="font-bold text-slate-800 text-sm truncate">
+                  Nhập môn Lập trình (Lab)
+                </h4>
+                <p class="text-xs text-slate-500 truncate">
+                  <i class="fa-solid fa-location-dot mr-1"></i> Phòng máy 2
+                </p>
+              </div>
+            </div>
           </div>
         </div>
       </div>
-    </div>
 
-    <!-- Quick Actions / Notifications -->
-    <div class="space-y-6">
-      <div
-        class="p-6 rounded-[28px] bg-gradient-to-br from-indigo-600 to-purple-600 text-white shadow-xl hover:-translate-y-1 transition duration-300"
-      >
-        <h3 class="font-bold text-lg mb-2">Nhắc nhở quan trọng</h3>
-        <div class="space-y-3">
-          <div
-            class="p-3 bg-white/10 rounded-xl backdrop-blur-sm border border-white/20"
-          >
-            <p class="text-xs font-bold text-indigo-200 uppercase mb-1">
-              Hạn chót: Hôm nay
-            </p>
-            <p class="text-sm font-medium">Nộp BTL môn Công nghệ phần mềm</p>
-          </div>
-          <div
-            class="p-3 bg-white/10 rounded-xl backdrop-blur-sm border border-white/20"
-          >
-            <p class="text-xs font-bold text-indigo-200 uppercase mb-1">
-              Sắp tới
-            </p>
-            <p class="text-sm font-medium">Thi giữa kỳ Giải tích 1 (30/11)</p>
+      <!-- Weekly Schedule (Embedded) -->
+      <div class="glass-card p-6 rounded-[28px]">
+        <div class="flex justify-between items-center mb-6">
+          <h3 class="font-bold text-slate-800 flex items-center gap-2">
+            <i class="fa-regular fa-calendar-check text-blue-500"></i> Thời khóa
+            biểu tuần
+          </h3>
+          <div class="flex gap-2">
+            <button
+              class="w-8 h-8 rounded-lg bg-slate-100 text-slate-500 hover:bg-blue-50 hover:text-blue-600 transition flex items-center justify-center"
+            >
+              <i class="fa-solid fa-chevron-left"></i>
+            </button>
+            <span
+              class="px-3 py-1.5 bg-slate-100 rounded-lg text-xs font-bold text-slate-600 flex items-center"
+              >Tuần 12</span
+            >
+            <button
+              class="w-8 h-8 rounded-lg bg-slate-100 text-slate-500 hover:bg-blue-50 hover:text-blue-600 transition flex items-center justify-center"
+            >
+              <i class="fa-solid fa-chevron-right"></i>
+            </button>
           </div>
         </div>
-        <button
-          class="mt-4 w-full py-2 rounded-xl bg-white text-indigo-600 text-xs font-bold hover:bg-indigo-50 transition"
-        >
-          Xem lịch thi
-        </button>
+
+        <div class="overflow-x-auto">
+          <div class="min-w-[800px]">
+            <!-- Header -->
+            <div class="grid grid-cols-8 gap-2 mb-2">
+              <div
+                class="p-3 text-center font-bold text-slate-400 text-xs uppercase bg-slate-50 rounded-xl"
+              >
+                Tiết / Thứ
+              </div>
+              <div
+                class="p-3 text-center font-bold text-slate-800 bg-blue-50 rounded-xl"
+              >
+                Thứ 2
+              </div>
+              <div
+                class="p-3 text-center font-bold text-slate-800 bg-slate-50 rounded-xl"
+              >
+                Thứ 3
+              </div>
+              <div
+                class="p-3 text-center font-bold text-slate-800 bg-slate-50 rounded-xl"
+              >
+                Thứ 4
+              </div>
+              <div
+                class="p-3 text-center font-bold text-slate-800 bg-slate-50 rounded-xl"
+              >
+                Thứ 5
+              </div>
+              <div
+                class="p-3 text-center font-bold text-slate-800 bg-slate-50 rounded-xl"
+              >
+                Thứ 6
+              </div>
+              <div
+                class="p-3 text-center font-bold text-slate-800 bg-slate-50 rounded-xl"
+              >
+                Thứ 7
+              </div>
+              <div
+                class="p-3 text-center font-bold text-slate-800 bg-slate-50 rounded-xl"
+              >
+                CN
+              </div>
+            </div>
+
+            <!-- Grid Body (Mock) -->
+            <div class="space-y-2">
+              <!-- Morning -->
+              <div class="grid grid-cols-8 gap-2">
+                <div
+                  class="h-28 p-3 flex items-center justify-center font-bold text-slate-500 bg-slate-50 rounded-xl text-sm"
+                >
+                  Sáng<br />(1-6)
+                </div>
+
+                <!-- T2 -->
+                <div
+                  class="h-28 p-2 bg-blue-100 border border-blue-200 rounded-xl relative group hover:shadow-md transition cursor-pointer"
+                >
+                  <span
+                    class="absolute top-2 right-2 text-[10px] font-bold bg-white text-blue-600 px-1.5 py-0.5 rounded shadow-sm"
+                    >Tiết 1-3</span
+                  >
+                  <p class="text-xs font-bold text-blue-800 mt-4 line-clamp-2">
+                    Giải tích 1
+                  </p>
+                  <p class="text-[10px] text-blue-600 mt-1">
+                    <i class="fa-solid fa-location-dot"></i> 405 H6
+                  </p>
+                </div>
+
+                <!-- T3 -->
+                <div
+                  class="h-28 bg-slate-50/50 rounded-xl border border-dashed border-slate-200"
+                ></div>
+
+                <!-- T4 -->
+                <div
+                  class="h-28 p-2 bg-blue-100 border border-blue-200 rounded-xl relative group hover:shadow-md transition cursor-pointer"
+                >
+                  <span
+                    class="absolute top-2 right-2 text-[10px] font-bold bg-white text-blue-600 px-1.5 py-0.5 rounded shadow-sm"
+                    >Tiết 1-3</span
+                  >
+                  <p class="text-xs font-bold text-blue-800 mt-4 line-clamp-2">
+                    Giải tích 1
+                  </p>
+                  <p class="text-[10px] text-blue-600 mt-1">
+                    <i class="fa-solid fa-location-dot"></i> 405 H6
+                  </p>
+                </div>
+
+                <!-- T5 -->
+                <div
+                  class="h-28 bg-slate-50/50 rounded-xl border border-dashed border-slate-200"
+                ></div>
+                <!-- T6 -->
+                <div
+                  class="h-28 bg-slate-50/50 rounded-xl border border-dashed border-slate-200"
+                ></div>
+                <!-- T7 -->
+                <div
+                  class="h-28 bg-slate-50/50 rounded-xl border border-dashed border-slate-200"
+                ></div>
+                <!-- CN -->
+                <div
+                  class="h-28 bg-slate-50/50 rounded-xl border border-dashed border-slate-200"
+                ></div>
+              </div>
+
+              <!-- Afternoon -->
+              <div class="grid grid-cols-8 gap-2">
+                <div
+                  class="h-28 p-3 flex items-center justify-center font-bold text-slate-500 bg-slate-50 rounded-xl text-sm"
+                >
+                  Chiều<br />(7-12)
+                </div>
+
+                <!-- T2 -->
+                <div
+                  class="h-28 bg-slate-50/50 rounded-xl border border-dashed border-slate-200"
+                ></div>
+
+                <!-- T3 -->
+                <div
+                  class="h-28 p-2 bg-indigo-100 border border-indigo-200 rounded-xl relative group hover:shadow-md transition cursor-pointer"
+                >
+                  <span
+                    class="absolute top-2 right-2 text-[10px] font-bold bg-white text-indigo-600 px-1.5 py-0.5 rounded shadow-sm"
+                    >Tiết 7-9</span
+                  >
+                  <p
+                    class="text-xs font-bold text-indigo-800 mt-4 line-clamp-2"
+                  >
+                    Nhập môn Lập trình
+                  </p>
+                  <p class="text-[10px] text-indigo-600 mt-1">
+                    <i class="fa-solid fa-location-dot"></i> PM 2
+                  </p>
+                </div>
+
+                <!-- T4 -->
+                <div
+                  class="h-28 bg-slate-50/50 rounded-xl border border-dashed border-slate-200"
+                ></div>
+
+                <!-- T5 -->
+                <div
+                  class="h-28 p-2 bg-indigo-100 border border-indigo-200 rounded-xl relative group hover:shadow-md transition cursor-pointer"
+                >
+                  <span
+                    class="absolute top-2 right-2 text-[10px] font-bold bg-white text-indigo-600 px-1.5 py-0.5 rounded shadow-sm"
+                    >Tiết 7-9</span
+                  >
+                  <p
+                    class="text-xs font-bold text-indigo-800 mt-4 line-clamp-2"
+                  >
+                    Nhập môn Lập trình
+                  </p>
+                  <p class="text-[10px] text-indigo-600 mt-1">
+                    <i class="fa-solid fa-location-dot"></i> PM 2
+                  </p>
+                </div>
+                <!-- T6 -->
+                <div
+                  class="h-28 bg-slate-50/50 rounded-xl border border-dashed border-slate-200"
+                ></div>
+                <!-- T7 -->
+                <div
+                  class="h-28 bg-slate-50/50 rounded-xl border border-dashed border-slate-200"
+                ></div>
+                <!-- CN -->
+                <div
+                  class="h-28 bg-slate-50/50 rounded-xl border border-dashed border-slate-200"
+                ></div>
+              </div>
+            </div>
+          </div>
+        </div>
       </div>
     </div>
   </div>
