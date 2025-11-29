@@ -18,14 +18,14 @@ export function addSubjectRow() {
             <input type="text" placeholder="Nhập tên môn..." class="w-full bg-transparent border-none focus:ring-0 p-0 text-sm placeholder-slate-400 font-medium text-slate-700">
         </td>
         <td class="bg-slate-50 border-y border-slate-100 p-2">
-            <input type="number" min="1" max="10" value="3" onchange="calculateGPA()" class="w-full bg-white border border-slate-200 rounded-lg px-1 py-1 text-center focus:ring-2 focus:ring-blue-100 gpa-credit text-xs font-bold">
+            <input type="number" min="1" max="10" value="3" onchange="calculateGPA()" class="w-full bg-white border border-slate-200 rounded-lg px-2 py-1 text-center focus:ring-2 focus:ring-blue-100 focus:border-blue-300 outline-none transition-all gpa-credit text-xs font-bold text-slate-600">
         </td>
         <td class="bg-slate-50 border-y border-slate-100 p-2">
-            <input type="number" min="0" max="10" step="0.1" placeholder="0.0" onchange="calculateGPA()" class="w-full bg-white border border-slate-200 rounded-lg px-1 py-1 text-center focus:ring-2 focus:ring-blue-100 gpa-score text-xs font-bold text-blue-600">
+            <input type="number" min="0" max="10" step="0.1" placeholder="0.0" onchange="calculateGPA()" class="w-full bg-white border border-slate-200 rounded-lg px-2 py-1 text-center focus:ring-2 focus:ring-blue-100 focus:border-blue-300 outline-none transition-all gpa-score text-xs font-bold text-blue-600">
         </td>
         <td class="bg-slate-50 rounded-r-xl border-y border-r border-slate-100 p-2 text-center">
-            <button onclick="removeSubjectRow(this)" class="text-slate-300 hover:text-red-500 transition-colors opacity-0 group-hover:opacity-100">
-                <i class="fa-solid fa-xmark"></i>
+            <button onclick="removeSubjectRow(this)" class="w-6 h-6 rounded-full hover:bg-red-50 text-slate-300 hover:text-red-500 transition-all opacity-0 group-hover:opacity-100 flex items-center justify-center">
+                <i class="fa-solid fa-xmark text-xs"></i>
             </button>
         </td>
     `;
@@ -116,32 +116,258 @@ export function calculateGPA() {
 }
 
 // Debounce function for auto-saving
-let saveTimeout;
-export function saveNote() {
-  const status = document.getElementById("note-status");
-  status.style.opacity = "0";
-
-  clearTimeout(saveTimeout);
-  saveTimeout = setTimeout(() => {
-    const note = document.getElementById("personal-note").value;
-    localStorage.setItem("student_personal_note", note);
-
-    status.textContent = "Đã lưu";
-    status.style.opacity = "1";
-    setTimeout(() => {
-      status.style.opacity = "0";
-    }, 2000);
-  }, 1000);
-}
+// --- Notes Logic ---
+// --- Todo List & Notes Logic ---
+let todos = [];
 
 export function loadNote() {
-  const note = localStorage.getItem("student_personal_note");
-  if (note) {
-    const textarea = document.getElementById("personal-note");
-    if (textarea) {
-      textarea.value = note;
+  const savedTodos = localStorage.getItem("student_todos");
+  if (savedTodos) {
+    todos = JSON.parse(savedTodos);
+  } else {
+    // Migrate old notes if exists
+    const oldNotes = localStorage.getItem("student_notes");
+    if (oldNotes) {
+      const parsedNotes = JSON.parse(oldNotes);
+      todos = parsedNotes.map((n) => ({
+        id: n.id,
+        content: n.content,
+        isCompleted: false,
+        color: n.color || "bg-white",
+        tags: [],
+      }));
+      localStorage.removeItem("student_notes");
+      saveTodos();
     }
   }
+  renderTodos();
+}
+
+export function saveTodos() {
+  localStorage.setItem("student_todos", JSON.stringify(todos));
+}
+
+export function renderTodos() {
+  const container = document.getElementById("notes-container");
+  if (!container) return;
+
+  container.innerHTML = "";
+
+  if (todos.length === 0) {
+    container.innerHTML = `
+            <div class="flex flex-col items-center justify-center h-40 text-slate-400">
+                <i class="fa-solid fa-clipboard-check text-3xl mb-2"></i>
+                <p class="text-xs">Chưa có công việc nào</p>
+            </div>
+        `;
+    return;
+  }
+
+  // Sort: Incomplete first, then by date
+  todos.sort((a, b) => {
+    if (a.isCompleted === b.isCompleted) return b.id - a.id;
+    return a.isCompleted ? 1 : -1;
+  });
+
+  todos.forEach((todo) => {
+    const todoEl = document.createElement("div");
+    const isDone = todo.isCompleted;
+    todoEl.className = `p-3 rounded-xl border ${
+      isDone ? "bg-slate-50 border-slate-100" : "bg-white border-slate-200"
+    } relative group animate-fade-in transition-all hover:shadow-md flex items-start gap-3`;
+
+    todoEl.innerHTML = `
+            <button onclick="toggleTodoStatus(${
+              todo.id
+            })" class="mt-1 w-5 h-5 rounded-md border-2 ${
+      isDone
+        ? "bg-green-500 border-green-500 text-white"
+        : "border-slate-300 text-transparent hover:border-green-500"
+    } flex items-center justify-center transition-all">
+                <i class="fa-solid fa-check text-xs"></i>
+            </button>
+            
+            <div class="flex-1 cursor-pointer" onclick="openTodoModal(${
+              todo.id
+            })">
+                <p class="text-sm ${
+                  isDone ? "text-slate-400 line-through" : "text-slate-700"
+                } font-medium line-clamp-2">${renderRichText(todo.content)}</p>
+                <div class="flex items-center gap-2 mt-1">
+                    <span class="text-[10px] text-slate-400">${new Date(
+                      todo.id
+                    ).toLocaleDateString("vi-VN")}</span>
+                    ${
+                      todo.tags
+                        ? todo.tags
+                            .map(
+                              (tag) =>
+                                `<span class="px-1.5 py-0.5 rounded text-[9px] bg-blue-50 text-blue-600 font-bold">#${tag}</span>`
+                            )
+                            .join("")
+                        : ""
+                    }
+                </div>
+            </div>
+
+            <button onclick="deleteTodo(${
+              todo.id
+            })" class="text-slate-300 hover:text-red-500 transition-colors opacity-0 group-hover:opacity-100 p-1">
+                <i class="fa-solid fa-trash-can"></i>
+            </button>
+        `;
+    container.appendChild(todoEl);
+  });
+}
+
+export function addTodo() {
+  const newTodo = {
+    id: Date.now(),
+    content: "",
+    isCompleted: false,
+    color: "bg-white",
+    tags: [],
+  };
+  todos.unshift(newTodo);
+  saveTodos();
+  renderTodos();
+  openTodoModal(newTodo.id);
+}
+
+// Delete Modal Logic
+let todoToDeleteId = null;
+
+export function deleteTodo(id) {
+  todoToDeleteId = id;
+  const modal = document.getElementById("delete-confirm-modal");
+  if (modal) {
+    modal.classList.remove("hidden");
+  } else {
+    // Fallback if modal doesn't exist (shouldn't happen if HTML is updated)
+    if (confirm("Bạn có chắc muốn xóa công việc này?")) {
+      confirmDeleteTodo();
+    }
+  }
+}
+
+export function confirmDeleteTodo() {
+  if (todoToDeleteId) {
+    todos = todos.filter((t) => t.id !== todoToDeleteId);
+    saveTodos();
+    renderTodos();
+    closeDeleteModal();
+  }
+}
+
+export function closeDeleteModal() {
+  const modal = document.getElementById("delete-confirm-modal");
+  if (modal) modal.classList.add("hidden");
+  todoToDeleteId = null;
+}
+
+export function toggleTodoStatus(id) {
+  const todo = todos.find((t) => t.id === id);
+  if (todo) {
+    todo.isCompleted = !todo.isCompleted;
+    saveTodos();
+    renderTodos();
+  }
+}
+
+// Todo Modal Logic
+let currentTodoId = null;
+
+export function openTodoModal(id) {
+  currentTodoId = id;
+  const todo = todos.find((t) => t.id === id);
+  if (!todo) return;
+
+  const modal = document.getElementById("note-modal");
+  const textarea = document.getElementById("note-textarea");
+
+  textarea.value = todo.content;
+
+  // Reset formatting buttons
+  document
+    .getElementById("format-bold")
+    .classList.remove("text-blue-600", "bg-blue-50");
+  document
+    .getElementById("format-italic")
+    .classList.remove("text-blue-600", "bg-blue-50");
+  document
+    .getElementById("format-list")
+    .classList.remove("text-blue-600", "bg-blue-50");
+
+  modal.classList.remove("hidden");
+  textarea.focus();
+}
+
+export function closeTodoModal() {
+  document.getElementById("note-modal").classList.add("hidden");
+  currentTodoId = null;
+}
+
+export function updateTodoContent(content) {
+  if (!currentTodoId) return;
+  const todo = todos.find((t) => t.id === currentTodoId);
+  if (todo) {
+    todo.content = content;
+    saveTodos();
+    renderTodos();
+  }
+}
+
+// Rich Text Helpers (Simple implementation for textarea)
+// Rich Text Helpers
+export function insertFormat(format) {
+  const textarea = document.getElementById("note-textarea");
+  const start = textarea.selectionStart;
+  const end = textarea.selectionEnd;
+  const text = textarea.value;
+  const selectedText = text.substring(start, end);
+
+  let newText = "";
+  let newCursorPos = end;
+
+  if (format === "bold") {
+    newText =
+      text.substring(0, start) + `<b>${selectedText}</b>` + text.substring(end);
+    newCursorPos += 7; // <b> + </b> = 3 + 4 = 7
+  } else if (format === "italic") {
+    newText =
+      text.substring(0, start) + `<i>${selectedText}</i>` + text.substring(end);
+    newCursorPos += 7; // <i> + </i> = 3 + 4 = 7
+  } else if (format === "list") {
+    newText =
+      text.substring(0, start) + `\n• ${selectedText}` + text.substring(end);
+    newCursorPos += 3;
+  }
+
+  textarea.value = newText;
+  updateTodoContent(newText);
+  textarea.focus();
+  textarea.setSelectionRange(newCursorPos, newCursorPos);
+}
+
+// Helper to render basic HTML safely (sanitized)
+function renderRichText(text) {
+  if (!text) return "Công việc mới";
+  // Escape HTML first to prevent XSS, then allow specific tags
+  let safeText = text
+    .replace(/&/g, "&amp;")
+    .replace(/</g, "&lt;")
+    .replace(/>/g, "&gt;")
+    .replace(/"/g, "&quot;")
+    .replace(/'/g, "&#039;");
+
+  // Re-enable specific tags we added
+  safeText = safeText
+    .replace(/&lt;b&gt;/g, "<b>")
+    .replace(/&lt;\/b&gt;/g, "</b>")
+    .replace(/&lt;i&gt;/g, "<i>")
+    .replace(/&lt;\/i&gt;/g, "</i>");
+
+  return safeText;
 }
 
 // --- Pomodoro Timer Logic ---

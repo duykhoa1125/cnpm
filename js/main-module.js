@@ -196,10 +196,18 @@ import {
   addSubjectRow,
   removeSubjectRow,
   calculateGPA,
-  saveNote,
   switchPomodoroMode,
   togglePomodoro,
   resetPomodoro,
+  addTodo,
+  deleteTodo,
+  toggleTodoStatus,
+  openTodoModal,
+  closeTodoModal,
+  updateTodoContent,
+  insertFormat,
+  confirmDeleteTodo,
+  closeDeleteModal,
 } from "./modules/utilities.js";
 
 // Make all functions globally available for HTML onclick handlers
@@ -337,10 +345,18 @@ window.renderUtilities = renderUtilities;
 window.addSubjectRow = addSubjectRow;
 window.removeSubjectRow = removeSubjectRow;
 window.calculateGPA = calculateGPA;
-window.saveNote = saveNote;
 window.switchPomodoroMode = switchPomodoroMode;
 window.togglePomodoro = togglePomodoro;
 window.resetPomodoro = resetPomodoro;
+window.addTodo = addTodo;
+window.deleteTodo = deleteTodo;
+window.toggleTodoStatus = toggleTodoStatus;
+window.openTodoModal = openTodoModal;
+window.closeTodoModal = closeTodoModal;
+window.updateTodoContent = updateTodoContent;
+window.insertFormat = insertFormat;
+window.confirmDeleteTodo = confirmDeleteTodo;
+window.closeDeleteModal = closeDeleteModal;
 
 // Initialize Application when partials are loaded
 document.addEventListener("partialsLoaded", () => {
