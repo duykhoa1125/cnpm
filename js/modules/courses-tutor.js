@@ -493,17 +493,126 @@ export function submitEmail(e) {
   }, 1000);
 }
 
+// Open Upload Modal
+export function openUploadModal(courseId) {
+  const modal = document.getElementById("upload-modal");
+  const courseInput = document.getElementById("upload-course-id");
+  const preview = document.getElementById("selected-files-preview");
+  const fileInput = document.getElementById("file-input");
+
+  if (modal && courseInput) {
+    courseInput.value = courseId;
+    preview.innerHTML = ""; // Clear previous previews
+    fileInput.value = ""; // Clear file input
+    modal.classList.remove("hidden");
+  }
+}
+
+export function closeUploadModal() {
+  const modal = document.getElementById("upload-modal");
+  if (modal) modal.classList.add("hidden");
+}
+
+// Handle File Selection
+export function handleFileSelect(input) {
+  const preview = document.getElementById("selected-files-preview");
+  const files = Array.from(input.files);
+
+  if (files.length === 0) return;
+
+  files.forEach((file) => {
+    const fileEl = document.createElement("div");
+    fileEl.className =
+      "flex items-center justify-between p-3 bg-slate-50 rounded-xl border border-slate-200";
+
+    let iconClass = "fa-file";
+    let colorClass = "text-slate-500";
+
+    if (file.name.endsWith(".pdf")) {
+      iconClass = "fa-file-pdf";
+      colorClass = "text-red-500";
+    } else if (file.name.endsWith(".pptx") || file.name.endsWith(".ppt")) {
+      iconClass = "fa-file-powerpoint";
+      colorClass = "text-orange-500";
+    } else if (file.name.endsWith(".docx") || file.name.endsWith(".doc")) {
+      iconClass = "fa-file-word";
+      colorClass = "text-blue-500";
+    } else if (file.name.endsWith(".mp4")) {
+      iconClass = "fa-video";
+      colorClass = "text-purple-500";
+    }
+
+    fileEl.innerHTML = `
+            <div class="flex items-center gap-3 overflow-hidden">
+                <div class="w-8 h-8 rounded-lg bg-white flex items-center justify-center ${colorClass} shadow-sm">
+                    <i class="fa-solid ${iconClass}"></i>
+                </div>
+                <div class="min-w-0">
+                    <p class="text-xs font-bold text-slate-700 truncate">${
+                      file.name
+                    }</p>
+                    <p class="text-[10px] text-slate-400">${(
+                      file.size /
+                      1024 /
+                      1024
+                    ).toFixed(2)} MB</p>
+                </div>
+            </div>
+            <button onclick="this.parentElement.remove()" class="text-slate-400 hover:text-red-500 transition">
+                <i class="fa-solid fa-xmark"></i>
+            </button>
+        `;
+    preview.appendChild(fileEl);
+  });
+}
+
 // Submit Upload
 export function submitUpload() {
   const btn = document.querySelector(
     '#upload-modal button[onclick="submitUpload()"]'
   );
+  const courseId = document.getElementById("upload-course-id").value;
+  const preview = document.getElementById("selected-files-preview");
+
+  if (preview.children.length === 0) {
+    showToast("Vui lòng chọn ít nhất một file!", "error");
+    return;
+  }
+
   setButtonLoading(btn, true);
 
   setTimeout(() => {
+    // Mock adding files to course materials
+    const course = mockTutorClasses.find((c) => c.id === courseId);
+    if (course) {
+      const newFiles = Array.from(preview.children).map((child) => {
+        const name = child.querySelector("p.truncate").innerText;
+        const size = child.querySelector("p.text-\\[10px\\]").innerText;
+        const type = name.endsWith(".pdf") ? "pdf" : "pptx"; // Simplified type detection
+        return {
+          name: name,
+          size: size,
+          date: new Date().toLocaleDateString("vi-VN"),
+          type: type,
+        };
+      });
+      course.materials.push(...newFiles);
+
+      // Re-render to show new files
+      renderTutorCourses();
+      // Re-open the specific tab
+      setTimeout(() => {
+        toggleTutorClassDetail(courseId);
+        const tabBtn = document.querySelector(
+          `button[onclick*="tab-materials-${courseId}"]`
+        );
+        if (tabBtn) tabBtn.click();
+      }, 100);
+    }
+
     showToast("Upload tài liệu thành công!", "success");
     setButtonLoading(btn, false);
-    document.getElementById("upload-modal").classList.add("hidden");
+    closeUploadModal();
   }, 1000);
 }
 
@@ -524,5 +633,8 @@ window.submitAttendance = submitAttendance;
 window.sendEmail = sendEmail;
 window.closeEmailModal = closeEmailModal;
 window.submitEmail = submitEmail;
+window.openUploadModal = openUploadModal;
+window.closeUploadModal = closeUploadModal;
+window.handleFileSelect = handleFileSelect;
 window.submitUpload = submitUpload;
 window.saveTutorSchedule = saveTutorSchedule;
