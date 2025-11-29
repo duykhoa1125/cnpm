@@ -268,6 +268,106 @@ export function viewNotificationDetail(id) {
   switchTab("notifications_view");
 }
 
+// Open Create Notification Modal
+export function openCreateNotificationModal() {
+  const modal = document.getElementById("create-notification-modal");
+  if (modal) {
+    document.getElementById("notification-form").reset();
+    document.getElementById("notif-preview").innerText =
+      "Nhập thông tin để xem trước thông báo...";
+    document.getElementById("schedule-time-section").classList.add("hidden");
+    modal.classList.remove("hidden");
+
+    // Add real-time preview
+    setupNotificationPreview();
+  }
+}
+
+// Close Create Notification Modal
+export function closeCreateNotificationModal() {
+  const modal = document.getElementById("create-notification-modal");
+  if (modal) modal.classList.add("hidden");
+}
+
+// Toggle Schedule Time Section
+export function toggleScheduleTime(checkbox) {
+  const section = document.getElementById("schedule-time-section");
+  if (checkbox.checked) {
+    section.classList.remove("hidden");
+  } else {
+    section.classList.add("hidden");
+  }
+}
+
+// Setup Real-time Notification Preview
+function setupNotificationPreview() {
+  const titleEl = document.getElementById("notif-title");
+  const contentEl = document.getElementById("notif-content");
+  const typeEl = document.getElementById("notif-type");
+  const previewEl = document.getElementById("notif-preview");
+
+  const updatePreview = () => {
+    const title = titleEl.value || "[Tiêu đề]";
+    const content = contentEl.value || "[Nội dung]";
+    const type = typeEl.options[typeEl.selectedIndex].text;
+
+    previewEl.innerHTML = `
+            <div class="space-y-1">
+                <p class="text-xs font-bold text-blue-600 uppercase">${type}</p>
+                <p class="text-sm font-bold text-slate-800">${title}</p>
+                <p class="text-xs text-slate-600">${content}</p>
+            </div>
+        `;
+  };
+
+  titleEl.addEventListener("input", updatePreview);
+  contentEl.addEventListener("input", updatePreview);
+  typeEl.addEventListener("change", updatePreview);
+}
+
+// Submit Create Notification
+export function submitCreateNotification(e) {
+  e.preventDefault();
+
+  const title = document.getElementById("notif-title").value;
+  const content = document.getElementById("notif-content").value;
+  const type = document.getElementById("notif-type").value;
+  const recipients = document.getElementById("notif-recipients").value;
+  const isScheduled = document.getElementById("notif-schedule").checked;
+
+  let scheduleInfo = "";
+  if (isScheduled) {
+    const date = document.getElementById("notif-schedule-date").value;
+    const time = document.getElementById("notif-schedule-time").value;
+    scheduleInfo = ` (Lên lịch: ${date} ${time})`;
+  }
+
+  // Create new notification object
+  const newNotification = {
+    id: mockNotifications.length + 1,
+    type: type,
+    title: title,
+    message: content,
+    time: isScheduled ? scheduleInfo : "Vừa xong",
+    isRead: false,
+  };
+
+  // Add to mock data
+  mockNotifications.unshift(newNotification);
+
+  // Show success message
+  showToast(
+    `Thông báo đã được ${isScheduled ? "lên lịch" : "gửi"} thành công!`,
+    "success"
+  );
+
+  // Refresh notifications
+  renderNotifications();
+
+  // Close modal
+  closeCreateNotificationModal();
+}
+
 // Make functions globally available
 window.renderNotifications = renderNotifications;
 window.filterNotifications = filterNotifications;
@@ -275,3 +375,7 @@ window.toggleNotificationRead = toggleNotificationRead;
 window.markAllNotificationsRead = markAllNotificationsRead;
 window.deleteNotification = deleteNotification;
 window.viewNotificationDetail = viewNotificationDetail;
+window.openCreateNotificationModal = openCreateNotificationModal;
+window.closeCreateNotificationModal = closeCreateNotificationModal;
+window.toggleScheduleTime = toggleScheduleTime;
+window.submitCreateNotification = submitCreateNotification;

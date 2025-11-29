@@ -618,7 +618,46 @@ export function submitUpload() {
 
 // Save Tutor Schedule
 export function saveTutorSchedule() {
-  showToast("Lịch dạy đã được lưu thành công!", "success");
+  // Get form values (if they exist)
+  const form = document.getElementById("tutor-schedule-form");
+
+  // Confirm action with user
+  const confirmed = confirm(
+    "Xác nhận lưu lịch dạy?\n\nLịch dạy đã đăng ký sẽ được cập nhật vào hệ thống và gửi thông báo đến sinh viên."
+  );
+
+  if (!confirmed) {
+    showToast("Đã hủy lưu lịch dạy", "info");
+    return;
+  }
+
+  // Show loading state
+  const saveBtn = document.querySelector(
+    'button[onclick="saveTutorSchedule()"]'
+  );
+  if (saveBtn) {
+    setButtonLoading(saveBtn, true, "Đang lưu...");
+  }
+
+  // Simulate API call
+  setTimeout(() => {
+    // Reset button
+    if (saveBtn) {
+      setButtonLoading(saveBtn, false);
+    }
+
+    // Show success message with more details
+    showToast(
+      "Lịch dạy đã được lưu thành công! Sinh viên sẽ nhận được thông báo.",
+      "success"
+    );
+
+    // Optional: Reset form if it exists
+    if (form) {
+      // Don't reset, keep data for reference
+      console.log("Schedule saved successfully");
+    }
+  }, 1200);
 }
 
 // Window assignments

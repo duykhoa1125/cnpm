@@ -1,128 +1,200 @@
 /**
- * Cancellation Module
- * Handles course cancellation rules and logic
+ * Course Cancellation Logic Module
+ * Handles course cancellation and cancellation rules management
  */
 
-import { showToast } from "./ui.js";
+import { mockCancellationRules } from "./config.js";
+import { showToast, confirmActionModal, setButtonLoading } from "./ui.js";
 
-let pendingCancelId = null;
-let pendingCancelName = null;
-
-// Ensure Cancellation Modal Exists
-function ensureCancellationModalExists() {
-  if (!document.getElementById("cancellation-modal")) {
-    const modalHtml = `
-        <div id="cancellation-modal" class="hidden fixed inset-0 z-[60] flex items-center justify-center">
-            <div class="absolute inset-0 bg-slate-900/20 backdrop-blur-sm transition-opacity" onclick="closeCancellationModal()"></div>
-            <div class="glass-panel w-full max-w-md p-8 rounded-[32px] shadow-2xl relative z-10 bg-white/80 transform transition-all scale-100">
-                <div class="text-center mb-6">
-                    <div class="w-16 h-16 bg-red-50 text-red-500 rounded-full flex items-center justify-center text-2xl mx-auto mb-4 shadow-inner border border-red-100">
-                        <i class="fa-solid fa-triangle-exclamation"></i>
-                    </div>
-                    <h3 class="text-2xl font-black text-slate-800">Xác nhận hủy môn</h3>
-                    <p class="text-slate-500 mt-2 text-sm font-medium">Hành động này không thể hoàn tác ngay lập tức.</p>
-                </div>
-
-                <div class="bg-white/50 p-5 rounded-2xl border border-white/60 mb-6 shadow-sm">
-                    <div class="flex justify-between mb-3">
-                        <span class="text-xs font-bold text-slate-400 uppercase">Môn học</span>
-                        <span id="modal-course-name" class="text-sm font-bold text-slate-700 text-right">...</span>
-                    </div>
-                    <div class="flex justify-between mb-3">
-                        <span class="text-xs font-bold text-slate-400 uppercase">Hoàn lại</span>
-                        <span id="modal-refund-amount" class="text-sm font-bold text-green-600 text-right">...</span>
-                    </div>
-                    <div class="flex justify-between">
-                        <span class="text-xs font-bold text-slate-400 uppercase">Trạng thái</span>
-                        <span id="modal-cancel-status" class="text-sm font-bold text-right">...</span>
-                    </div>
-                </div>
-                
-                <div id="modal-warning-box" class="hidden bg-yellow-50 text-yellow-700 p-4 rounded-xl text-xs font-medium mb-6 border border-yellow-100 flex items-start gap-3">
-                    <i class="fa-solid fa-circle-info mt-0.5 text-lg"></i>
-                    <span class="leading-relaxed">Lưu ý: Hủy môn sau 24h sẽ bị ghi nhận vào hồ sơ vi phạm quy chế đào tạo.</span>
-                </div>
-
-                <div class="grid grid-cols-2 gap-4">
-                    <button onclick="closeCancellationModal()" class="py-3 rounded-xl font-bold text-slate-600 bg-slate-100 hover:bg-slate-200 transition text-sm">Quay lại</button>
-                    <button onclick="processCancellation()" class="py-3 rounded-xl bg-red-500 text-white font-bold shadow-lg shadow-red-500/30 hover:bg-red-600 transition text-sm">Xác nhận Hủy</button>
-                </div>
-            </div>
-        </div>`;
-    document.body.insertAdjacentHTML("beforeend", modalHtml);
+// Cancel Course (Student)
+export function cancelCourse(courseId, courseName) {
+  const modal = document.getElementById("cancel-course-modal");
+  if (modal) {
+    document.getElementById("cancel-course-name").innerText = courseName;
+    document.getElementById("cancel-course-id").value = courseId;
+    document.getElementById("cancel-reason").value = "";
+    modal.classList.remove("hidden");
   }
-}
-
-// Cancel Course
-export function cancelCourse(id, name) {
-  ensureCancellationModalExists();
-  pendingCancelId = id;
-  pendingCancelName = name;
-
-  // Mock Logic for Rules
-  const isLate = id === "CO1023";
-
-  document.getElementById("modal-course-name").innerText = name;
-
-  const refundEl = document.getElementById("modal-refund-amount");
-  const statusEl = document.getElementById("modal-cancel-status");
-  const warningBox = document.getElementById("modal-warning-box");
-
-  if (isLate) {
-    refundEl.innerText = "0 VNĐ (0%)";
-    refundEl.className =
-      "text-sm font-bold text-slate-400 text-right decoration-dashed";
-    statusEl.innerHTML = "<span class='text-red-500'>Vi phạm quy chế</span>";
-    warningBox.classList.remove("hidden");
-  } else {
-    refundEl.innerText = "100% Học phí";
-    refundEl.className = "text-sm font-bold text-green-600 text-right";
-    statusEl.innerHTML = "<span class='text-blue-600'>Hợp lệ</span>";
-    warningBox.classList.add("hidden");
-  }
-
-  document.getElementById("cancellation-modal").classList.remove("hidden");
 }
 
 // Close Cancellation Modal
 export function closeCancellationModal() {
-  document.getElementById("cancellation-modal").classList.add("hidden");
-  pendingCancelId = null;
+  const modal = document.getElementById("cancel-course-modal");
+  if (modal) modal.classList.add("hidden");
 }
 
 // Process Cancellation
-export function processCancellation() {
-  if (!pendingCancelId) return;
+export function processCancellation(e) {
+  e.preventDefault();
 
-  document.getElementById("cancellation-modal").classList.add("hidden");
-  showToast(`Đang xử lý hủy môn ${pendingCancelName}...`, "info");
+  const courseId = document.getElementById("cancel-course-id").value;
+  const reason = document.getElementById("cancel-reason").value;
+
+  const btn = e.target.querySelector('button[type="submit"]');
+  setButtonLoading(btn, true);
 
   setTimeout(() => {
-    const card = document.getElementById(`course-card-${pendingCancelId}`);
-    if (card) {
-      card.classList.add("opacity-60", "grayscale");
-      card.style.pointerEvents = "none";
+    setButtonLoading(btn, false);
+    showToast("Yêu cầu hủy môn đã được gửi!", "success");
+    closeCancellationModal();
 
-      const btn = card.querySelector('button[onclick*="cancelCourse"]');
-      if (btn) {
-        btn.innerHTML = '<i class="fa-solid fa-ban mr-1"></i> Đã hủy';
-        btn.className =
-          "ml-2 px-3 py-1 rounded-lg bg-slate-200 text-slate-500 text-xs font-bold border border-slate-300 cursor-not-allowed flex-shrink-0";
-        btn.removeAttribute("onclick");
-      }
-
-      showToast(`Đã hủy thành công môn "${pendingCancelName}".`, "success");
-    } else {
-      showToast(`Lỗi: Không tìm thấy môn học trên giao diện.`, "error");
-    }
-
-    pendingCancelId = null;
-  }, 1000);
+    // Show rule consequence
+    setTimeout(() => {
+      showToast(
+        "Lưu ý: Bạn sẽ được hoàn 80% học phí do hủy trước 2 tuần.",
+        "info"
+      );
+    }, 1000);
+  }, 1200);
 }
 
-// Render Course Cancellation Rules
+// Render Cancellation Rules (Academic/Admin)
 export function renderCourseCancellationRules() {
-  console.log("Rendering Cancellation Rules view.");
+  const tableBody = document.getElementById("cancellation-rules-list");
+  const emptyState = document.getElementById("cancellation-rules-empty");
+
+  if (!tableBody) return;
+
+  if (mockCancellationRules.length === 0) {
+    tableBody.innerHTML = "";
+    if (emptyState) emptyState.classList.remove("hidden");
+    return;
+  }
+
+  if (emptyState) emptyState.classList.add("hidden");
+
+  tableBody.innerHTML = mockCancellationRules
+    .map(
+      (rule) => `
+        <tr class="border-b border-slate-100 hover:bg-blue-50/30 transition">
+            <td class="py-4 pl-4">
+                <p class="font-bold text-slate-800">${rule.condition}</p>
+                <p class="text-xs text-slate-500 mt-1">${rule.timeframe}</p>
+            </td>
+            <td class="py-4">
+                <p class="text-sm text-slate-700">${rule.consequence}</p>
+            </td>
+            <td class="py-4 text-center">
+                <span class="px-3 py-1 rounded-full text-xs font-bold ${
+                  rule.refundRate >= 80
+                    ? "bg-green-100 text-green-700"
+                    : rule.refundRate >= 50
+                    ? "bg-yellow-100 text-yellow-700"
+                    : "bg-red-100 text-red-700"
+                }">
+                    ${rule.refundRate}%
+                </span>
+            </td>
+            <td class="py-4 text-center">
+                ${
+                  rule.isPenalty
+                    ? '<span class="px-3 py-1 rounded-full text-xs font-bold bg-red-100 text-red-700"><i class="fa-solid fa-exclamation-triangle mr-1"></i>Có</span>'
+                    : '<span class="px-3 py-1 rounded-full text-xs font-bold bg-slate-100 text-slate-500">Không</span>'
+                }
+            </td>
+            <td class="py-4 pr-4 text-right">
+                <div class="flex gap-2 justify-end">
+                    <button onclick="editCancellationRule(${
+                      rule.id
+                    })" class="w-8 h-8 rounded-lg bg-blue-50 text-blue-600 hover:bg-blue-100 transition flex items-center justify-center" title="Chỉnh sửa">
+                        <i class="fa-solid fa-pen text-xs"></i>
+                    </button>
+                    <button onclick="deleteCancellationRule(${
+                      rule.id
+                    })" class="w-8 h-8 rounded-lg bg-red-50 text-red-600 hover:bg-red-100 transition flex items-center justify-center" title="Xóa">
+                        <i class="fa-solid fa-trash text-xs"></i>
+                    </button>
+                </div>
+            </td>
+        </tr>
+    `
+    )
+    .join("");
+}
+
+// Add Cancellation Rule
+export function addCancellationRule() {
+  const condition = prompt("Nhập điều kiện (VD: Hủy trước 2 tuần):");
+  if (!condition) return;
+
+  const timeframe = prompt(
+    "Nhập khung thời gian (VD: >= 14 ngày trước khai giảng):"
+  );
+  if (!timeframe) return;
+
+  const consequence = prompt(
+    "Nhập hậu quả (VD: Được hoàn học phí, không bị phạt):"
+  );
+  if (!consequence) return;
+
+  const refundRate = parseInt(prompt("Nhập % hoàn học phí (0-100):") || "0");
+  const isPenalty = confirm("Có bị phạt/cảnh cáo không?");
+
+  const newRule = {
+    id: mockCancellationRules.length + 1,
+    condition,
+    timeframe,
+    consequence,
+    refundRate: Math.min(100, Math.max(0, refundRate)),
+    isPenalty,
+  };
+
+  mockCancellationRules.push(newRule);
+  renderCourseCancellationRules();
+  showToast("Đã thêm quy tắc mới thành công!", "success");
+}
+
+// Edit Cancellation Rule
+export function editCancellationRule(id) {
+  const rule = mockCancellationRules.find((r) => r.id === id);
+  if (!rule) return;
+
+  const condition = prompt("Điều kiện:", rule.condition);
+  if (condition) rule.condition = condition;
+
+  const timeframe = prompt("Khung thời gian:", rule.timeframe);
+  if (timeframe) rule.timeframe = timeframe;
+
+  const consequence = prompt("Hậu quả:", rule.consequence);
+  if (consequence) rule.consequence = consequence;
+
+  const refundRate = prompt("% Hoàn học phí:", rule.refundRate);
+  if (refundRate) rule.refundRate = parseInt(refundRate);
+
+  const isPenalty = confirm(
+    `Có bị phạt? (Hiện tại: ${rule.isPenalty ? "Có" : "Không"})`
+  );
+  rule.isPenalty = isPenalty;
+
+  renderCourseCancellationRules();
+  showToast("Đã cập nhật quy tắc!", "success");
+}
+
+// Delete Cancellation Rule
+export function deleteCancellationRule(id) {
+  confirmActionModal(
+    "Xóa quy tắc?",
+    "Bạn có chắc muốn xóa quy tắc này không?",
+    () => {
+      const index = mockCancellationRules.findIndex((r) => r.id === id);
+      if (index !== -1) {
+        mockCancellationRules.splice(index, 1);
+        renderCourseCancellationRules();
+        showToast("Đã xóa quy tắc!", "info");
+      }
+    },
+    "Xóa",
+    "bg-red-500"
+  );
+}
+
+// Filter Progress by Semester (Student Progress)
+export function filterProgressBySemester(semester) {
+  showToast(
+    `Đang lọc theo ${semester === "all" ? "tất cả học kỳ" : semester}...`,
+    "info"
+  );
+  // In a real app, this would filter the table
 }
 
 // Make functions globally available
@@ -130,3 +202,7 @@ window.cancelCourse = cancelCourse;
 window.closeCancellationModal = closeCancellationModal;
 window.processCancellation = processCancellation;
 window.renderCourseCancellationRules = renderCourseCancellationRules;
+window.addCancellationRule = addCancellationRule;
+window.editCancellationRule = editCancellationRule;
+window.deleteCancellationRule = deleteCancellationRule;
+window.filterProgressBySemester = filterProgressBySemester;

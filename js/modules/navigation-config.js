@@ -9,6 +9,7 @@ export const roleMenus = {
     { id: "dashboard_student", icon: "fa-chart-pie", text: "Tổng quan" },
     { id: "courses_student", icon: "fa-book-open", text: "Môn học" },
     { id: "library_view", icon: "fa-book-bookmark", text: "Thư viện số" },
+    { id: "progress_student", icon: "fa-chart-line", text: "Tiến độ học tập" },
     { id: "feedback_student", icon: "fa-comment-dots", text: "Đánh giá" },
     { id: "profile_student", icon: "fa-user", text: "Hồ sơ" },
   ],
@@ -27,7 +28,7 @@ export const roleMenus = {
   department: [
     { id: "dashboard_department", icon: "fa-building", text: "Tổng quan Khoa" },
     { id: "feedback_view_admin", icon: "fa-comments", text: "Phản hồi Khoa" },
-    { id: "progress_admin", icon: "fa-chart-pie", text: "Tiến độ Khoa" },
+    { id: "progress_department", icon: "fa-chart-pie", text: "Tiến độ Khoa" },
   ],
   academic: [
     { id: "dashboard_academic", icon: "fa-school", text: "Tổng quan Đào tạo" },
@@ -71,9 +72,21 @@ export const breadcrumbMap = {
     { label: "Trang chủ", icon: "fa-home" },
     { label: "Thư viện số", icon: "fa-book-bookmark" },
   ],
+  progress_student: [
+    { label: "Trang chủ", icon: "fa-home" },
+    { label: "Tiến độ học tập", icon: "fa-chart-line" },
+  ],
+  progress_department: [
+    { label: "Trang chủ", icon: "fa-home" },
+    { label: "Tiến độ Khoa", icon: "fa-chart-pie" },
+  ],
   feedback_student: [
     { label: "Trang chủ", icon: "fa-home" },
     { label: "Gửi Đánh giá", icon: "fa-comment-dots" },
+  ],
+  feedback_department: [
+    { label: "Trang chủ", icon: "fa-home" },
+    { label: "Phản hồi Khoa", icon: "fa-comments" },
   ],
   profile_student: [
     { label: "Trang chủ", icon: "fa-home" },

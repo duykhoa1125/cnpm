@@ -64,6 +64,15 @@ export function switchTab(tabId) {
   if (tabId === "system_admin") renderAdminSystem();
   if (tabId === "library_view") renderLibrary();
   if (tabId === "progress_admin") renderAdminProgress();
+  if (tabId === "progress_student") {
+    // Initialize student progress chart
+    setTimeout(() => {
+      import("./charts.js").then((module) => {
+        if (module.initStudentProgressChart) module.initStudentProgressChart();
+      });
+    }, 300);
+  }
+  if (tabId === "progress_department") renderAdminProgress();
   if (tabId === "tutor_schedule") {
     renderBonusSessions();
     renderBonusRsvps();

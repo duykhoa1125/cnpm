@@ -1,0 +1,287 @@
+<div id="progress_student" class="section-view space-y-8">
+  <!-- Header -->
+  <div class="flex justify-between items-center">
+    <div>
+      <h2 class="text-2xl font-black text-slate-800">Bảng điểm học tập</h2>
+      <p class="text-slate-500">
+        Theo dõi kết quả học tập chi tiết theo từng học kỳ
+      </p>
+    </div>
+    <button
+      onclick="exportStudentReport('personal')"
+      class="px-4 py-2 bg-blue-600 text-white font-bold rounded-xl text-sm hover:bg-blue-700 transition shadow-lg shadow-blue-500/30"
+    >
+      <i class="fa-solid fa-file-export mr-2"></i>Xuất bảng điểm
+    </button>
+  </div>
+
+  <!-- Detailed Grades Table -->
+  <div class="glass-card p-6 rounded-[28px]">
+    <div class="flex justify-between items-center mb-6">
+      <h3 class="font-bold text-slate-800 flex items-center gap-2">
+        <i class="fa-solid fa-table text-indigo-500"></i> Bảng điểm chi tiết
+      </h3>
+      <div class="flex gap-3">
+        <select
+          id="progress-semester-filter"
+          onchange="filterProgressBySemester(this.value)"
+          class="text-xs font-bold text-slate-600 bg-slate-100 rounded-lg px-3 py-2 border-none outline-none cursor-pointer hover:bg-slate-200 transition"
+        >
+          <option value="all">Tất cả học kỳ</option>
+          <option value="HK251" selected>HK1 2024-2025</option>
+          <option value="HK242">HK2 2023-2024</option>
+          <option value="HK241">HK1 2023-2024</option>
+          <option value="HK232">HK2 2022-2023</option>
+        </select>
+      </div>
+    </div>
+
+    <div class="overflow-x-auto">
+      <table class="w-full text-left border-collapse">
+        <thead class="bg-slate-50 text-xs text-slate-500 uppercase font-bold">
+          <tr>
+            <th class="p-3 sticky left-0 bg-slate-50 z-10">Mã MH</th>
+            <th class="p-3">Tên môn học</th>
+            <th class="p-3 text-center">Tín chỉ</th>
+            <th class="p-3 text-center">Chuyên cần</th>
+            <th class="p-3 text-center">Giữa kỳ</th>
+            <th class="p-3 text-center">Cuối kỳ</th>
+            <th class="p-3 text-center">Tổng kết</th>
+            <th class="p-3 text-center">Điểm chữ</th>
+            <th class="p-3 text-right">Trạng thái</th>
+          </tr>
+        </thead>
+        <tbody
+          id="progress-grades-table"
+          class="text-sm text-slate-700 divide-y divide-slate-100 bg-white"
+        >
+          <!-- Sample Data - HK1 2024-2025 -->
+          <tr class="hover:bg-blue-50/50 transition">
+            <td
+              class="p-3 font-mono text-xs text-slate-500 font-bold sticky left-0 bg-white"
+            >
+              CO1023
+            </td>
+            <td class="p-3 font-bold">Giải tích 1</td>
+            <td class="p-3 text-center font-bold text-purple-600">4</td>
+            <td class="p-3 text-center font-mono">9.0</td>
+            <td class="p-3 text-center font-mono">8.5</td>
+            <td class="p-3 text-center font-mono">9.0</td>
+            <td class="p-3 text-center font-mono font-bold text-blue-600">
+              8.8
+            </td>
+            <td class="p-3 text-center font-bold text-green-600">A</td>
+            <td class="p-3 text-right">
+              <span
+                class="px-2 py-1 bg-green-100 text-green-600 rounded text-[10px] font-bold"
+                >Đạt</span
+              >
+            </td>
+          </tr>
+          <tr class="hover:bg-blue-50/50 transition">
+            <td
+              class="p-3 font-mono text-xs text-slate-500 font-bold sticky left-0 bg-white"
+            >
+              CO2003
+            </td>
+            <td class="p-3 font-bold">Cấu trúc dữ liệu</td>
+            <td class="p-3 text-center font-bold text-purple-600">4</td>
+            <td class="p-3 text-center font-mono">8.0</td>
+            <td class="p-3 text-center font-mono">7.5</td>
+            <td class="p-3 text-center font-mono">8.0</td>
+            <td class="p-3 text-center font-mono font-bold text-blue-600">
+              7.8
+            </td>
+            <td class="p-3 text-center font-bold text-green-600">B+</td>
+            <td class="p-3 text-right">
+              <span
+                class="px-2 py-1 bg-green-100 text-green-600 rounded text-[10px] font-bold"
+                >Đạt</span
+              >
+            </td>
+          </tr>
+          <tr class="hover:bg-blue-50/50 transition">
+            <td
+              class="p-3 font-mono text-xs text-slate-500 font-bold sticky left-0 bg-white"
+            >
+              CO2007
+            </td>
+            <td class="p-3 font-bold">Lập trình Web</td>
+            <td class="p-3 text-center font-bold text-purple-600">4</td>
+            <td class="p-3 text-center font-mono">10.0</td>
+            <td class="p-3 text-center font-mono">9.0</td>
+            <td class="p-3 text-center font-mono">9.5</td>
+            <td class="p-3 text-center font-mono font-bold text-blue-600">
+              9.3
+            </td>
+            <td class="p-3 text-center font-bold text-green-600">A</td>
+            <td class="p-3 text-right">
+              <span
+                class="px-2 py-1 bg-green-100 text-green-600 rounded text-[10px] font-bold"
+                >Đạt</span
+              >
+            </td>
+          </tr>
+          <tr class="hover:bg-blue-50/50 transition">
+            <td
+              class="p-3 font-mono text-xs text-slate-500 font-bold sticky left-0 bg-white"
+            >
+              CO3001
+            </td>
+            <td class="p-3 font-bold">Công nghệ phần mềm</td>
+            <td class="p-3 text-center font-bold text-purple-600">4</td>
+            <td class="p-3 text-center font-mono">8.5</td>
+            <td class="p-3 text-center font-mono">8.0</td>
+            <td class="p-3 text-center font-mono">8.5</td>
+            <td class="p-3 text-center font-mono font-bold text-blue-600">
+              8.3
+            </td>
+            <td class="p-3 text-center font-bold text-green-600">B+</td>
+            <td class="p-3 text-right">
+              <span
+                class="px-2 py-1 bg-green-100 text-green-600 rounded text-[10px] font-bold"
+                >Đạt</span
+              >
+            </td>
+          </tr>
+          <tr class="hover:bg-blue-50/50 transition">
+            <td
+              class="p-3 font-mono text-xs text-slate-500 font-bold sticky left-0 bg-white"
+            >
+              PE101
+            </td>
+            <td class="p-3 font-bold">Giáo dục Thể chất 1</td>
+            <td class="p-3 text-center font-bold text-purple-600">1</td>
+            <td class="p-3 text-center font-mono text-slate-400">--</td>
+            <td class="p-3 text-center font-mono text-slate-400">--</td>
+            <td class="p-3 text-center font-mono text-slate-400">--</td>
+            <td class="p-3 text-center font-mono font-bold text-green-600">
+              P
+            </td>
+            <td class="p-3 text-center font-bold text-green-600">P</td>
+            <td class="p-3 text-right">
+              <span
+                class="px-2 py-1 bg-green-100 text-green-600 rounded text-[10px] font-bold"
+                >Đạt</span
+              >
+            </td>
+          </tr>
+        </tbody>
+      </table>
+    </div>
+
+    <!-- Summary Row -->
+    <div
+      class="mt-6 p-4 bg-gradient-to-r from-blue-50 to-purple-50 rounded-xl border border-blue-100"
+    >
+      <div class="grid grid-cols-2 md:grid-cols-5 gap-4 text-center">
+        <div>
+          <p class="text-xs font-bold text-slate-500 uppercase mb-1">
+            Tổng tín chỉ
+          </p>
+          <p class="text-2xl font-black text-blue-600">17</p>
+        </div>
+        <div>
+          <p class="text-xs font-bold text-slate-500 uppercase mb-1">
+            GPA học kỳ
+          </p>
+          <p class="text-2xl font-black text-purple-600">3.75</p>
+        </div>
+        <div>
+          <p class="text-xs font-bold text-slate-500 uppercase mb-1">
+            GPA tích lũy
+          </p>
+          <p class="text-2xl font-black text-indigo-600">3.68</p>
+        </div>
+        <div>
+          <p class="text-xs font-bold text-slate-500 uppercase mb-1">
+            Xếp loại
+          </p>
+          <p class="text-2xl font-black text-green-600">Giỏi</p>
+        </div>
+        <div>
+          <p class="text-xs font-bold text-slate-500 uppercase mb-1">
+            Tín chỉ tích lũy
+          </p>
+          <p class="text-2xl font-black text-slate-700">112/140</p>
+        </div>
+      </div>
+    </div>
+
+    <!-- Quick Actions -->
+    <div class="mt-4 flex gap-3 flex-wrap">
+      <button
+        onclick="showToast('Đang tải lịch sử điểm...', 'info')"
+        class="px-4 py-2 bg-white border border-slate-200 text-slate-600 font-bold rounded-lg text-xs hover:bg-slate-50 transition"
+      >
+        <i class="fa-solid fa-history mr-2"></i>Xem các kỳ trước
+      </button>
+      <button
+        onclick="showToast('Đang so sánh với TB khóa...', 'info')"
+        class="px-4 py-2 bg-white border border-slate-200 text-slate-600 font-bold rounded-lg text-xs hover:bg-slate-50 transition"
+      >
+        <i class="fa-solid fa-chart-simple mr-2"></i>So sánh TB khóa
+      </button>
+      <button
+        onclick="window.print()"
+        class="px-4 py-2 bg-white border border-slate-200 text-slate-600 font-bold rounded-lg text-xs hover:bg-slate-50 transition"
+      >
+        <i class="fa-solid fa-print mr-2"></i>In bảng điểm
+      </button>
+    </div>
+  </div>
+
+  <!-- Academic Warnings -->
+  <div class="glass-card p-6 rounded-[28px] border-l-4 border-green-500">
+    <h3 class="font-bold text-slate-800 mb-4 flex items-center gap-2">
+      <i class="fa-solid fa-shield-check text-green-500"></i> Cảnh báo học vụ
+    </h3>
+    <div class="text-sm text-slate-600">
+      <div class="flex items-start gap-3 mb-4">
+        <div
+          class="w-12 h-12 rounded-xl bg-green-50 flex items-center justify-center flex-shrink-0"
+        >
+          <i class="fa-solid fa-check-circle text-green-500 text-2xl"></i>
+        </div>
+        <div class="flex-1">
+          <p class="font-bold text-green-700 mb-1">
+            <i class="fa-solid fa-sparkles mr-1"></i>
+            Bạn không có cảnh báo học vụ nào!
+          </p>
+          <p class="text-slate-600">
+            Kết quả học tập của bạn đang rất tốt. Hãy tiếp tục phấn đấu để duy
+            trì thành tích này.
+          </p>
+        </div>
+      </div>
+
+      <!-- Warning Guidelines -->
+      <div class="mt-4 p-4 bg-amber-50/50 rounded-xl border border-amber-100">
+        <p
+          class="text-xs font-bold text-amber-700 uppercase mb-2 flex items-center gap-2"
+        >
+          <i class="fa-solid fa-info-circle"></i>
+          Quy định về cảnh báo học vụ
+        </p>
+        <ul class="text-xs text-slate-600 space-y-1.5 ml-6">
+          <li class="list-disc">
+            <strong>Cảnh báo lần 1:</strong> GPA học kỳ < 2.0 hoặc GPA tích lũy
+            < 2.0
+          </li>
+          <li class="list-disc">
+            <strong>Cảnh báo lần 2:</strong> Bị cảnh báo lần 1 trong 2 học kỳ
+            liên tiếp
+          </li>
+          <li class="list-disc">
+            <strong>Cảnh báo lần 3:</strong> Bị cảnh báo lần 2 trong 2 học kỳ
+            liên tiếp
+          </li>
+          <li class="list-disc text-red-600">
+            <strong>Buộc thôi học:</strong> Bị cảnh báo lần 3 trong 2 học kỳ
+            liên tiếp
+          </li>
+        </ul>
+      </div>
+    </div>
+  </div>
+</div>

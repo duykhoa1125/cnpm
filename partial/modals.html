@@ -1,3 +1,90 @@
+<!-- Cancel Course Modal -->
+<div
+  id="cancel-course-modal"
+  class="fixed inset-0 z-[60] hidden flex items-center justify-center"
+>
+  <!-- Backdrop -->
+  <div
+    class="absolute inset-0 bg-slate-900/20 backdrop-blur-sm transition-opacity"
+    onclick="closeCancellationModal()"
+  ></div>
+
+  <!-- Modal Content -->
+  <div
+    class="glass-panel w-full max-w-lg p-8 rounded-[32px] shadow-2xl relative z-10 bg-white/90 transform transition-all scale-100 m-4"
+  >
+    <div class="text-center mb-6">
+      <div
+        class="w-16 h-16 bg-red-50 text-red-500 rounded-full flex items-center justify-center text-2xl mx-auto mb-4 shadow-inner border border-red-100"
+      >
+        <i class="fa-solid fa-triangle-exclamation"></i>
+      </div>
+      <h3 class="text-2xl font-black text-slate-800">Xác nhận hủy môn học</h3>
+      <p class="text-slate-500 mt-2 text-sm font-medium">
+        Vui lòng đọc kỹ quy định trước khi hủy môn học
+      </p>
+    </div>
+
+    <form onsubmit="processCancellation(event)" class="space-y-5">
+      <input type="hidden" id="cancel-course-id" />
+
+      <!-- Course Info -->
+      <div class="p-4 bg-blue-50/50 rounded-xl border border-blue-100">
+        <p class="text-xs font-bold text-slate-500 uppercase mb-1">Môn học</p>
+        <p id="cancel-course-name" class="text-base font-bold text-slate-800">
+          --
+        </p>
+      </div>
+
+      <!-- Reason -->
+      <div>
+        <label
+          class="text-xs font-bold text-slate-500 uppercase ml-1 mb-1 block"
+          >Lý do hủy (Tùy chọn)</label
+        >
+        <textarea
+          id="cancel-reason"
+          rows="3"
+          class="w-full p-3 rounded-xl border border-slate-200 bg-white/50 focus:outline-none focus:border-red-500 transition font-medium text-slate-700"
+          placeholder="Nhập lý do hủy môn học..."
+        ></textarea>
+      </div>
+
+      <!-- Warning -->
+      <div
+        class="p-4 bg-yellow-50 rounded-xl border border-yellow-200 flex items-start gap-3"
+      >
+        <i class="fa-solid fa-info-circle text-yellow-600 mt-0.5"></i>
+        <div class="text-xs text-yellow-700">
+          <p class="font-bold mb-1">Lưu ý quan trọng:</p>
+          <ul class="list-disc ml-4 space-y-1">
+            <li>Hủy trước 2 tuần: Hoàn 80% học phí</li>
+            <li>Hủy trong vòng 2 tuần: Hoàn 50% học phí</li>
+            <li>Hủy sau khi khai giảng: Không hoàn học phí</li>
+          </ul>
+        </div>
+      </div>
+
+      <!-- Actions -->
+      <div class="grid grid-cols-2 gap-4">
+        <button
+          type="button"
+          onclick="closeCancellationModal()"
+          class="w-full py-3 bg-slate-100 text-slate-600 font-bold rounded-xl hover:bg-slate-200 transition text-sm"
+        >
+          Quay lại
+        </button>
+        <button
+          type="submit"
+          class="w-full py-3 bg-red-500 text-white font-bold rounded-xl hover:bg-red-600 shadow-lg shadow-red-500/30 transition text-sm"
+        >
+          <i class="fa-solid fa-ban mr-1"></i> Xác nhận hủy
+        </button>
+      </div>
+    </form>
+  </div>
+</div>
+
 <!-- Bonus Session Modal -->
 <div
   id="bonus-session-modal"
@@ -1148,6 +1235,198 @@
           class="w-full py-3 bg-blue-600 text-white font-bold rounded-xl hover:bg-blue-700 shadow-lg shadow-blue-500/30 transition text-sm"
         >
           <i class="fa-solid fa-save mr-1"></i> Lưu thông tin
+        </button>
+      </div>
+    </form>
+  </div>
+</div>
+
+<!-- Create Notification Modal (Academic Role) -->
+<div
+  id="create-notification-modal"
+  class="fixed inset-0 z-[60] hidden flex items-center justify-center"
+>
+  <!-- Backdrop -->
+  <div
+    class="absolute inset-0 bg-slate-900/20 backdrop-blur-sm transition-opacity"
+    onclick="closeCreateNotificationModal()"
+  ></div>
+
+  <!-- Modal Content -->
+  <div
+    class="glass-panel w-full max-w-2xl p-8 rounded-[32px] shadow-2xl relative z-10 bg-white/90 transform transition-all scale-100 m-4 max-h-[90vh] overflow-y-auto custom-scroll"
+  >
+    <div class="text-center mb-6">
+      <div
+        class="w-16 h-16 bg-blue-50 text-blue-600 rounded-full flex items-center justify-center text-2xl mx-auto mb-4 shadow-inner border border-blue-100"
+      >
+        <i class="fa-solid fa-bullhorn"></i>
+      </div>
+      <h3 class="text-2xl font-black text-slate-800">Tạo thông báo mới</h3>
+      <p class="text-slate-500 mt-2 text-sm font-medium">
+        Gửi thông báo đến sinh viên, giảng viên hoặc toàn hệ thống.
+      </p>
+    </div>
+
+    <form
+      id="notification-form"
+      class="space-y-5"
+      onsubmit="submitCreateNotification(event)"
+    >
+      <!-- Title -->
+      <div>
+        <label
+          class="text-xs font-bold text-slate-500 uppercase ml-1 mb-1 block"
+          >Tiêu đề thông báo</label
+        >
+        <input
+          type="text"
+          id="notif-title"
+          class="w-full p-3 rounded-xl border border-slate-200 bg-white/50 focus:outline-none focus:border-blue-500 transition font-bold text-slate-700"
+          placeholder="Ví dụ: Thông báo lịch thi giữa kỳ HK251"
+          required
+        />
+      </div>
+
+      <!-- Content -->
+      <div>
+        <label
+          class="text-xs font-bold text-slate-500 uppercase ml-1 mb-1 block"
+          >Nội dung chi tiết</label
+        >
+        <textarea
+          id="notif-content"
+          rows="4"
+          class="w-full p-3 rounded-xl border border-slate-200 bg-white/50 focus:outline-none focus:border-blue-500 transition font-medium text-slate-700"
+          placeholder="Nhập nội dung thông báo..."
+          required
+        ></textarea>
+      </div>
+
+      <div class="grid grid-cols-1 md:grid-cols-2 gap-4">
+        <!-- Type -->
+        <div>
+          <label
+            class="text-xs font-bold text-slate-500 uppercase ml-1 mb-1 block"
+            >Loại thông báo</label
+          >
+          <select
+            id="notif-type"
+            class="w-full p-3 rounded-xl border border-slate-200 bg-white/50 focus:outline-none focus:border-blue-500 transition font-bold text-slate-700"
+            required
+          >
+            <option value="system">Hệ thống</option>
+            <option value="schedule">Lịch học</option>
+            <option value="deadline">Hạn chót</option>
+            <option value="grade">Điểm số</option>
+            <option value="feedback">Phản hồi</option>
+            <option value="cancel">Hủy lớp</option>
+          </select>
+        </div>
+
+        <!-- Priority -->
+        <div>
+          <label
+            class="text-xs font-bold text-slate-500 uppercase ml-1 mb-1 block"
+            >Độ ưu tiên</label
+          >
+          <select
+            id="notif-priority"
+            class="w-full p-3 rounded-xl border border-slate-200 bg-white/50 focus:outline-none focus:border-blue-500 transition font-bold text-slate-700"
+          >
+            <option value="normal">Bình thường</option>
+            <option value="high">Cao</option>
+            <option value="urgent">Khẩn cấp</option>
+          </select>
+        </div>
+      </div>
+
+      <!-- Recipients -->
+      <div>
+        <label
+          class="text-xs font-bold text-slate-500 uppercase ml-1 mb-1 block"
+          >Đối tượng nhận</label
+        >
+        <select
+          id="notif-recipients"
+          class="w-full p-3 rounded-xl border border-slate-200 bg-white/50 focus:outline-none focus:border-blue-500 transition font-bold text-slate-700"
+          required
+        >
+          <option value="all">Toàn bộ hệ thống</option>
+          <option value="students">Tất cả sinh viên</option>
+          <option value="tutors">Tất cả giảng viên</option>
+          <option value="department">Khoa cụ thể</option>
+          <option value="class">Lớp học cụ thể</option>
+        </select>
+      </div>
+
+      <!-- Schedule Options -->
+      <div
+        class="flex items-center gap-3 p-3 rounded-xl bg-blue-50/50 border border-blue-200"
+      >
+        <input
+          type="checkbox"
+          id="notif-schedule"
+          class="w-5 h-5 rounded border-slate-300 text-blue-600 focus:ring-blue-500"
+          onchange="toggleScheduleTime(this)"
+        />
+        <label for="notif-schedule" class="text-sm font-bold text-slate-700"
+          >Lên lịch gửi sau</label
+        >
+      </div>
+
+      <!-- Scheduled Time (Hidden by default) -->
+      <div id="schedule-time-section" class="hidden">
+        <div class="grid grid-cols-2 gap-4">
+          <div>
+            <label
+              class="text-xs font-bold text-slate-500 uppercase ml-1 mb-1 block"
+              >Ngày gửi</label
+            >
+            <input
+              type="date"
+              id="notif-schedule-date"
+              class="w-full p-3 rounded-xl border border-slate-200 bg-white/50 focus:outline-none focus:border-blue-500 transition font-medium text-slate-700"
+            />
+          </div>
+          <div>
+            <label
+              class="text-xs font-bold text-slate-500 uppercase ml-1 mb-1 block"
+              >Giờ gửi</label
+            >
+            <input
+              type="time"
+              id="notif-schedule-time"
+              class="w-full p-3 rounded-xl border border-slate-200 bg-white/50 focus:outline-none focus:border-blue-500 transition font-medium text-slate-700"
+            />
+          </div>
+        </div>
+      </div>
+
+      <!-- Preview Section -->
+      <div class="p-4 rounded-xl bg-slate-50 border border-slate-200">
+        <h4 class="text-xs font-bold text-slate-500 uppercase mb-2">
+          Preview thông báo
+        </h4>
+        <p id="notif-preview" class="text-sm text-slate-600">
+          Nhập thông tin để xem trước thông báo...
+        </p>
+      </div>
+
+      <!-- Action Buttons -->
+      <div class="grid grid-cols-2 gap-4">
+        <button
+          type="button"
+          onclick="closeCreateNotificationModal()"
+          class="w-full py-3 bg-slate-100 text-slate-600 font-bold rounded-xl hover:bg-slate-200 transition text-sm"
+        >
+          Hủy bỏ
+        </button>
+        <button
+          type="submit"
+          class="w-full py-3 bg-blue-600 text-white font-bold rounded-xl hover:bg-blue-700 shadow-lg shadow-blue-500/30 transition text-sm"
+        >
+          <i class="fa-solid fa-paper-plane mr-1"></i> Gửi thông báo
         </button>
       </div>
     </form>

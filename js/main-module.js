@@ -88,6 +88,10 @@ import {
   markAllNotificationsRead,
   deleteNotification,
   viewNotificationDetail,
+  openCreateNotificationModal,
+  closeCreateNotificationModal,
+  toggleScheduleTime,
+  submitCreateNotification,
 } from "./modules/notifications.js";
 
 import {
@@ -158,7 +162,24 @@ import {
   closeCancellationModal,
   processCancellation,
   renderCourseCancellationRules,
+  addCancellationRule,
+  editCancellationRule,
+  deleteCancellationRule,
+  filterProgressBySemester,
 } from "./modules/cancellation.js";
+
+import {
+  downloadAcademicReport,
+  viewLibraryMaterial,
+  downloadLibraryMaterial,
+  uploadLibraryMaterial,
+  viewFullSchedule,
+  viewGPADetails,
+  viewCreditDetails,
+  viewTrainingScoreDetails,
+  sendAutomatedReminder,
+  exportStudentReport,
+} from "./modules/dashboard-utils.js";
 
 // Make all functions globally available for HTML onclick handlers
 // UI Functions
@@ -203,6 +224,10 @@ window.toggleNotificationRead = toggleNotificationRead;
 window.markAllNotificationsRead = markAllNotificationsRead;
 window.deleteNotification = deleteNotification;
 window.viewNotificationDetail = viewNotificationDetail;
+window.openCreateNotificationModal = openCreateNotificationModal;
+window.closeCreateNotificationModal = closeCreateNotificationModal;
+window.toggleScheduleTime = toggleScheduleTime;
+window.submitCreateNotification = submitCreateNotification;
 
 // Progress Functions
 window.renderTutorProgress = renderTutorProgress;
@@ -260,6 +285,22 @@ window.changeRsvpStatus = changeRsvpStatus;
 window.cancelCourse = cancelCourse;
 window.closeCancellationModal = closeCancellationModal;
 window.processCancellation = processCancellation;
+window.addCancellationRule = addCancellationRule;
+window.editCancellationRule = editCancellationRule;
+window.deleteCancellationRule = deleteCancellationRule;
+window.filterProgressBySemester = filterProgressBySemester;
+
+// Dashboard Utilities
+window.downloadAcademicReport = downloadAcademicReport;
+window.viewLibraryMaterial = viewLibraryMaterial;
+window.downloadLibraryMaterial = downloadLibraryMaterial;
+window.uploadLibraryMaterial = uploadLibraryMaterial;
+window.viewFullSchedule = viewFullSchedule;
+window.viewGPADetails = viewGPADetails;
+window.viewCreditDetails = viewCreditDetails;
+window.viewTrainingScoreDetails = viewTrainingScoreDetails;
+window.sendAutomatedReminder = sendAutomatedReminder;
+window.exportStudentReport = exportStudentReport;
 
 // Initialize Application when partials are loaded
 document.addEventListener("partialsLoaded", () => {

@@ -129,44 +129,68 @@ export function togglePasswordVisibility() {
 
 // Apply Login State
 export function applyLoginState(username, role) {
-  document
-    .querySelectorAll(".user-name-display")
-    .forEach((el) => (el.innerText = username));
-  document
-    .querySelectorAll(".user-role-display")
-    .forEach((el) => (el.innerText = role.toUpperCase()));
+  try {
+    // Update username displays
+    document
+      .querySelectorAll(".user-name-display")
+      .forEach((el) => (el.innerText = username));
 
-  const portalBadge = document.getElementById("portal-badge");
-  if (portalBadge) portalBadge.innerText = role.toUpperCase();
+    // Update role displays
+    document
+      .querySelectorAll(".user-role-display")
+      .forEach((el) => (el.innerText = role.toUpperCase()));
 
-  // Update Greeting based on time
-  updateDashboardGreeting();
+    const portalBadge = document.getElementById("portal-badge");
+    if (portalBadge) portalBadge.innerText = role.toUpperCase();
 
-  generateSidebar(role);
+    // Update Greeting based on time
+    updateDashboardGreeting();
 
-  const loginScreen = document.getElementById("login-screen");
-  if (loginScreen) loginScreen.classList.add("hidden");
+    // Generate sidebar
+    generateSidebar(role);
 
-  const mainApp = document.getElementById("main-app");
-  if (mainApp) {
-    mainApp.classList.remove("hidden");
-    mainApp.classList.add("flex");
+    // Show/hide screens
+    const loginScreen = document.getElementById("login-screen");
+    if (loginScreen) {
+      loginScreen.classList.add("hidden");
+    } else {
+      console.warn("Login screen element not found");
+    }
+
+    const mainApp = document.getElementById("main-app");
+    if (mainApp) {
+      mainApp.classList.remove("hidden");
+      mainApp.classList.add("flex");
+    } else {
+      console.warn("Main app element not found");
+      throw new Error("Cannot display main app");
+    }
+
+    // Restore active tab or default
+    let savedTab;
+    try {
+      savedTab = localStorage.getItem("activeTab");
+    } catch (e) {
+      console.error("Cannot read activeTab from localStorage:", e);
+      savedTab = null;
+    }
+
+    const dashboardId =
+      role === "admin"
+        ? "dashboard_admin"
+        : role === "tutor"
+        ? "dashboard_tutor"
+        : role === "department"
+        ? "dashboard_department"
+        : role === "academic"
+        ? "dashboard_academic"
+        : "dashboard_student";
+
+    switchTab(savedTab || dashboardId);
+  } catch (error) {
+    console.error("Error in applyLoginState:", error);
+    throw error; // Re-throw to be caught by caller
   }
-
-  // Restore active tab or default
-  const savedTab = localStorage.getItem("activeTab");
-  const dashboardId =
-    role === "admin"
-      ? "dashboard_admin"
-      : role === "tutor"
-      ? "dashboard_tutor"
-      : role === "department"
-      ? "dashboard_department"
-      : role === "academic"
-      ? "dashboard_academic"
-      : "dashboard_student";
-
-  switchTab(savedTab || dashboardId);
 }
 
 // Logout
@@ -252,36 +276,68 @@ export function onRoleChange() {
 
 // Initialize Auth Module
 export function initAuth() {
-  // Login Role Select
-  setupCustomSelect("role-select", {
-    student: "fa-user-graduate",
-    tutor: "fa-chalkboard-user",
-    department: "fa-building-user",
-    academic: "fa-university",
-    admin: "fa-user-shield",
-  });
+  try {
+    // Login Role Select
+    const roleSelectEl = document.getElementById("role-select");
+    if (roleSelectEl) {
+      setupCustomSelect("role-select", {
+        student: "fa-user-graduate",
+        tutor: "fa-chalkboard-user",
+        department: "fa-building-user",
+        academic: "fa-university",
+        admin: "fa-user-shield",
+      });
 
-  // Event listener for role change
-  const roleSelect = document.getElementById("role-select");
-  if (roleSelect) {
-    roleSelect.addEventListener("change", onRoleChange);
-  }
+      // Event listener for role change
+      roleSelectEl.addEventListener("change", onRoleChange);
+    } else {
+      console.warn("Role select element not found during init");
+    }
 
-  // Set initial login credentials based on default role
-  onRoleChange();
+    // Set initial login credentials based on default role
+    if (roleSelectEl) {
+      onRoleChange();
+    }
 
-  // Check for existing session
-  const savedRole = localStorage.getItem("currentUserRole");
-  const savedUsername = localStorage.getItem("username");
+    // Check for existing session
+    let savedRole, savedUsername;
+    try {
+      savedRole = localStorage.getItem("currentUserRole");
+      savedUsername = localStorage.getItem("username");
+    } catch (storageError) {
+      console.error("localStorage read error:", storageError);
+      savedRole = null;
+      savedUsername = null;
+    }
 
-  if (savedRole && savedUsername) {
-    const roleSelect = document.getElementById("role-select");
-    if (roleSelect) roleSelect.value = savedRole;
+    if (savedRole && savedUsername) {
+      const roleSelect = document.getElementById("role-select");
+      if (roleSelect) roleSelect.value = savedRole;
 
-    const userInput = document.getElementById("login-username");
-    if (userInput) userInput.value = savedUsername;
+      const userInput = document.getElementById("login-username");
+      if (userInput) userInput.value = savedUsername;
 
-    applyLoginState(savedUsername, savedRole);
+      // Restore session
+      try {
+        applyLoginState(savedUsername, savedRole);
+      } catch (error) {
+        console.error("Error restoring session:", error);
+        showToast(
+          "Không thể khôi phục phiên đăng nhập. Vui lòng đăng nhập lại.",
+          "warning"
+        );
+        // Clear corrupted session
+        try {
+          localStorage.removeItem("currentUserRole");
+          localStorage.removeItem("username");
+        } catch (e) {
+          console.error("Cannot clear localStorage:", e);
+        }
+      }
+    }
+  } catch (error) {
+    console.error("initAuth error:", error);
+    // Continue execution even if init fails
   }
 }
 
