@@ -151,18 +151,18 @@ export const mockCourseDetails = {
     announcements: [
       {
         id: 1,
-        title: "Thông báo về lịch thi giữa kỳ",
+        title: "Chào mừng các em đến với môn học",
         content:
-          "Các em chú ý lịch thi giữa kỳ sẽ diễn ra vào tuần 8. Nội dung bao gồm chương 1 đến chương 3.",
+          "Xin chào các em! Thầy sẽ hỗ trợ các em ôn tập kiến thức thông qua các bài quiz nội bộ. Hãy cố gắng hoàn thành đầy đủ nhé!",
         date: "2025-10-15",
         author: "Trần Văn B",
         type: "important",
       },
       {
         id: 2,
-        title: "Nghỉ học bù ngày 20/11",
+        title: "Buổi học bổ sung ngày 22/11",
         content:
-          "Lớp sẽ nghỉ học vào ngày 20/11 và học bù vào sáng thứ 7 tuần sau.",
+          "Lớp sẽ có buổi học bổ sung vào sáng thứ 7 tuần sau để ôn tập thêm.",
         date: "2025-11-10",
         author: "Trần Văn B",
         type: "normal",
@@ -233,7 +233,7 @@ export const mockCourseDetails = {
     quizzes: [
       {
         id: 1,
-        title: "Quiz 1: Chương 1",
+        title: "Quiz: Giới hạn và Liên tục",
         deadline: "2025-09-20",
         status: "completed",
         score: 9.0,
@@ -243,7 +243,7 @@ export const mockCourseDetails = {
       },
       {
         id: 2,
-        title: "Quiz 2: Chương 2",
+        title: "Quiz: Đạo hàm và Vi phân",
         deadline: "2025-10-10",
         status: "completed",
         score: 7.5,
@@ -253,13 +253,23 @@ export const mockCourseDetails = {
       },
       {
         id: 3,
-        title: "Kiểm tra giữa kỳ",
+        title: "Quiz: Tích phân cơ bản",
         deadline: "2025-10-25",
-        status: "completed",
-        score: 8.0,
+        status: "pending",
+        score: null,
         description:
-          "Nội dung bao gồm chương 1, 2 và 3. Hình thức: Tự luận + Trắc nghiệm.",
-        files: [{ name: "De_cuong_on_tap_GK.pdf", size: "2.5 MB" }],
+          "Quiz ôn tập kiến thức tích phân cơ bản. Thời gian làm bài: 25 phút.",
+        files: [],
+      },
+      {
+        id: 4,
+        title: "Quiz: Ứng dụng Đạo hàm",
+        deadline: "2025-11-05",
+        status: "pending",
+        score: null,
+        description:
+          "Kiểm tra ứng dụng đạo hàm trong bài toán cực trị. Thời gian: 30 phút.",
+        files: [],
       },
     ],
     forum: [
@@ -302,22 +312,7 @@ export const mockCourseDetails = {
         ],
       },
     ],
-    exams: [
-      {
-        name: "Thi Giữa Kỳ",
-        date: "2025-10-25",
-        time: "07:00",
-        room: "H6-302",
-        type: "Tự luận",
-      },
-      {
-        name: "Thi Cuối Kỳ",
-        date: "2025-12-25",
-        time: "07:00",
-        room: "A4-401",
-        type: "Tự luận",
-      },
-    ],
+    exams: [],
     materials: [
       {
         id: 1,
@@ -342,11 +337,10 @@ export const mockCourseDetails = {
       },
     ],
     grades: [
-      { item: "Quiz 1", weight: "10%", score: 9.0 },
-      { item: "Quiz 2", weight: "10%", score: 7.5 },
-      { item: "Bài tập lớn 1", weight: "20%", score: 8.5 },
-      { item: "Giữa kỳ", weight: "30%", score: 8.0 },
-      { item: "Cuối kỳ", weight: "30%", score: null },
+      { item: "Quiz: Giới hạn và Liên tục", weight: "25%", score: 9.0 },
+      { item: "Quiz: Đạo hàm và Vi phân", weight: "25%", score: 7.5 },
+      { item: "Quiz: Tích phân cơ bản", weight: "25%", score: null },
+      { item: "Quiz: Ứng dụng Đạo hàm", weight: "25%", score: null },
     ],
   },
   "Lập trình Web": {
@@ -395,34 +389,27 @@ export const mockCourseDetails = {
         note: "",
       },
     ],
-    assignments: [
-      {
-        id: 1,
-        title: "Thiết kế Landing Page",
-        deadline: "2025-10-15",
-        status: "submitted",
-        score: 9.5,
-      },
-    ],
+    assignments: [],
     quizzes: [
       {
         id: 1,
-        title: "HTML/CSS Quiz",
+        title: "Quiz: HTML & CSS cơ bản",
         deadline: "2025-09-25",
         status: "completed",
         score: 10.0,
+        description: "Kiểm tra kiến thức HTML5 và CSS3. Thời gian: 20 phút.",
+      },
+      {
+        id: 2,
+        title: "Quiz: JavaScript Fundamentals",
+        deadline: "2025-10-15",
+        status: "pending",
+        score: null,
+        description: "Kiểm tra kiến thức JavaScript cơ bản. Thời gian: 30 phút.",
       },
     ],
     forum: [],
-    exams: [
-      {
-        name: "Thi Cuối Kỳ",
-        date: "2025-12-20",
-        time: "13:00",
-        room: "Phòng máy 1",
-        type: "Thực hành",
-      },
-    ],
+    exams: [],
     materials: [
       {
         id: 1,
@@ -440,9 +427,8 @@ export const mockCourseDetails = {
       },
     ],
     grades: [
-      { item: "Quiz HTML/CSS", weight: "20%", score: 10.0 },
-      { item: "BTL Landing Page", weight: "30%", score: 9.5 },
-      { item: "Cuối kỳ", weight: "50%", score: null },
+      { item: "Quiz: HTML & CSS cơ bản", weight: "50%", score: 10.0 },
+      { item: "Quiz: JavaScript Fundamentals", weight: "50%", score: null },
     ],
   },
   "Cấu trúc dữ liệu": {

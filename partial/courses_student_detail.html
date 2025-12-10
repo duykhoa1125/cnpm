@@ -63,7 +63,7 @@
         </div>
         <div>
           <p class="text-xs text-blue-200 uppercase font-bold">
-            Bài tập chưa nộp
+            Quiz chưa làm
           </p>
           <p class="text-xl font-black">1</p>
         </div>
@@ -102,19 +102,13 @@
       class="course-tab-btn px-4 py-2 rounded-lg text-sm font-bold text-slate-500 hover:bg-slate-100 transition whitespace-nowrap"
       onclick="switchCourseTab(this, 'tab-assignments')"
     >
-      <i class="fa-solid fa-list-check mr-2"></i>Bài tập
+      <i class="fa-solid fa-brain mr-2"></i>Quiz
     </button>
     <button
       class="course-tab-btn px-4 py-2 rounded-lg text-sm font-bold text-slate-500 hover:bg-slate-100 transition whitespace-nowrap"
       onclick="switchCourseTab(this, 'tab-forum')"
     >
       <i class="fa-solid fa-comments mr-2"></i>Diễn đàn
-    </button>
-    <button
-      class="course-tab-btn px-4 py-2 rounded-lg text-sm font-bold text-slate-500 hover:bg-slate-100 transition whitespace-nowrap"
-      onclick="switchCourseTab(this, 'tab-exams')"
-    >
-      <i class="fa-solid fa-file-pen mr-2"></i>Lịch thi
     </button>
     <button
       class="course-tab-btn px-4 py-2 rounded-lg text-sm font-bold text-slate-500 hover:bg-slate-100 transition whitespace-nowrap"
@@ -171,7 +165,7 @@
           <!-- Deadlines -->
           <div class="glass-card p-6 rounded-2xl border-t-4 border-orange-500">
             <h4 class="font-bold text-slate-800 text-lg mb-4">
-              Hạn nộp sắp tới
+              Quiz sắp tới
             </h4>
             <div id="overview-deadlines" class="space-y-3">
               <!-- Injected by JS -->
@@ -256,38 +250,29 @@
       </div>
     </div>
 
-    <!-- Assignments & Exams Tab -->
+    <!-- Quiz Tab -->
     <div
       id="tab-assignments"
       class="course-tab-content hidden animate-fade-in-up"
     >
-      <div class="grid grid-cols-1 lg:grid-cols-2 gap-6">
-        <!-- Assignments -->
-        <div class="space-y-4">
+      <div class="glass-card p-6 rounded-2xl">
+        <div class="flex justify-between items-center mb-6">
           <h4 class="text-lg font-bold text-slate-800 flex items-center gap-2">
             <span
-              class="w-8 h-8 rounded-lg bg-purple-100 text-purple-600 flex items-center justify-center"
-              ><i class="fa-solid fa-file-code"></i
-            ></span>
-            Bài tập lớn
+              class="w-10 h-10 rounded-xl bg-gradient-to-br from-blue-500 to-purple-600 text-white flex items-center justify-center shadow-lg"
+              ><i class="fa-solid fa-brain"></i>
+            </span>
+            Quiz nội bộ
           </h4>
-          <div id="course-assignments-list" class="space-y-3">
-            <!-- Content injected by JS -->
-          </div>
+          <span class="text-xs font-bold text-slate-500 bg-slate-100 px-3 py-1 rounded-full">
+            Được giao bởi Tutor
+          </span>
         </div>
-
-        <!-- Quizzes -->
-        <div class="space-y-4">
-          <h4 class="text-lg font-bold text-slate-800 flex items-center gap-2">
-            <span
-              class="w-8 h-8 rounded-lg bg-orange-100 text-orange-600 flex items-center justify-center"
-              ><i class="fa-solid fa-stopwatch"></i
-            ></span>
-            Kiểm tra & Quiz
-          </h4>
-          <div id="course-quizzes-list" class="space-y-3">
-            <!-- Content injected by JS -->
-          </div>
+        <p class="text-sm text-slate-600 mb-6">
+          Các bài quiz được tutor giao để giúp bạn ôn tập và kiểm tra kiến thức.
+        </p>
+        <div id="course-quizzes-list" class="space-y-3">
+          <!-- Content injected by JS -->
         </div>
       </div>
     </div>
@@ -305,18 +290,6 @@
       </div>
       <div id="course-forum-list" class="space-y-3">
         <!-- Content injected by JS -->
-      </div>
-    </div>
-
-    <!-- Exam Schedule Tab -->
-    <div id="tab-exams" class="course-tab-content hidden animate-fade-in-up">
-      <div class="glass-card p-6 rounded-2xl border-l-4 border-red-500">
-        <h4 class="text-lg font-bold text-slate-800 mb-4">
-          Lịch thi tập trung
-        </h4>
-        <div id="course-exams-list" class="space-y-4">
-          <!-- Content injected by JS -->
-        </div>
       </div>
     </div>
 

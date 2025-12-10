@@ -176,7 +176,7 @@ export function enterClass(courseId, courseName) {
   renderCourseSchedule(details.scheduleList);
   renderCourseAssignments(details.assignments, details.quizzes);
   renderCourseForum(details.forum);
-  renderCourseExams(details.exams);
+  // renderCourseExams - Removed (not applicable for Tutor app)
   renderCourseMaterials(details.materials);
   renderCourseGrades(details.grades);
 
@@ -309,7 +309,7 @@ function renderCourseOverview(details) {
       deadContainer.innerHTML = `
                 <div class="text-center py-4">
                     <div class="w-10 h-10 bg-green-100 text-green-600 rounded-full flex items-center justify-center mx-auto mb-2"><i class="fa-solid fa-check"></i></div>
-                    <p class="text-slate-500 text-sm font-medium">Bạn đã hoàn thành tất cả bài tập!</p>
+                    <p class="text-slate-500 text-sm font-medium">Bạn đã hoàn thành tất cả quiz!</p>
                 </div>
             `;
     } else {
@@ -396,51 +396,14 @@ function renderCourseSchedule(list) {
 }
 
 function renderCourseAssignments(assignments, quizzes) {
-  const assignContainer = document.getElementById("course-assignments-list");
+  // Note: assignments parameter kept for backward compatibility but not used
+  // Only render quizzes for Tutor app
   const quizContainer = document.getElementById("course-quizzes-list");
-
-  if (assignContainer) {
-    if (!assignments || assignments.length === 0) {
-      assignContainer.innerHTML =
-        '<p class="text-slate-400 text-sm italic">Không có bài tập lớn.</p>';
-    } else {
-      assignContainer.innerHTML = assignments
-        .map(
-          (a) => `
-                <div onclick="openAssignmentModal('assignment', '${
-                  a.id
-                }')" class="cursor-pointer p-3 rounded-xl border border-slate-200 bg-white flex justify-between items-center group hover:border-purple-300 transition">
-                    <div>
-                        <p class="text-sm font-bold text-slate-800 group-hover:text-purple-700 transition">${
-                          a.title
-                        }</p>
-                        <p class="text-xs text-slate-500 mt-1">Hạn: ${
-                          a.deadline
-                        }</p>
-                    </div>
-                    <div class="text-right">
-                        ${
-                          a.status === "submitted"
-                            ? `<span class="px-2 py-1 rounded bg-green-100 text-green-700 text-[10px] font-bold">Đã nộp</span>`
-                            : `<span class="px-2 py-1 rounded bg-orange-100 text-orange-700 text-[10px] font-bold">Chưa nộp</span>`
-                        }
-                        ${
-                          a.score !== null
-                            ? `<p class="text-sm font-black text-purple-600 mt-1">${a.score}</p>`
-                            : ""
-                        }
-                    </div>
-                </div>
-            `
-        )
-        .join("");
-    }
-  }
 
   if (quizContainer) {
     if (!quizzes || quizzes.length === 0) {
       quizContainer.innerHTML =
-        '<p class="text-slate-400 text-sm italic">Không có bài kiểm tra.</p>';
+        '<p class="text-slate-400 text-sm italic text-center py-8">Chưa có quiz nào được tutor giao.</p>';
     } else {
       quizContainer.innerHTML = quizzes
         .map(
