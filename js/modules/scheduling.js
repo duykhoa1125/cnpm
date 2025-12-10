@@ -1,77 +1,75 @@
 /**
- * Scheduling Module
- * Handles class scheduling, tutor assignment, and room allocation
+ * Scheduling Module (Tutor Class Management)
+ * Handles class listing for Academic Department
  */
 
-import { showToast, setButtonLoading } from "./ui.js";
+import { showToast } from "./ui.js";
 
-// Mock Data
+// Mock Data - Tutor Classes (Online)
 let mockScheduleClasses = [
   {
     id: "L01",
     courseId: "CO1023",
-    courseName: "Hệ thống số",
-    tutorId: null,
-    tutorName: null,
-    day: null,
-    shift: null,
-    room: null,
+    courseName: "Giải tích 1",
+    tutorId: "T001",
+    tutorName: "Trần Văn B",
+    tutorEmail: "b.tran@tutor.edu.vn",
+    schedule: "Thứ 2, 07:00 - 10:00",
+    platform: "Zoom Meeting",
     studentsCount: 45,
+    status: "active",
+  },
+  {
+    id: "L02",
+    courseId: "CO2013",
+    courseName: "CTDL & Giải thuật",
+    tutorId: "T002",
+    tutorName: "Phạm Văn Z",
+    tutorEmail: "z.pham@tutor.edu.vn",
+    schedule: "Thứ 4, 09:00 - 11:00",
+    platform: "Google Meet",
+    studentsCount: 38,
+    status: "active",
+  },
+  {
+    id: "L01",
+    courseId: "CO3005",
+    courseName: "Lập trình Web",
+    tutorId: "T003",
+    tutorName: "Lê Thị M",
+    tutorEmail: "m.le@tutor.edu.vn",
+    schedule: "Thứ 7, 09:00 - 12:00",
+    platform: "Zoom Meeting",
+    studentsCount: 52,
+    status: "active",
   },
   {
     id: "L02",
     courseId: "CO1023",
-    courseName: "Hệ thống số",
-    tutorId: "T001",
-    tutorName: "Nguyen Van A",
-    day: "2",
-    shift: "1",
-    room: "H6-301",
-    studentsCount: 42,
-  },
-  {
-    id: "L01",
-    courseId: "CO2003",
-    courseName: "Cấu trúc dữ liệu",
-    tutorId: null,
-    tutorName: null,
-    day: null,
-    shift: null,
-    room: null,
-    studentsCount: 60,
-  },
-  {
-    id: "L01",
-    courseId: "EE1001",
-    courseName: "Mạch điện 1",
-    tutorId: "T002",
-    tutorName: "Tran Thi B",
-    day: "3",
-    shift: "2",
-    room: null, // Missing room
-    studentsCount: 50,
-  },
-  {
-    id: "L03",
-    courseId: "CO1023",
-    courseName: "Hệ thống số",
-    tutorId: "T001",
-    tutorName: "Nguyen Van A",
-    day: "2",
-    shift: "1", // Conflict with L02
-    room: "H6-302",
+    courseName: "Giải tích 1",
+    tutorId: "T004",
+    tutorName: "Nguyễn Thị K",
+    tutorEmail: "k.nguyen@tutor.edu.vn",
+    schedule: "Thứ 5, 14:00 - 17:00",
+    platform: "Google Meet",
     studentsCount: 40,
+    status: "finished",
+  },
+  {
+    id: "L01",
+    courseId: "MT1007",
+    courseName: "Đại số Tuyến tính",
+    tutorId: "T005",
+    tutorName: "Ngô Văn N",
+    tutorEmail: "n.ngo@tutor.edu.vn",
+    schedule: "Thứ 3, 14:00 - 16:00",
+    platform: "Zoom Meeting",
+    studentsCount: 35,
+    status: "active",
   },
 ];
 
-const mockTutorsList = [
-  { id: "T001", name: "Nguyen Van A", dept: "CSE" },
-  { id: "T002", name: "Tran Thi B", dept: "EEE" },
-  { id: "T003", name: "Le Van C", dept: "CSE" },
-  { id: "T004", name: "Pham Thi D", dept: "ME" },
-];
-
-// Render Scheduling View
+// Render Scheduling View (now: Quản lý Lớp học)
 export function renderScheduling() {
   const container = document.getElementById("schedule-class-list");
   if (!container) return;
@@ -88,93 +86,76 @@ export function renderScheduling() {
     const matchSearch =
       c.courseName.toLowerCase().includes(search) ||
       c.courseId.toLowerCase().includes(search) ||
+      c.tutorName.toLowerCase().includes(search) ||
       c.id.toLowerCase().includes(search);
 
     let matchFilter = true;
-    if (filter === "UNASSIGNED") matchFilter = !c.tutorId;
-    if (filter === "NO_ROOM") matchFilter = !c.room;
-    if (filter === "CONFLICT") matchFilter = checkConflict(c);
+    if (filter === "ONGOING") matchFilter = c.status === "active";
+    if (filter === "FINISHED") matchFilter = c.status === "finished";
 
     return matchSearch && matchFilter;
   });
 
   // Update Stats
   const total = mockScheduleClasses.length;
-  const assignedTutor = mockScheduleClasses.filter((c) => c.tutorId).length;
-  const assignedRoom = mockScheduleClasses.filter((c) => c.room).length;
-  const percent = Math.round(
-    ((assignedTutor + assignedRoom) / (total * 2)) * 100
-  );
+  const activeClasses = mockScheduleClasses.filter((c) => c.status === "active").length;
+  const uniqueTutors = [...new Set(mockScheduleClasses.map((c) => c.tutorId))].length;
+  const totalStudents = mockScheduleClasses.reduce((sum, c) => sum + c.studentsCount, 0);
 
-  document.getElementById(
-    "stat-assigned-tutor"
-  ).innerText = `${assignedTutor}/${total}`;
-  document.getElementById(
-    "stat-assigned-room"
-  ).innerText = `${assignedRoom}/${total}`;
-  document.getElementById(
-    "schedule-progress-percent"
-  ).innerText = `${percent}%`;
-  document.getElementById("schedule-progress-bar").style.width = `${percent}%`;
+  const statTotal = document.getElementById("stat-total-classes");
+  const statActive = document.getElementById("stat-active-classes");
+  const statTutors = document.getElementById("stat-tutors");
+  const statStudents = document.getElementById("stat-students");
+  
+  if (statTotal) statTotal.innerText = total;
+  if (statActive) statActive.innerText = activeClasses;
+  if (statTutors) statTutors.innerText = uniqueTutors;
+  if (statStudents) statStudents.innerText = totalStudents;
 
   // Render List
   container.innerHTML = filtered
     .map((c) => {
-      const isConflict = checkConflict(c);
-      const statusColor = isConflict
-        ? "border-red-200 bg-red-50"
-        : c.tutorId && c.room
-        ? "border-green-200 bg-white"
-        : "border-orange-200 bg-orange-50/50";
+      const statusClass = c.status === "active" 
+        ? "border-green-200 bg-green-50/50" 
+        : "border-slate-200 bg-slate-50";
+      const statusBadge = c.status === "active"
+        ? `<span class="px-2 py-1 bg-green-100 text-green-600 rounded text-[10px] font-bold">Đang hoạt động</span>`
+        : `<span class="px-2 py-1 bg-slate-200 text-slate-600 rounded text-[10px] font-bold">Đã kết thúc</span>`;
+      
+      const platformIcon = c.platform === "Zoom Meeting" 
+        ? `<i class="fa-solid fa-video text-blue-500"></i>` 
+        : `<i class="fa-brands fa-google text-red-500"></i>`;
 
       return `
-        <div class="p-4 rounded-xl border ${statusColor} shadow-sm hover:shadow-md transition group relative">
-            ${
-              isConflict
-                ? `<div class="absolute top-2 right-2 text-red-500" title="Xung đột lịch"><i class="fa-solid fa-triangle-exclamation"></i></div>`
-                : ""
-            }
+        <div class="p-4 rounded-xl border ${statusClass} shadow-sm hover:shadow-md transition group relative">
             <div class="flex justify-between items-start">
-                <div>
-                    <div class="flex items-center gap-2">
-                        <span class="font-bold text-slate-800 text-lg">${
-                          c.courseName
-                        }</span>
-                        <span class="px-2 py-0.5 rounded bg-slate-200 text-slate-600 text-[10px] font-mono font-bold">${
-                          c.courseId
-                        } - ${c.id}</span>
+                <div class="flex-1">
+                    <div class="flex items-center gap-2 flex-wrap">
+                        <span class="font-bold text-slate-800 text-lg">${c.courseName}</span>
+                        <span class="px-2 py-0.5 rounded bg-blue-100 text-blue-600 text-[10px] font-mono font-bold">${c.courseId} - ${c.id}</span>
+                        ${statusBadge}
                     </div>
-                    <div class="mt-2 space-y-1">
+                    <div class="mt-3 grid grid-cols-1 md:grid-cols-2 gap-2">
+                        <div class="flex items-center gap-2 text-sm text-slate-600">
+                            <img src="https://ui-avatars.com/api/?name=${encodeURIComponent(c.tutorName)}&size=24&background=3b82f6&color=fff" class="w-6 h-6 rounded-full" />
+                            <span class="font-bold text-slate-700">${c.tutorName}</span>
+                        </div>
                         <p class="text-sm text-slate-600 flex items-center gap-2">
-                            <i class="fa-solid fa-user-tie w-4 text-center text-slate-400"></i>
-                            ${
-                              c.tutorName
-                                ? `<span class="font-bold text-blue-600">${c.tutorName}</span>`
-                                : `<span class="italic text-slate-400">Chưa xếp GV</span>`
-                            }
+                            <i class="fa-solid fa-clock text-slate-400"></i>
+                            ${c.schedule}
                         </p>
                         <p class="text-sm text-slate-600 flex items-center gap-2">
-                            <i class="fa-solid fa-clock w-4 text-center text-slate-400"></i>
-                            ${
-                              c.day
-                                ? `Thứ ${c.day}, Ca ${c.shift}`
-                                : `<span class="italic text-slate-400">Chưa xếp lịch</span>`
-                            }
+                            ${platformIcon}
+                            <span class="font-medium">${c.platform}</span>
                         </p>
                         <p class="text-sm text-slate-600 flex items-center gap-2">
-                            <i class="fa-solid fa-location-dot w-4 text-center text-slate-400"></i>
-                            ${
-                              c.room
-                                ? `<span class="font-bold text-slate-700">${c.room}</span>`
-                                : `<span class="italic text-slate-400">Chưa xếp phòng</span>`
-                            }
+                            <i class="fa-solid fa-users text-slate-400"></i>
+                            <span>${c.studentsCount} sinh viên</span>
                         </p>
                     </div>
                 </div>
-                <button onclick="openSchedulingModal('${c.courseId}', '${
-        c.id
-      }')" class="w-10 h-10 rounded-xl bg-white border border-slate-200 text-blue-600 hover:bg-blue-50 transition flex items-center justify-center shadow-sm">
-                    <i class="fa-solid fa-pen"></i>
+                <button onclick="openSchedulingModal('${c.courseId}', '${c.id}')" class="w-10 h-10 rounded-xl bg-white border border-slate-200 text-blue-600 hover:bg-blue-50 transition flex items-center justify-center shadow-sm">
+                    <i class="fa-solid fa-eye"></i>
                 </button>
             </div>
         </div>
@@ -185,68 +166,6 @@ export function renderScheduling() {
   if (filtered.length === 0) {
     container.innerHTML = `<p class="text-center text-slate-400 italic py-8">Không tìm thấy lớp học nào.</p>`;
   }
-
-  renderConflicts();
-}
-
-function checkConflict(c) {
-  if (!c.tutorId || !c.day || !c.shift) return false;
-  // Check if tutor has another class at same time
-  const conflict = mockScheduleClasses.find(
-    (other) =>
-      other !== c &&
-      other.tutorId === c.tutorId &&
-      other.day === c.day &&
-      other.shift === c.shift
-  );
-  return !!conflict;
-}
-
-function renderConflicts() {
-  const container = document.getElementById("schedule-conflicts");
-  if (!container) return;
-
-  const conflicts = [];
-  mockScheduleClasses.forEach((c) => {
-    if (!c.tutorId || !c.day || !c.shift) return;
-    const conflict = mockScheduleClasses.find(
-      (other) =>
-        other !== c &&
-        other.tutorId === c.tutorId &&
-        other.day === c.day &&
-        other.shift === c.shift
-    );
-    if (
-      conflict &&
-      !conflicts.some(
-        (item) =>
-          (item.c1 === c && item.c2 === conflict) ||
-          (item.c1 === conflict && item.c2 === c)
-      )
-    ) {
-      conflicts.push({ c1: c, c2: conflict });
-    }
-  });
-
-  if (conflicts.length === 0) {
-    container.innerHTML = `<p class="text-sm text-slate-500 italic text-center py-4">Không có xung đột nào.</p>`;
-    return;
-  }
-
-  container.innerHTML = conflicts
-    .map(
-      (item) => `
-        <div class="p-3 bg-red-50 border border-red-100 rounded-xl text-xs">
-            <p class="font-bold text-red-600 mb-1">GV ${item.c1.tutorName}</p>
-            <p class="text-slate-600">Bị trùng lịch dạy Thứ ${item.c1.day}, Ca ${item.c1.shift}</p>
-            <div class="flex gap-2 mt-1">
-                <span class="bg-white px-1 rounded border border-red-100">${item.c1.courseId}-${item.c1.id}</span>
-                <span class="bg-white px-1 rounded border border-red-100">${item.c2.courseId}-${item.c2.id}</span>
-            </div>
-        </div>
-    `
-    )
-    .join("");
 }
 
 // Modal Functions
@@ -261,29 +180,13 @@ export function openSchedulingModal(courseId, classId) {
 
   const modal = document.getElementById("scheduling-modal");
   if (modal) {
-    document.getElementById(
-      "sched-modal-title"
-    ).innerText = `Xếp lịch lớp ${cls.id}`;
-    document.getElementById(
-      "sched-modal-course"
-    ).innerText = `Môn: ${cls.courseName}`;
-
-    // Populate Tutors
-    const tutorSelect = document.getElementById("sched-tutor");
-    tutorSelect.innerHTML =
-      `<option value="">-- Chọn giảng viên --</option>` +
-      mockTutorsList
-        .map(
-          (t) =>
-            `<option value="${t.id}" ${
-              cls.tutorId === t.id ? "selected" : ""
-            }>${t.name} (${t.dept})</option>`
-        )
-        .join("");
-
-    document.getElementById("sched-day").value = cls.day || "2";
-    document.getElementById("sched-shift").value = cls.shift || "1";
-    document.getElementById("sched-room").value = cls.room || "";
+    document.getElementById("sched-modal-title").innerText = `Chi tiết lớp ${cls.id}`;
+    document.getElementById("sched-modal-course").innerText = `Môn: ${cls.courseName}`;
+    document.getElementById("sched-tutor-name").innerText = cls.tutorName;
+    document.getElementById("sched-tutor-email").innerText = cls.tutorEmail;
+    document.getElementById("sched-time").innerText = cls.schedule;
+    document.getElementById("sched-students").innerText = `${cls.studentsCount} SV`;
+    document.getElementById("sched-platform").innerText = cls.platform;
 
     modal.classList.remove("hidden");
   }
@@ -295,59 +198,23 @@ export function closeSchedulingModal() {
   currentScheduleClass = null;
 }
 
-export function submitScheduleForm(e) {
-  e.preventDefault();
-  if (!currentScheduleClass) return;
-
-  const btn = document.querySelector('#scheduling-modal button[type="submit"]');
-  setButtonLoading(btn, true);
-
-  const tutorId = document.getElementById("sched-tutor").value;
-  const day = document.getElementById("sched-day").value;
-  const shift = document.getElementById("sched-shift").value;
-  const room = document.getElementById("sched-room").value.trim();
-
-  const tutor = mockTutorsList.find((t) => t.id === tutorId);
-
+export function exportClassList() {
+  showToast("Đang xuất danh sách lớp học...", "info");
   setTimeout(() => {
-    currentScheduleClass.tutorId = tutorId || null;
-    currentScheduleClass.tutorName = tutor ? tutor.name : null;
-    currentScheduleClass.day = day;
-    currentScheduleClass.shift = shift;
-    currentScheduleClass.room = room || null;
-
-    setButtonLoading(btn, false);
-    showToast("Cập nhật thời khóa biểu thành công!", "success");
-    closeSchedulingModal();
-    renderScheduling();
-  }, 800);
+    showToast("Đã xuất file Excel thành công!", "success");
+  }, 1500);
 }
 
-export function autoSchedule() {
-  showToast("Đang chạy thuật toán xếp lịch tự động...", "info");
+export function sendBulkNotification() {
+  showToast("Đang gửi thông báo đến tất cả Tutor...", "info");
   setTimeout(() => {
-    // Simple mock: assign random tutors and rooms to unassigned classes
-    mockScheduleClasses.forEach((c) => {
-      if (!c.tutorId) {
-        const randomTutor =
-          mockTutorsList[Math.floor(Math.random() * mockTutorsList.length)];
-        c.tutorId = randomTutor.id;
-        c.tutorName = randomTutor.name;
-      }
-      if (!c.room) {
-        c.room = `H6-${Math.floor(Math.random() * 900) + 100}`;
-      }
-      if (!c.day) c.day = Math.floor(Math.random() * 6) + 2;
-      if (!c.shift) c.shift = Math.floor(Math.random() * 4) + 1;
-    });
-    renderScheduling();
-    showToast("Đã xếp lịch tự động hoàn tất!", "success");
-  }, 2000);
+    showToast("Đã gửi thông báo thành công!", "success");
+  }, 1500);
 }
 
 // Bind to window
 window.renderScheduling = renderScheduling;
 window.openSchedulingModal = openSchedulingModal;
 window.closeSchedulingModal = closeSchedulingModal;
-window.submitScheduleForm = submitScheduleForm;
-window.autoSchedule = autoSchedule;
+window.exportClassList = exportClassList;
+window.sendBulkNotification = sendBulkNotification;

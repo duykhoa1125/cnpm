@@ -1,168 +1,200 @@
 <div id="dashboard_admin" class="section-view space-y-8">
-            <!-- Header -->
-            <div>
-                <h2 class="text-2xl font-black text-slate-800">Quản trị hệ thống</h2>
-                <p class="text-slate-500 text-sm">Theo dõi sức khỏe hệ thống và số liệu thời gian thực.</p>
-            </div>
+  <!-- Header -->
+  <div>
+    <h2 class="text-2xl font-black text-slate-800">Quản trị hệ thống Tutor App</h2>
+    <p class="text-slate-500 text-sm">Theo dõi sức khỏe hệ thống và hoạt động Tutor thời gian thực.</p>
+  </div>
 
-            <!-- Stats & Charts -->
-            <div class="grid grid-cols-1 md:grid-cols-4 gap-6">
-              <div class="glass-card p-5 rounded-2xl flex items-center justify-between border-b-4 border-blue-600 bg-blue-50/50">
-                <div class="min-w-0 flex-1">
-                  <p class="text-[10px] font-bold text-slate-500 uppercase truncate">Tổng Sinh viên</p>
-                  <p class="text-2xl font-black text-slate-800 truncate">10,200</p>
-                </div>
-                <i class="fa-solid fa-user-graduate text-blue-300 text-2xl flex-shrink-0 ml-3"></i>
-              </div>
-              <div class="glass-card p-5 rounded-2xl flex items-center justify-between border-b-4 border-purple-500 bg-purple-50/50">
-                <div class="min-w-0 flex-1">
-                  <p class="text-[10px] font-bold text-slate-500 uppercase truncate">Tổng Tutor</p>
-                  <p class="text-2xl font-black text-slate-800 truncate">450</p>
-                </div>
-                <i class="fa-solid fa-chalkboard-user text-purple-300 text-2xl flex-shrink-0 ml-3"></i>
-              </div>
-              <div class="glass-card p-5 rounded-2xl flex items-center justify-between border-b-4 border-green-500 bg-green-50/50">
-                <div class="min-w-0 flex-1">
-                  <p class="text-[10px] font-bold text-slate-500 uppercase truncate">Môn học Active</p>
-                  <p class="text-2xl font-black text-slate-800 truncate">340</p>
-                </div>
-                <i class="fa-solid fa-book-open text-green-300 text-2xl flex-shrink-0 ml-3"></i>
-              </div>
-              <div class="glass-card p-5 rounded-2xl flex items-center justify-between border-b-4 border-yellow-500 bg-yellow-50/50">
-                <div class="min-w-0 flex-1">
-                  <p class="text-[10px] font-bold text-slate-500 uppercase truncate">Hài lòng (TB)</p>
-                  <p class="text-2xl font-black text-slate-800 truncate">4.7/5</p>
-                </div>
-                <i class="fa-solid fa-face-smile text-yellow-300 text-2xl flex-shrink-0 ml-3"></i>
-              </div>
-            </div>
+  <!-- Stats -->
+  <div class="grid grid-cols-1 md:grid-cols-4 gap-6">
+    <div class="glass-card p-5 rounded-2xl flex items-center justify-between border-b-4 border-blue-600 bg-blue-50/50">
+      <div class="min-w-0 flex-1">
+        <p class="text-[10px] font-bold text-slate-500 uppercase truncate">Tổng Sinh viên</p>
+        <p class="text-2xl font-black text-slate-800 truncate">2,450</p>
+      </div>
+      <i class="fa-solid fa-user-graduate text-blue-300 text-2xl flex-shrink-0 ml-3"></i>
+    </div>
+    <div class="glass-card p-5 rounded-2xl flex items-center justify-between border-b-4 border-purple-500 bg-purple-50/50">
+      <div class="min-w-0 flex-1">
+        <p class="text-[10px] font-bold text-slate-500 uppercase truncate">Tổng Tutor</p>
+        <p class="text-2xl font-black text-slate-800 truncate">85</p>
+      </div>
+      <i class="fa-solid fa-chalkboard-user text-purple-300 text-2xl flex-shrink-0 ml-3"></i>
+    </div>
+    <div class="glass-card p-5 rounded-2xl flex items-center justify-between border-b-4 border-green-500 bg-green-50/50">
+      <div class="min-w-0 flex-1">
+        <p class="text-[10px] font-bold text-slate-500 uppercase truncate">Lớp Tutor Active</p>
+        <p class="text-2xl font-black text-slate-800 truncate">156</p>
+      </div>
+      <i class="fa-solid fa-video text-green-300 text-2xl flex-shrink-0 ml-3"></i>
+    </div>
+    <div class="glass-card p-5 rounded-2xl flex items-center justify-between border-b-4 border-yellow-500 bg-yellow-50/50">
+      <div class="min-w-0 flex-1">
+        <p class="text-[10px] font-bold text-slate-500 uppercase truncate">Đánh giá TB</p>
+        <p class="text-2xl font-black text-slate-800 truncate">4.7/5</p>
+      </div>
+      <i class="fa-solid fa-star text-yellow-300 text-2xl flex-shrink-0 ml-3"></i>
+    </div>
+  </div>
 
-            <!-- Charts Area -->
-            <div class="grid grid-cols-1 lg:grid-cols-2 gap-6">
-              <div class="glass-card p-6 rounded-[24px]">
-                <div class="flex justify-between items-center mb-4">
-                    <h4 class="font-bold text-slate-700"><i class="fa-solid fa-chart-area text-blue-500 mr-2"></i>Lưu lượng truy cập</h4>
-                    <select id="admin-traffic-filter" class="text-xs font-bold bg-slate-100 text-slate-600 rounded-lg px-2 py-1 border-none outline-none">
-                        <option value="7days">7 ngày qua</option>
-                        <option value="month">Tháng này</option>
-                    </select>
-                </div>
-                <canvas id="trafficChart" height="200"></canvas>
-              </div>
-              <div class="glass-card p-6 rounded-[24px]">
-                <div class="flex justify-between items-center mb-4">
-                    <h4 class="font-bold text-slate-700"><i class="fa-solid fa-users-viewfinder text-purple-500 mr-2"></i>Phân bổ người dùng mới</h4>
-                </div>
-                <canvas id="userChart" height="200"></canvas>
-              </div>
-            </div>
+  <!-- Charts Area -->
+  <div class="grid grid-cols-1 lg:grid-cols-2 gap-6">
+    <div class="glass-card p-6 rounded-[24px]">
+      <div class="flex justify-between items-center mb-4">
+        <h4 class="font-bold text-slate-700"><i class="fa-solid fa-chart-area text-blue-500 mr-2"></i>Lưu lượng truy cập</h4>
+        <select id="admin-traffic-filter" class="text-xs font-bold bg-slate-100 text-slate-600 rounded-lg px-2 py-1 border-none outline-none">
+          <option value="7days">7 ngày qua</option>
+          <option value="month">Tháng này</option>
+        </select>
+      </div>
+      <canvas id="trafficChart" height="200"></canvas>
+    </div>
+    <div class="glass-card p-6 rounded-[24px]">
+      <div class="flex justify-between items-center mb-4">
+        <h4 class="font-bold text-slate-700"><i class="fa-solid fa-users-viewfinder text-purple-500 mr-2"></i>Phân bổ người dùng mới</h4>
+      </div>
+      <canvas id="userChart" height="200"></canvas>
+    </div>
+  </div>
 
-            <!-- Detailed System Health -->
-            <div class="glass-card p-6 rounded-[24px]">
-                <h4 class="font-bold text-slate-800 mb-4">Trạng thái Hệ thống</h4>
-                <div class="grid grid-cols-1 md:grid-cols-3 gap-4">
-                    <div class="p-4 rounded-xl bg-green-50 border border-green-100 flex items-center gap-3">
-                        <div class="w-10 h-10 rounded-full bg-green-500 text-white flex items-center justify-center animate-pulse">
-                            <i class="fa-solid fa-server"></i>
-                        </div>
-                        <div>
-                            <p class="text-xs font-bold text-slate-500 uppercase">Server Uptime</p>
-                            <p class="text-lg font-black text-green-700">99.98%</p>
-                        </div>
-                    </div>
-                    <div class="p-4 rounded-xl bg-blue-50 border border-blue-100 flex items-center gap-3">
-                        <div class="w-10 h-10 rounded-full bg-blue-500 text-white flex items-center justify-center">
-                            <i class="fa-solid fa-database"></i>
-                        </div>
-                        <div>
-                            <p class="text-xs font-bold text-slate-500 uppercase">Database</p>
-                            <p class="text-lg font-black text-blue-700">Hoạt động tốt</p>
-                        </div>
-                    </div>
-                    <div class="p-4 rounded-xl bg-yellow-50 border border-yellow-100 flex items-center gap-3">
-                        <div class="w-10 h-10 rounded-full bg-yellow-500 text-white flex items-center justify-center">
-                            <i class="fa-solid fa-triangle-exclamation"></i>
-                        </div>
-                        <div>
-                            <p class="text-xs font-bold text-slate-500 uppercase">Cảnh báo</p>
-                            <p class="text-lg font-black text-yellow-700">0 Lỗi nghiêm trọng</p>
-                        </div>
-                    </div>
-                </div>
-            </div>
+  <!-- Detailed System Health -->
+  <div class="glass-card p-6 rounded-[24px]">
+    <h4 class="font-bold text-slate-800 mb-4">Trạng thái Hệ thống</h4>
+    <div class="grid grid-cols-1 md:grid-cols-4 gap-4">
+      <div class="p-4 rounded-xl bg-green-50 border border-green-100 flex items-center gap-3">
+        <div class="w-10 h-10 rounded-full bg-green-500 text-white flex items-center justify-center animate-pulse">
+          <i class="fa-solid fa-server"></i>
+        </div>
+        <div>
+          <p class="text-xs font-bold text-slate-500 uppercase">Server Uptime</p>
+          <p class="text-lg font-black text-green-700">99.98%</p>
+        </div>
+      </div>
+      <div class="p-4 rounded-xl bg-blue-50 border border-blue-100 flex items-center gap-3">
+        <div class="w-10 h-10 rounded-full bg-blue-500 text-white flex items-center justify-center">
+          <i class="fa-solid fa-database"></i>
+        </div>
+        <div>
+          <p class="text-xs font-bold text-slate-500 uppercase">Database</p>
+          <p class="text-lg font-black text-blue-700">Hoạt động tốt</p>
+        </div>
+      </div>
+      <div class="p-4 rounded-xl bg-purple-50 border border-purple-100 flex items-center gap-3">
+        <div class="w-10 h-10 rounded-full bg-purple-500 text-white flex items-center justify-center">
+          <i class="fa-solid fa-video"></i>
+        </div>
+        <div>
+          <p class="text-xs font-bold text-slate-500 uppercase">Zoom/Meet API</p>
+          <p class="text-lg font-black text-purple-700">Kết nối OK</p>
+        </div>
+      </div>
+      <div class="p-4 rounded-xl bg-yellow-50 border border-yellow-100 flex items-center gap-3">
+        <div class="w-10 h-10 rounded-full bg-yellow-500 text-white flex items-center justify-center">
+          <i class="fa-solid fa-triangle-exclamation"></i>
+        </div>
+        <div>
+          <p class="text-xs font-bold text-slate-500 uppercase">Cảnh báo</p>
+          <p class="text-lg font-black text-yellow-700">0 Lỗi</p>
+        </div>
+      </div>
+    </div>
+  </div>
 
-            <!-- Course Performance Table -->
-            <div class="glass-card p-6 rounded-[24px] overflow-hidden">
-              <div class="flex justify-between items-center mb-4">
-                <h4 class="font-bold text-slate-800">
-                  Hiệu suất Môn học (Điểm trung bình)
-                </h4>
-                <button onclick="viewDetailedReport()" class="text-blue-600 text-xs font-bold hover:underline">
-                  Xem báo cáo chi tiết
-                </button>
+  <!-- Tutor Performance Table -->
+  <div class="glass-card p-6 rounded-[24px] overflow-hidden">
+    <div class="flex justify-between items-center mb-4">
+      <h4 class="font-bold text-slate-800">
+        <i class="fa-solid fa-ranking-star text-purple-500 mr-2"></i>Tiến độ Quiz theo lớp Tutor
+      </h4>
+      <button onclick="viewDetailedReport()" class="text-blue-600 text-xs font-bold hover:underline">
+        Xem báo cáo chi tiết
+      </button>
+    </div>
+    <div class="overflow-x-auto">
+      <table class="w-full text-left text-sm">
+        <thead
+          class="bg-slate-50/50 text-xs font-bold text-slate-500 uppercase border-b border-slate-200"
+        >
+          <tr>
+            <th class="p-4 rounded-tl-xl min-w-[200px]">Môn học</th>
+            <th class="p-4">Mã MH</th>
+            <th class="p-4">Số Tutor</th>
+            <th class="p-4">Số SV</th>
+            <th class="p-4">Quiz hoàn thành</th>
+            <th class="p-4 rounded-tr-xl text-right">Tiến độ TB</th>
+          </tr>
+        </thead>
+        <tbody class="divide-y divide-slate-100">
+          <tr class="hover:bg-blue-50/40 transition">
+            <td class="p-4 font-bold text-slate-700">Giải tích 1</td>
+            <td class="p-4">
+              <span class="bg-blue-100 text-blue-600 px-2 py-1 rounded text-[10px] font-bold">CO1023</span>
+            </td>
+            <td class="p-4 text-slate-600">5</td>
+            <td class="p-4 text-slate-600">185</td>
+            <td class="p-4 text-slate-600">720/850</td>
+            <td class="p-4 text-right">
+              <div class="flex items-center justify-end gap-2">
+                <div class="w-16 bg-slate-200 rounded-full h-1.5">
+                  <div class="bg-green-500 h-1.5 rounded-full" style="width: 85%"></div>
+                </div>
+                <span class="font-bold text-green-600">85%</span>
               </div>
-              <div class="overflow-x-auto">
-                <table class="w-full text-left text-sm">
-                  <thead
-                    class="bg-slate-50/50 text-xs font-bold text-slate-500 uppercase border-b border-slate-200"
-                  >
-                    <tr>
-                      <th class="p-4 rounded-tl-xl min-w-[200px]">Môn học</th>
-                      <th class="p-4">Mã MH</th>
-                      <th class="p-4">Số lượng Tutor</th>
-                      <th class="p-4">Số lượng SV</th>
-                      <th class="p-4 rounded-tr-xl text-right">
-                        Điểm TB (GPA 4.0)
-                      </th>
-                    </tr>
-                  </thead>
-                  <tbody class="divide-y divide-slate-100">
-                    <tr class="hover:bg-blue-50/40 transition">
-                      <td class="p-4 font-bold text-slate-700">Giải tích 1</td>
-                      <td class="p-4">
-                        <span
-                          class="bg-blue-100 text-blue-600 px-2 py-1 rounded text-[10px] font-bold"
-                          >CO1023</span
-                        >
-                      </td>
-                      <td class="p-4 text-slate-600">12</td>
-                      <td class="p-4 text-slate-600">450</td>
-                      <td class="p-4 text-right font-bold text-green-600">
-                        3.2
-                      </td>
-                    </tr>
-                    <tr class="hover:bg-blue-50/40 transition">
-                      <td class="p-4 font-bold text-slate-700">
-                        Vật lý Đại cương 1
-                      </td>
-                      <td class="p-4">
-                        <span
-                          class="bg-purple-100 text-purple-600 px-2 py-1 rounded text-[10px] font-bold"
-                          >PH1003</span
-                        >
-                      </td>
-                      <td class="p-4 text-slate-600">8</td>
-                      <td class="p-4 text-slate-600">320</td>
-                      <td class="p-4 text-right font-bold text-yellow-600">
-                        2.5
-                      </td>
-                    </tr>
-                    <tr class="hover:bg-blue-50/40 transition">
-                      <td class="p-4 font-bold text-slate-700">Nhập môn Lập trình (Python)</td>
-                      <td class="p-4">
-                        <span
-                          class="bg-indigo-100 text-indigo-600 px-2 py-1 rounded text-[10px] font-bold"
-                          >CO2011</span
-                        >
-                      </td>
-                      <td class="p-4 text-slate-600">15</td>
-                      <td class="p-4 text-slate-600">600</td>
-                      <td class="p-4 text-right font-bold text-green-600">
-                        3.5
-                      </td>
-                    </tr>
-                  </tbody>
-                </table>
+            </td>
+          </tr>
+          <tr class="hover:bg-blue-50/40 transition">
+            <td class="p-4 font-bold text-slate-700">CTDL & Giải thuật</td>
+            <td class="p-4">
+              <span class="bg-indigo-100 text-indigo-600 px-2 py-1 rounded text-[10px] font-bold">CO2013</span>
+            </td>
+            <td class="p-4 text-slate-600">4</td>
+            <td class="p-4 text-slate-600">152</td>
+            <td class="p-4 text-slate-600">456/608</td>
+            <td class="p-4 text-right">
+              <div class="flex items-center justify-end gap-2">
+                <div class="w-16 bg-slate-200 rounded-full h-1.5">
+                  <div class="bg-blue-500 h-1.5 rounded-full" style="width: 75%"></div>
+                </div>
+                <span class="font-bold text-blue-600">75%</span>
               </div>
-            </div>
-          </div>
+            </td>
+          </tr>
+          <tr class="hover:bg-blue-50/40 transition">
+            <td class="p-4 font-bold text-slate-700">Lập trình Web</td>
+            <td class="p-4">
+              <span class="bg-green-100 text-green-600 px-2 py-1 rounded text-[10px] font-bold">CO3005</span>
+            </td>
+            <td class="p-4 text-slate-600">6</td>
+            <td class="p-4 text-slate-600">240</td>
+            <td class="p-4 text-slate-600">1080/1200</td>
+            <td class="p-4 text-right">
+              <div class="flex items-center justify-end gap-2">
+                <div class="w-16 bg-slate-200 rounded-full h-1.5">
+                  <div class="bg-green-500 h-1.5 rounded-full" style="width: 90%"></div>
+                </div>
+                <span class="font-bold text-green-600">90%</span>
+              </div>
+            </td>
+          </tr>
+          <tr class="hover:bg-blue-50/40 transition">
+            <td class="p-4 font-bold text-slate-700">Đại số Tuyến tính</td>
+            <td class="p-4">
+              <span class="bg-purple-100 text-purple-600 px-2 py-1 rounded text-[10px] font-bold">MT1007</span>
+            </td>
+            <td class="p-4 text-slate-600">3</td>
+            <td class="p-4 text-slate-600">105</td>
+            <td class="p-4 text-slate-600">273/420</td>
+            <td class="p-4 text-right">
+              <div class="flex items-center justify-end gap-2">
+                <div class="w-16 bg-slate-200 rounded-full h-1.5">
+                  <div class="bg-orange-500 h-1.5 rounded-full" style="width: 65%"></div>
+                </div>
+                <span class="font-bold text-orange-600">65%</span>
+              </div>
+            </td>
+          </tr>
+        </tbody>
+      </table>
+    </div>
+  </div>
+</div>

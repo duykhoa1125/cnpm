@@ -126,31 +126,45 @@ export function initTutorCharts() {
     type: "bar",
     data: {
       labels: [
-        "A (3.6-4.0)",
-        "B (3.2-3.6)",
-        "C (2.5-3.2)",
-        "D (2.0-2.5)",
-        "F (<2.0)",
+        "0-25%",
+        "26-50%",
+        "51-75%",
+        "76-100%",
       ],
       datasets: [
         {
           label: "Số lượng SV",
-          data: [12, 25, 18, 5, 2],
+          data: [5, 12, 25, 20],
           backgroundColor: [
-            "#22c55e",
-            "#3b82f6",
-            "#eab308",
-            "#f97316",
             "#ef4444",
+            "#f97316",
+            "#3b82f6",
+            "#22c55e",
           ],
-          borderRadius: 6,
+          borderRadius: 8,
         },
       ],
     },
     options: {
       responsive: true,
-      plugins: { legend: { display: false } },
-      scales: { y: { beginAtZero: true } },
+      plugins: { 
+        legend: { display: false },
+        tooltip: {
+          callbacks: {
+            title: (items) => `Tiến độ: ${items[0].label}`,
+            label: (item) => `${item.raw} sinh viên`,
+          }
+        }
+      },
+      scales: { 
+        y: { 
+          beginAtZero: true,
+          title: { display: true, text: 'Số sinh viên', font: { size: 11, weight: 'bold' } }
+        },
+        x: {
+          title: { display: true, text: 'Tiến độ Quiz', font: { size: 11, weight: 'bold' } }
+        }
+      },
     },
   });
   setTutorStudentChart(newChart);
@@ -164,16 +178,22 @@ export function initDeptCharts() {
     new Chart(ctx, {
       type: "doughnut",
       data: {
-        labels: ["Qua môn", "Rớt", "Cảnh báo"],
+        labels: ["Hoàn thành (>80%)", "Đang tiến hành (40-80%)", "Cần hỗ trợ (<40%)"],
         datasets: [
           {
-            data: [85, 10, 5],
-            backgroundColor: ["#22c55e", "#ef4444", "#f59e0b"],
+            data: [65, 25, 10],
+            backgroundColor: ["#22c55e", "#3b82f6", "#f59e0b"],
             borderWidth: 0,
           },
         ],
       },
-      options: { responsive: true, cutout: "70%" },
+      options: { 
+        responsive: true, 
+        cutout: "70%",
+        plugins: {
+          legend: { position: "bottom", labels: { font: { size: 10, weight: "bold" } } }
+        }
+      },
     });
   }
 }
@@ -330,53 +350,53 @@ export function createAdminProgressCharts() {
   }
 }
 
-// Create Department Progress Charts
+// Create Department Progress Charts (Quiz-based)
 export function createDepartmentProgressCharts() {
-  // Reuse admin chart variables or create new ones if needed.
-  // For simplicity, we'll just create new chart instances without storing them in global config for now,
-  // or we could add new global variables if we wanted to destroy them properly.
-  // Given the scope, we'll just create them.
-
-  // Chart 1: Department Comparison (Targeting _dept)
+  // Chart 1: Quiz Completion by Tutor Class
   const ctx1 = document.getElementById("deptComparisonChart_dept");
   if (ctx1) {
-    // Destroy existing if any (basic check)
     const existingChart = Chart.getChart(ctx1);
     if (existingChart) existingChart.destroy();
 
     new Chart(ctx1, {
       type: "bar",
       data: {
-        labels: ["KHMT", "Đ-ĐT", "Cơ Khí", "Hóa", "Xây Dựng"],
+        labels: ["Giải tích 1", "CTDL & GT", "Lập trình Web", "ĐSTT", "Vật lý ĐC"],
         datasets: [
           {
-            label: "GPA TB (Thang 4)",
-            data: [3.24, 2.8, 2.6, 2.9, 2.5], // Highlighted KHMT
+            label: "Tiến độ Quiz TB (%)",
+            data: [82, 65, 91, 78, 58],
             backgroundColor: [
+              "#22c55e",
+              "#f59e0b",
+              "#22c55e",
               "#3b82f6",
-              "#cbd5e1",
-              "#cbd5e1",
-              "#cbd5e1",
-              "#cbd5e1",
+              "#ef4444",
             ],
-            borderRadius: 4,
+            borderRadius: 6,
           },
         ],
       },
       options: {
         responsive: true,
+        plugins: {
+          legend: { display: false },
+        },
         scales: {
           y: {
             beginAtZero: true,
-            max: 4,
-            title: { display: true, text: "GPA (4.0)" },
+            max: 100,
+            title: { display: true, text: "Tiến độ (%)", font: { size: 11, weight: "bold" } },
+          },
+          x: {
+            title: { display: true, text: "Lớp Tutor", font: { size: 11, weight: "bold" } },
           },
         },
       },
     });
   }
 
-  // Chart 2: Grade Distribution (Targeting _dept)
+  // Chart 2: Progress Distribution
   const ctx2 = document.getElementById("systemGradeDistChart_dept");
   if (ctx2) {
     const existingChart = Chart.getChart(ctx2);
@@ -386,19 +406,19 @@ export function createDepartmentProgressCharts() {
       type: "doughnut",
       data: {
         labels: [
-          "Xuất sắc (3.6-4.0)",
-          "Giỏi (3.2-3.6)",
-          "Khá (2.5-3.2)",
-          "Trung bình (2.0-2.5)",
-          "Yếu/Kém (<2.0)",
+          "Xuất sắc (>90%)",
+          "Tốt (70-90%)",
+          "Trung bình (50-70%)",
+          "Cần cải thiện (30-50%)",
+          "Cần hỗ trợ (<30%)",
         ],
         datasets: [
           {
-            data: [20, 40, 25, 10, 5], // Slightly better stats for this dept
+            data: [25, 40, 20, 10, 5],
             backgroundColor: [
               "#22c55e",
               "#3b82f6",
-              "#6366f1",
+              "#8b5cf6",
               "#f59e0b",
               "#ef4444",
             ],
@@ -409,29 +429,29 @@ export function createDepartmentProgressCharts() {
       options: {
         responsive: true,
         cutout: "60%",
-        plugins: { legend: { position: "right" } },
+        plugins: { legend: { position: "right", labels: { font: { size: 10 } } } },
       },
     });
   }
 }
-// Initialize Student Dashboard Charts
+// Initialize Student Dashboard Charts (Quiz Progress)
 export function initStudentGPAChart() {
   const ctx = document.getElementById("studentGPAChart");
   if (ctx) {
     new Chart(ctx, {
       type: "line",
       data: {
-        labels: ["HK221", "HK222", "HK231", "HK232", "HK241"],
+        labels: ["Tuần 1", "Tuần 2", "Tuần 3", "Tuần 4", "Tuần 5", "Tuần 6", "Tuần 7", "Tuần 8"],
         datasets: [
           {
-            label: "GPA",
-            data: [3.2, 3.4, 3.5, 3.55, 3.68],
-            borderColor: "#3b82f6",
-            backgroundColor: "rgba(59, 130, 246, 0.1)",
+            label: "Tiến độ Quiz (%)",
+            data: [15, 28, 42, 55, 63, 72, 80, 85],
+            borderColor: "#8b5cf6",
+            backgroundColor: "rgba(139, 92, 246, 0.1)",
             tension: 0.4,
             fill: true,
             pointBackgroundColor: "#fff",
-            pointBorderColor: "#3b82f6",
+            pointBorderColor: "#8b5cf6",
             pointBorderWidth: 2,
             pointRadius: 4,
             pointHoverRadius: 6,
@@ -446,25 +466,32 @@ export function initStudentGPAChart() {
           tooltip: {
             backgroundColor: "rgba(255, 255, 255, 0.9)",
             titleColor: "#1e293b",
-            bodyColor: "#3b82f6",
+            bodyColor: "#8b5cf6",
             borderColor: "#e2e8f0",
             borderWidth: 1,
             padding: 10,
             displayColors: false,
             callbacks: {
               label: function (context) {
-                return "GPA: " + context.parsed.y;
+                return "Tiến độ: " + context.parsed.y + "%";
               },
             },
           },
         },
         scales: {
           y: {
-            beginAtZero: false,
-            min: 2.0,
-            max: 4.0,
+            beginAtZero: true,
+            min: 0,
+            max: 100,
             grid: { color: "#f1f5f9", borderDash: [5, 5] },
-            ticks: { color: "#64748b", font: { size: 10, weight: "bold" } },
+            ticks: { 
+              color: "#64748b", 
+              font: { size: 10, weight: "bold" },
+              callback: function(value) {
+                return value + "%";
+              }
+            },
+            title: { display: true, text: 'Tiến độ Quiz (%)', font: { size: 11, weight: 'bold' } }
           },
           x: {
             grid: { display: false },

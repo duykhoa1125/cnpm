@@ -47,14 +47,8 @@ export const roleMenus = {
     },
     {
       id: "scheduling_academic",
-      icon: "fa-calendar-days",
-      text: "Xếp Thời khóa biểu",
-    },
-    { id: "feedback_view_admin", icon: "fa-star", text: "Quản lý Đánh giá" },
-    {
-      id: "curriculum_academic",
-      icon: "fa-book-open",
-      text: "Quản lý Đào tạo",
+      icon: "fa-chalkboard-user",
+      text: "Quản lý Lớp học",
     },
     { id: "library_view", icon: "fa-book", text: "Kho Tài liệu" },
   ],
@@ -166,7 +160,7 @@ export const breadcrumbMap = {
   ],
   scheduling_academic: [
     { label: "Trang chủ", icon: "fa-home" },
-    { label: "Xếp Thời khóa biểu", icon: "fa-calendar-days" },
+    { label: "Quản lý Lớp học", icon: "fa-chalkboard-user" },
   ],
   courses_student_detail: [
     { label: "Trang chủ", icon: "fa-home", id: "dashboard_student" },

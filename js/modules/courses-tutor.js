@@ -41,7 +41,7 @@ export function renderTutorCourses() {
                               c.name
                             } - ${c.group}</h4>
                             <p class="text-sm text-slate-500 mt-1 truncate font-medium">
-                                <i class="fa-solid fa-location-dot mr-1.5 text-red-400"></i>Phòng: ${
+                                <i class="fa-solid fa-video mr-1.5 text-blue-400"></i>${
                                   c.room
                                 }
                                 <span class="mx-2">•</span>

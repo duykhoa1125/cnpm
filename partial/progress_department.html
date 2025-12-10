@@ -5,9 +5,9 @@
   >
     <div>
       <h2 class="text-2xl font-black text-slate-800">
-        Tiến độ học tập - Khoa KH&KT Máy tính
+        Tiến độ học tập - Khoa CNPM
       </h2>
-      <p class="text-slate-500">Báo cáo chi tiết học kỳ HK251</p>
+      <p class="text-slate-500">Báo cáo tiến độ Quiz và hoạt động Tutor</p>
     </div>
     <div class="flex gap-3">
       <button
@@ -28,50 +28,51 @@
   <div class="grid grid-cols-1 md:grid-cols-4 gap-6">
     <div class="glass-card p-6 rounded-[24px] flex flex-col justify-between">
       <p class="text-xs font-bold text-slate-500 uppercase mb-2">
-        GPA Trung bình Khoa
+        Tiến độ Quiz TB
       </p>
-      <p class="text-4xl font-black text-slate-800">3.24</p>
+      <p class="text-4xl font-black text-slate-800">78%</p>
       <div class="mt-2 text-xs font-bold text-green-600 flex items-center">
-        <i class="fa-solid fa-arrow-trend-up mr-1"></i> +0.15 so với HK trước
+        <i class="fa-solid fa-arrow-trend-up mr-1"></i> +8% so với tuần trước
       </div>
     </div>
     <div class="glass-card p-6 rounded-[24px] flex flex-col justify-between">
       <p class="text-xs font-bold text-slate-500 uppercase mb-2">
-        Tỷ lệ qua môn
+        Quiz hoàn thành
       </p>
-      <p class="text-4xl font-black text-slate-800">94%</p>
+      <p class="text-4xl font-black text-slate-800">1,450</p>
       <div class="w-full bg-slate-200 h-1.5 rounded-full mt-3">
-        <div class="bg-blue-500 h-1.5 rounded-full" style="width: 94%"></div>
+        <div class="bg-purple-500 h-1.5 rounded-full" style="width: 82%"></div>
       </div>
+      <p class="text-xs text-slate-400 mt-1">82% tổng Quiz</p>
     </div>
     <div class="glass-card p-6 rounded-[24px] flex flex-col justify-between">
       <p class="text-xs font-bold text-slate-500 uppercase mb-2">
-        Sinh viên Xuất sắc
+        SV tiến độ xuất sắc
       </p>
-      <p class="text-4xl font-black text-slate-800">320</p>
-      <p class="text-xs text-slate-400 mt-1">GPA >= 3.6</p>
+      <p class="text-4xl font-black text-slate-800">245</p>
+      <p class="text-xs text-slate-400 mt-1">Tiến độ >= 90%</p>
     </div>
     <div
-      class="glass-card p-6 rounded-[24px] flex flex-col justify-between border border-red-200 bg-red-50/50"
+      class="glass-card p-6 rounded-[24px] flex flex-col justify-between border border-orange-200 bg-orange-50/50"
     >
-      <p class="text-xs font-bold text-red-500 uppercase mb-2">
-        Cảnh báo Học vụ
+      <p class="text-xs font-bold text-orange-500 uppercase mb-2">
+        SV cần theo dõi
       </p>
-      <p class="text-4xl font-black text-red-600">12</p>
-      <p class="text-xs text-red-400 mt-1">Cần tư vấn ngay</p>
+      <p class="text-4xl font-black text-orange-600">18</p>
+      <p class="text-xs text-orange-400 mt-1">Tiến độ < 40%</p>
     </div>
   </div>
 
   <div class="grid grid-cols-1 lg:grid-cols-2 gap-8">
-    <!-- Chart 1: Comparison (Reusing Admin Chart for now) -->
+    <!-- Chart 1: Quiz Completion Rate -->
     <div class="glass-card p-6 rounded-[28px]">
-      <h3 class="font-bold text-slate-800 mb-4">So sánh với các Khoa khác</h3>
+      <h3 class="font-bold text-slate-800 mb-4">Tiến độ Quiz theo lớp Tutor</h3>
       <canvas id="deptComparisonChart_dept" height="250"></canvas>
     </div>
 
-    <!-- Chart 2: Grade Distribution -->
+    <!-- Chart 2: Progress Distribution -->
     <div class="glass-card p-6 rounded-[28px]">
-      <h3 class="font-bold text-slate-800 mb-4">Phân bố điểm số Khoa</h3>
+      <h3 class="font-bold text-slate-800 mb-4">Phân bố tiến độ SV</h3>
       <canvas id="systemGradeDistChart_dept" height="250"></canvas>
     </div>
   </div>
@@ -79,9 +80,8 @@
   <!-- At Risk Table -->
   <div class="glass-card p-6 rounded-[28px]">
     <div class="flex justify-between items-center mb-6">
-      <h3 class="font-bold text-red-600 flex items-center gap-2">
-        <i class="fa-solid fa-triangle-exclamation"></i> Sinh viên Khoa cần theo
-        dõi
+      <h3 class="font-bold text-orange-600 flex items-center gap-2">
+        <i class="fa-solid fa-triangle-exclamation"></i> SV cần hỗ trợ thêm
       </h3>
       <div class="relative">
         <i
@@ -103,65 +103,86 @@
           >
             <th class="pb-3 pl-4 font-bold">MSSV</th>
             <th class="pb-3 font-bold">Họ và tên</th>
-            <th class="pb-3 font-bold">Lớp SH</th>
-            <th class="pb-3 font-bold">GPA</th>
-            <th class="pb-3 font-bold">Số môn nợ</th>
+            <th class="pb-3 font-bold">Lớp Tutor</th>
+            <th class="pb-3 font-bold">Tiến độ</th>
+            <th class="pb-3 font-bold">Quiz chưa làm</th>
             <th class="pb-3 font-bold text-right pr-4">Tình trạng</th>
           </tr>
         </thead>
         <tbody class="text-sm text-slate-700">
           <!-- Sample Data for Department -->
           <tr
-            class="border-b border-slate-100 hover:bg-red-50/50 transition progress-row"
+            class="border-b border-slate-100 hover:bg-orange-50/50 transition progress-row"
             data-mssv="2011001"
-            data-name="Lê Văn Hỏng"
-            data-percent="1.2"
+            data-name="Lê Văn Hùng"
+            data-percent="25"
           >
             <td class="py-4 pl-4 font-mono text-slate-500">2011001</td>
-            <td class="py-4 font-bold">Lê Văn Hỏng</td>
-            <td class="py-4">MT20KH01</td>
-            <td class="py-4 font-bold text-red-600">1.2</td>
-            <td class="py-4">4</td>
+            <td class="py-4 font-bold">Lê Văn Hùng</td>
+            <td class="py-4">Giải tích 1 - L03</td>
+            <td class="py-4">
+              <div class="flex items-center gap-2">
+                <div class="w-16 bg-slate-200 rounded-full h-1.5">
+                  <div class="bg-red-500 h-1.5 rounded-full" style="width: 25%"></div>
+                </div>
+                <span class="font-bold text-red-600 text-xs">25%</span>
+              </div>
+            </td>
+            <td class="py-4 font-bold text-red-600">4 Quiz</td>
             <td class="py-4 text-right pr-4">
               <span
                 class="px-2 py-1 bg-red-100 text-red-600 rounded text-xs font-bold"
-                >Nguy cấp</span
+                >Cần hỗ trợ</span
               >
             </td>
           </tr>
           <tr
-            class="border-b border-slate-100 hover:bg-red-50/50 transition progress-row"
+            class="border-b border-slate-100 hover:bg-orange-50/50 transition progress-row"
             data-mssv="2110456"
-            data-name="Trần Thị B"
-            data-percent="1.9"
+            data-name="Trần Thị Bích"
+            data-percent="38"
           >
             <td class="py-4 pl-4 font-mono text-slate-500">2110456</td>
-            <td class="py-4 font-bold">Trần Thị B</td>
-            <td class="py-4">MT21KH02</td>
-            <td class="py-4 font-bold text-red-600">1.9</td>
-            <td class="py-4">2</td>
+            <td class="py-4 font-bold">Trần Thị Bích</td>
+            <td class="py-4">CTDL & Giải thuật - L02</td>
+            <td class="py-4">
+              <div class="flex items-center gap-2">
+                <div class="w-16 bg-slate-200 rounded-full h-1.5">
+                  <div class="bg-orange-500 h-1.5 rounded-full" style="width: 38%"></div>
+                </div>
+                <span class="font-bold text-orange-600 text-xs">38%</span>
+              </div>
+            </td>
+            <td class="py-4 font-bold text-orange-600">3 Quiz</td>
             <td class="py-4 text-right pr-4">
               <span
                 class="px-2 py-1 bg-orange-100 text-orange-600 rounded text-xs font-bold"
-                >Cảnh báo</span
+                >Theo dõi</span
               >
             </td>
           </tr>
           <tr
-            class="border-b border-slate-100 hover:bg-red-50/50 transition progress-row"
+            class="border-b border-slate-100 hover:bg-orange-50/50 transition progress-row"
             data-mssv="2210789"
-            data-name="Nguyễn Văn C"
-            data-percent="1.5"
+            data-name="Nguyễn Văn Cường"
+            data-percent="32"
           >
             <td class="py-4 pl-4 font-mono text-slate-500">2210789</td>
-            <td class="py-4 font-bold">Nguyễn Văn C</td>
-            <td class="py-4">MT22KH01</td>
-            <td class="py-4 font-bold text-red-600">1.5</td>
-            <td class="py-4">3</td>
+            <td class="py-4 font-bold">Nguyễn Văn Cường</td>
+            <td class="py-4">Lập trình Web - L01</td>
+            <td class="py-4">
+              <div class="flex items-center gap-2">
+                <div class="w-16 bg-slate-200 rounded-full h-1.5">
+                  <div class="bg-red-500 h-1.5 rounded-full" style="width: 32%"></div>
+                </div>
+                <span class="font-bold text-red-600 text-xs">32%</span>
+              </div>
+            </td>
+            <td class="py-4 font-bold text-red-600">4 Quiz</td>
             <td class="py-4 text-right pr-4">
               <span
                 class="px-2 py-1 bg-red-100 text-red-600 rounded text-xs font-bold"
-                >Nguy cấp</span
+                >Cần hỗ trợ</span
               >
             </td>
           </tr>

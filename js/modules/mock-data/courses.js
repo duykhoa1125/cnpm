@@ -346,7 +346,7 @@ export const mockCourseDetails = {
   "Lập trình Web": {
     tutor: "Nguyễn Văn A",
     schedule: "Thứ 4 (13:00 - 16:00)",
-    room: "B1-205",
+    room: "Zoom Meeting",
     group: "L02",
     announcements: [
       {
@@ -364,28 +364,28 @@ export const mockCourseDetails = {
         week: 1,
         content: "Tổng quan về Web & HTML",
         time: "13:00 - 16:00",
-        room: "B1-205",
+        room: "Zoom Meeting",
         note: "",
       },
       {
         week: 2,
         content: "CSS & Layout",
         time: "13:00 - 16:00",
-        room: "B1-205",
+        room: "Zoom Meeting",
         note: "",
       },
       {
         week: 3,
         content: "JavaScript cơ bản",
         time: "13:00 - 16:00",
-        room: "B1-205",
+        room: "Zoom Meeting",
         note: "",
       },
       {
         week: 4,
         content: "DOM & Events",
         time: "13:00 - 16:00",
-        room: "B1-205",
+        room: "Zoom Meeting",
         note: "",
       },
     ],
@@ -434,7 +434,7 @@ export const mockCourseDetails = {
   "Cấu trúc dữ liệu": {
     tutor: "Lê Thị C",
     schedule: "Thứ 6 (07:00 - 10:00)",
-    room: "H6-401",
+    room: "Google Meet",
     group: "L03",
     announcements: [],
     scheduleList: [],
