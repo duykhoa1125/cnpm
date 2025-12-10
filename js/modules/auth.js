@@ -341,8 +341,51 @@ export function initAuth() {
   }
 }
 
+// Role Card Selection for Login
+export function selectRole(role) {
+  // Update hidden input
+  const roleInput = document.getElementById('role-select');
+  if (roleInput) roleInput.value = role;
+  
+  // Define role colors
+  const roleColors = {
+    student: { border: 'border-blue-500', bg: 'bg-blue-50', iconBg: 'bg-blue-500', text: 'text-blue-700' },
+    tutor: { border: 'border-purple-500', bg: 'bg-purple-50', iconBg: 'bg-purple-500', text: 'text-purple-700' },
+    department: { border: 'border-green-500', bg: 'bg-green-50', iconBg: 'bg-green-500', text: 'text-green-700' },
+    academic: { border: 'border-orange-500', bg: 'bg-orange-50', iconBg: 'bg-orange-500', text: 'text-orange-700' },
+    admin: { border: 'border-red-500', bg: 'bg-red-50', iconBg: 'bg-red-500', text: 'text-red-700' }
+  };
+  
+  // Reset all cards
+  document.querySelectorAll('.role-card').forEach(card => {
+    card.className = 'role-card cursor-pointer px-4 py-3 rounded-2xl border-2 border-slate-200 bg-white text-center transition-all hover:shadow-lg hover:scale-[1.02] flex-shrink-0 min-w-[90px]';
+    const icon = card.querySelector('div > div:first-child');
+    if (icon) icon.className = 'w-10 h-10 mx-auto mb-2 rounded-xl bg-slate-100 text-slate-500 flex items-center justify-center text-lg';
+    const title = card.querySelector('p');
+    if (title) title.className = 'font-bold text-slate-700 text-xs';
+  });
+  
+  // Highlight selected card
+  const selectedCard = document.getElementById('role-card-' + role);
+  if (!selectedCard) return;
+  
+  const colors = roleColors[role];
+  selectedCard.className = `role-card cursor-pointer px-4 py-3 rounded-2xl border-2 ${colors.border} ${colors.bg} text-center transition-all hover:shadow-lg hover:scale-[1.02] flex-shrink-0 min-w-[90px]`;
+  
+  const icon = selectedCard.querySelector('div > div:first-child');
+  if (icon) icon.className = `w-10 h-10 mx-auto mb-2 rounded-xl ${colors.iconBg} text-white flex items-center justify-center text-lg`;
+  
+  const title = selectedCard.querySelector('p');
+  if (title) title.className = `font-bold ${colors.text} text-xs`;
+  
+  // Also update username/password fields
+  onRoleChange();
+}
+
 // Make functions globally available
 window.handleLogin = handleLogin;
 window.logout = logout;
 window.onRoleChange = onRoleChange;
 window.togglePasswordVisibility = togglePasswordVisibility;
+window.selectRole = selectRole;
+

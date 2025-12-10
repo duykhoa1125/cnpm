@@ -360,7 +360,7 @@ window.closeDeleteModal = closeDeleteModal;
 
 // Initialize Application when partials are loaded
 document.addEventListener("partialsLoaded", () => {
-  console.log("🚀 HCMUT LMS Initializing...");
+  console.log("🚀 HCMUT Tutor Initializing...");
 
   // Initialize Auth (handles login form setup and session restore)
   initAuth();
@@ -398,7 +398,7 @@ document.addEventListener("partialsLoaded", () => {
     setupCustomSelect(bonusSelect.id);
   }
 
-  console.log("✅ HCMUT LMS Ready!");
+  console.log("✅ HCMUT Tutor Ready!");
 });
 
 // Export for external access if needed
