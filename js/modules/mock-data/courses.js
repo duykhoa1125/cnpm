@@ -330,7 +330,7 @@ export const mockCourseDetails = {
       },
       {
         id: 3,
-        title: "Đề thi mẫu giữa kỳ",
+        title: "Bộ Quiz luyện tập",
         type: "pdf",
         size: "3.0 MB",
         date: "2025-10-01",

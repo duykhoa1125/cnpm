@@ -1,30 +1,33 @@
 /**
  * Utilities Module
- * Handles student utilities like GPA calculation and personal notes
+ * Handles student utilities like Quiz Progress calculation and personal notes
  */
 
 export function renderUtilities() {
   console.log("Rendering Utilities...");
   loadNote();
-  // Add initial rows if empty (handled in HTML, but good to ensure)
+  calculateQuizProgress(); // Auto calculate on load
 }
 
-export function addSubjectRow() {
-  const tbody = document.getElementById("gpa-table-body");
+// Quiz Progress Calculation (updated from GPA)
+export function addQuizRow() {
+  const tbody = document.getElementById("quiz-table-body");
+  if (!tbody) return;
+  
   const row = document.createElement("tr");
   row.className = "group animate-fade-in";
   row.innerHTML = `
         <td class="bg-slate-50 rounded-l-xl border-y border-l border-slate-100 p-2">
-            <input type="text" placeholder="Nhập tên môn..." class="w-full bg-transparent border-none focus:ring-0 p-0 text-sm placeholder-slate-400 font-medium text-slate-700">
+            <input type="text" placeholder="Nhập tên Quiz..." class="w-full bg-transparent border-none focus:ring-0 p-0 text-sm placeholder-slate-400 font-medium text-slate-700">
         </td>
         <td class="bg-slate-50 border-y border-slate-100 p-2">
-            <input type="number" min="1" max="10" value="3" onchange="calculateGPA()" class="w-full bg-white border border-slate-200 rounded-lg px-2 py-1 text-center focus:ring-2 focus:ring-blue-100 focus:border-blue-300 outline-none transition-all gpa-credit text-xs font-bold text-slate-600">
+            <input type="number" min="0" max="10" step="0.1" placeholder="--" onchange="calculateQuizProgress()" class="w-full bg-white border border-slate-200 rounded-lg px-2 py-1 text-center focus:ring-2 focus:ring-purple-100 focus:border-purple-300 outline-none transition-all quiz-score text-xs font-bold text-purple-600">
         </td>
-        <td class="bg-slate-50 border-y border-slate-100 p-2">
-            <input type="number" min="0" max="10" step="0.1" placeholder="0.0" onchange="calculateGPA()" class="w-full bg-white border border-slate-200 rounded-lg px-2 py-1 text-center focus:ring-2 focus:ring-blue-100 focus:border-blue-300 outline-none transition-all gpa-score text-xs font-bold text-blue-600">
+        <td class="bg-slate-50 border-y border-slate-100 p-2 text-center">
+            <span class="px-2 py-1 bg-orange-100 text-orange-600 rounded text-[10px] font-bold">Chưa làm</span>
         </td>
         <td class="bg-slate-50 rounded-r-xl border-y border-r border-slate-100 p-2 text-center">
-            <button onclick="removeSubjectRow(this)" class="w-6 h-6 rounded-full hover:bg-red-50 text-slate-300 hover:text-red-500 transition-all opacity-0 group-hover:opacity-100 flex items-center justify-center">
+            <button onclick="removeQuizRow(this)" class="w-6 h-6 rounded-full hover:bg-red-50 text-slate-300 hover:text-red-500 transition-all opacity-0 group-hover:opacity-100 flex items-center justify-center">
                 <i class="fa-solid fa-xmark text-xs"></i>
             </button>
         </td>
@@ -32,91 +35,83 @@ export function addSubjectRow() {
   tbody.appendChild(row);
 }
 
-export function removeSubjectRow(btn) {
+export function removeQuizRow(btn) {
   const row = btn.closest("tr");
-  if (document.querySelectorAll("#gpa-table-body tr").length > 1) {
+  const tbody = document.getElementById("quiz-table-body");
+  if (tbody && tbody.querySelectorAll("tr").length > 1) {
     row.remove();
-    calculateGPA(); // Recalculate after removal
-  } else {
-    // Clear inputs if it's the last row
-    row
-      .querySelectorAll("input")
-      .forEach((input) => (input.value = input.type === "number" ? "" : ""));
-    calculateGPA();
+    calculateQuizProgress();
   }
 }
 
-export function calculateGPA() {
-  const rows = document.querySelectorAll("#gpa-table-body tr");
-  let totalCredits = 0;
+export function calculateQuizProgress() {
+  const rows = document.querySelectorAll("#quiz-table-body tr");
+  let totalQuizzes = rows.length;
+  let completedQuizzes = 0;
   let totalScore = 0;
-  let totalScore4 = 0;
 
   rows.forEach((row) => {
-    const creditInput = row.querySelector(".gpa-credit");
-    const scoreInput = row.querySelector(".gpa-score");
-
-    const credit = parseFloat(creditInput.value) || 0;
-    const score = parseFloat(scoreInput.value) || 0;
-
-    // Convert 10-scale to 4-scale (Approximate HCMUT/Standard rule)
-    let score4 = 0;
-    if (score >= 8.5) score4 = 4.0;
-    else if (score >= 8.0) score4 = 3.5;
-    else if (score >= 7.0) score4 = 3.0;
-    else if (score >= 6.5) score4 = 2.5;
-    else if (score >= 5.5) score4 = 2.0;
-    else if (score >= 5.0) score4 = 1.5;
-    else if (score >= 4.0) score4 = 1.0;
-    else score4 = 0;
-
-    if (credit > 0 && score >= 0) {
-      totalCredits += credit;
-      totalScore += score * credit;
-      totalScore4 += score4 * credit;
+    const scoreInput = row.querySelector(".quiz-score");
+    const statusCell = row.querySelector("td:nth-child(3)");
+    
+    if (scoreInput) {
+      const score = parseFloat(scoreInput.value);
+      
+      if (!isNaN(score) && score >= 0) {
+        completedQuizzes++;
+        totalScore += score;
+        // Update status to completed
+        if (statusCell) {
+          statusCell.innerHTML = '<span class="px-2 py-1 bg-green-100 text-green-600 rounded text-[10px] font-bold">Hoàn thành</span>';
+        }
+      } else {
+        // Update status to pending
+        if (statusCell) {
+          statusCell.innerHTML = '<span class="px-2 py-1 bg-orange-100 text-orange-600 rounded text-[10px] font-bold">Chưa làm</span>';
+        }
+      }
     }
   });
 
-  const gpa =
-    totalCredits > 0 ? (totalScore / totalCredits).toFixed(2) : "0.00";
-  const gpa4 =
-    totalCredits > 0 ? (totalScore4 / totalCredits).toFixed(2) : "0.00";
+  const progress = totalQuizzes > 0 ? Math.round((completedQuizzes / totalQuizzes) * 100) : 0;
+  const avgScore = completedQuizzes > 0 ? (totalScore / completedQuizzes).toFixed(1) : "0.0";
 
-  document.getElementById("total-credits").textContent = totalCredits;
-  document.getElementById("gpa-result").textContent = gpa;
-  document.getElementById("gpa-4-result").textContent = gpa4;
+  // Update display
+  const progressEl = document.getElementById("quiz-progress-result");
+  const avgEl = document.getElementById("quiz-avg-score");
+  const totalEl = document.getElementById("total-quizzes");
+  const classificationEl = document.getElementById("quiz-classification");
 
-  // Update Classification
-  const classificationEl = document.getElementById("gpa-classification");
-  let classification = "Chưa xếp loại";
-  let colorClass = "bg-white/10 text-slate-300";
+  if (progressEl) progressEl.textContent = progress;
+  if (avgEl) avgEl.textContent = avgScore;
+  if (totalEl) totalEl.textContent = `${completedQuizzes}/${totalQuizzes}`;
 
-  if (totalCredits > 0) {
-    const gpaVal = parseFloat(gpa);
-    if (gpaVal >= 9.0) {
-      classification = "Xuất sắc";
-      colorClass = "bg-green-500 text-white";
-    } else if (gpaVal >= 8.0) {
-      classification = "Giỏi";
-      colorClass = "bg-blue-500 text-white";
-    } else if (gpaVal >= 7.0) {
-      classification = "Khá";
-      colorClass = "bg-cyan-500 text-white";
-    } else if (gpaVal >= 5.0) {
-      classification = "Trung bình";
-      colorClass = "bg-orange-500 text-white";
-    } else {
-      classification = "Yếu";
-      colorClass = "bg-red-500 text-white";
+  // Classification
+  if (classificationEl) {
+    let classification = "Chưa có dữ liệu";
+    let colorClass = "bg-white/10 text-purple-100";
+
+    if (completedQuizzes > 0) {
+      if (progress >= 90) {
+        classification = "Xuất sắc";
+        colorClass = "bg-green-500 text-white";
+      } else if (progress >= 70) {
+        classification = "Tốt";
+        colorClass = "bg-blue-500 text-white";
+      } else if (progress >= 50) {
+        classification = "Trung bình";
+        colorClass = "bg-yellow-500 text-white";
+      } else {
+        classification = "Cần cải thiện";
+        colorClass = "bg-orange-500 text-white";
+      }
     }
-  }
 
-  classificationEl.textContent = classification;
-  classificationEl.className = `px-2 py-0.5 rounded text-[10px] font-bold ${colorClass}`;
+    classificationEl.textContent = classification;
+    classificationEl.className = `px-2 py-0.5 rounded text-[10px] font-bold ${colorClass}`;
+  }
 }
 
-// Debounce function for auto-saving
-// --- Notes Logic ---
 // --- Todo List & Notes Logic ---
 let todos = [];
 
@@ -243,7 +238,6 @@ export function deleteTodo(id) {
   if (modal) {
     modal.classList.remove("hidden");
   } else {
-    // Fallback if modal doesn't exist (shouldn't happen if HTML is updated)
     if (confirm("Bạn có chắc muốn xóa công việc này?")) {
       confirmDeleteTodo();
     }
@@ -317,7 +311,6 @@ export function updateTodoContent(content) {
   }
 }
 
-// Rich Text Helpers (Simple implementation for textarea)
 // Rich Text Helpers
 export function insertFormat(format) {
   const textarea = document.getElementById("note-textarea");
@@ -332,11 +325,11 @@ export function insertFormat(format) {
   if (format === "bold") {
     newText =
       text.substring(0, start) + `<b>${selectedText}</b>` + text.substring(end);
-    newCursorPos += 7; // <b> + </b> = 3 + 4 = 7
+    newCursorPos += 7;
   } else if (format === "italic") {
     newText =
       text.substring(0, start) + `<i>${selectedText}</i>` + text.substring(end);
-    newCursorPos += 7; // <i> + </i> = 3 + 4 = 7
+    newCursorPos += 7;
   } else if (format === "list") {
     newText =
       text.substring(0, start) + `\n• ${selectedText}` + text.substring(end);
@@ -349,10 +342,8 @@ export function insertFormat(format) {
   textarea.setSelectionRange(newCursorPos, newCursorPos);
 }
 
-// Helper to render basic HTML safely (sanitized)
 function renderRichText(text) {
   if (!text) return "Công việc mới";
-  // Escape HTML first to prevent XSS, then allow specific tags
   let safeText = text
     .replace(/&/g, "&amp;")
     .replace(/</g, "&lt;")
@@ -360,7 +351,6 @@ function renderRichText(text) {
     .replace(/"/g, "&quot;")
     .replace(/'/g, "&#039;");
 
-  // Re-enable specific tags we added
   safeText = safeText
     .replace(/&lt;b&gt;/g, "<b>")
     .replace(/&lt;\/b&gt;/g, "</b>")
@@ -372,16 +362,15 @@ function renderRichText(text) {
 
 // --- Pomodoro Timer Logic ---
 let pomoInterval;
-let pomoTime = 25 * 60; // Default 25 minutes
+let pomoTime = 25 * 60;
 let pomoIsRunning = false;
-let pomoMode = "focus"; // focus, short, long
+let pomoMode = "focus";
 
 export function switchPomodoroMode(mode) {
   pomoMode = mode;
   pomoIsRunning = false;
   clearInterval(pomoInterval);
 
-  // Update UI Buttons
   document.getElementById(
     "pomo-btn-focus"
   ).className = `px-3 py-1 rounded-md text-xs font-bold transition-all ${
@@ -404,7 +393,6 @@ export function switchPomodoroMode(mode) {
       : "text-white hover:bg-white/10"
   }`;
 
-  // Set Time
   if (mode === "focus") pomoTime = 25 * 60;
   else if (mode === "short") pomoTime = 5 * 60;
   else if (mode === "long") pomoTime = 15 * 60;
@@ -431,10 +419,8 @@ function startPomodoro() {
       pomoTime--;
       updatePomodoroDisplay();
     } else {
-      // Timer finished
       pausePomodoro();
-      alert("Time's up!"); // Simple alert for now
-      // Optionally play sound here
+      alert("Time's up!");
     }
   }, 1000);
 }
@@ -460,7 +446,7 @@ function updatePomodoroDisplay() {
     .toString()
     .padStart(2, "0")}`;
   document.getElementById("pomo-timer").textContent = display;
-  document.title = `${display} - Pomodoro`; // Update browser tab title
+  document.title = `${display} - Pomodoro`;
 }
 
 function updatePomodoroButton() {
@@ -471,3 +457,21 @@ function updatePomodoroButton() {
     btn.innerHTML = '<i class="fa-solid fa-play pl-1"></i>';
   }
 }
+
+// Bind to window for HTML onclick
+window.addQuizRow = addQuizRow;
+window.removeQuizRow = removeQuizRow;
+window.calculateQuizProgress = calculateQuizProgress;
+window.addTodo = addTodo;
+window.deleteTodo = deleteTodo;
+window.confirmDeleteTodo = confirmDeleteTodo;
+window.closeDeleteModal = closeDeleteModal;
+window.toggleTodoStatus = toggleTodoStatus;
+window.openTodoModal = openTodoModal;
+window.closeTodoModal = closeTodoModal;
+window.updateTodoContent = updateTodoContent;
+window.insertFormat = insertFormat;
+window.switchPomodoroMode = switchPomodoroMode;
+window.togglePomodoro = togglePomodoro;
+window.resetPomodoro = resetPomodoro;
+

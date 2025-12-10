@@ -33,7 +33,7 @@ NHẬT KÝ HOẠT ĐỘNG:
 - Hủy lớp: Vật lý 2 (L09) - Không đủ sĩ số
 
 ========================================
-Báo cáo được tạo tự động bởi Hệ thống LMS HCMUT
+Báo cáo được tạo tự động bởi Hệ thống Tutor App
 `;
 
     // Create and download file
@@ -83,16 +83,16 @@ export function viewFullSchedule() {
 
 // Dashboard - Quick Stats Click Handlers
 export function viewGPADetails() {
-  showToast("Đang tải chi tiết GPA...", "info");
+  showToast("Đang tải chi tiết tiến độ Quiz...", "info");
   setTimeout(() => {
-    showToast("Xem bảng điểm chi tiết tại mục 'Tiến độ học tập'", "info");
+    showToast("Xem chi tiết tại mục 'Tiến độ học tập'", "info");
   }, 500);
 }
 
 export function viewCreditDetails() {
-  showToast("Đang tải thông tin tín chỉ...", "info");
+  showToast("Đang tải thông tin Quiz...", "info");
   setTimeout(() => {
-    showToast("Bạn đã hoàn thành 80% chương trình đào tạo", "success");
+    showToast("Bạn đã hoàn thành 80% Quiz trong chương trình học", "success");
   }, 500);
 }
 

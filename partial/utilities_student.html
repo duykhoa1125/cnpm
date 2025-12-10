@@ -8,26 +8,26 @@
   </div>
 
   <div class="grid grid-cols-1 lg:grid-cols-2 gap-6">
-    <!-- GPA Simulator -->
+    <!-- Quiz Progress Calculator -->
     <div
       class="bg-white rounded-2xl shadow-sm border border-slate-200 p-6 flex flex-col h-full"
     >
       <div class="flex items-center justify-between mb-6">
         <div class="flex items-center gap-3">
           <div
-            class="w-10 h-10 rounded-full bg-blue-50 flex items-center justify-center text-blue-600"
+            class="w-10 h-10 rounded-full bg-purple-50 flex items-center justify-center text-purple-600"
           >
-            <i class="fa-solid fa-calculator text-lg"></i>
+            <i class="fa-solid fa-brain text-lg"></i>
           </div>
           <div>
-            <h3 class="font-bold text-slate-800">Mô phỏng GPA</h3>
-            <p class="text-xs text-slate-500">Dự tính & Quy đổi điểm</p>
+            <h3 class="font-bold text-slate-800">Tính Tiến độ Quiz</h3>
+            <p class="text-xs text-slate-500">Theo dõi tiến độ học tập</p>
           </div>
         </div>
         <button
-          onclick="addSubjectRow()"
-          class="text-blue-600 hover:bg-blue-50 p-2 rounded-lg transition-colors"
-          title="Thêm môn học"
+          onclick="addQuizRow()"
+          class="text-purple-600 hover:bg-purple-50 p-2 rounded-lg transition-colors"
+          title="Thêm Quiz"
         >
           <i class="fa-solid fa-plus"></i>
         </button>
@@ -35,7 +35,7 @@
 
       <!-- Main Display -->
       <div
-        class="flex items-center justify-between bg-gradient-to-r from-slate-800 to-slate-900 rounded-2xl p-6 mb-6 text-white shadow-lg relative overflow-hidden"
+        class="flex items-center justify-between bg-gradient-to-r from-purple-600 to-indigo-600 rounded-2xl p-6 mb-6 text-white shadow-lg relative overflow-hidden"
       >
         <!-- Background Decoration -->
         <div
@@ -43,31 +43,31 @@
         ></div>
 
         <div class="relative z-10 flex-1">
-          <p class="text-xs text-slate-400 uppercase font-bold mb-1">
-            GPA (Hệ 10)
+          <p class="text-xs text-purple-200 uppercase font-bold mb-1">
+            Tiến độ tổng
           </p>
           <div class="flex items-baseline gap-2">
-            <span id="gpa-result" class="text-4xl font-black text-white"
-              >0.00</span
+            <span id="quiz-progress-result" class="text-4xl font-black text-white"
+              >0</span
             >
-            <span class="text-sm text-slate-400">/ 10</span>
+            <span class="text-sm text-purple-200">%</span>
           </div>
           <div class="mt-2 flex items-center gap-2">
             <span
-              id="gpa-classification"
-              class="px-2 py-0.5 rounded text-[10px] font-bold bg-white/10 text-slate-300"
-              >Chưa xếp loại</span
+              id="quiz-classification"
+              class="px-2 py-0.5 rounded text-[10px] font-bold bg-white/10 text-purple-100"
+              >Chưa có dữ liệu</span
             >
           </div>
         </div>
 
         <div class="relative z-10 text-right">
-          <p class="text-xs text-slate-400 uppercase font-bold mb-1">Hệ 4.0</p>
-          <span id="gpa-4-result" class="text-3xl font-bold text-blue-400"
-            >0.00</span
+          <p class="text-xs text-purple-200 uppercase font-bold mb-1">Điểm TB</p>
+          <span id="quiz-avg-score" class="text-3xl font-bold text-yellow-300"
+            >0.0</span
           >
-          <p class="text-[10px] text-slate-500 mt-1">
-            Tổng tín chỉ: <span id="total-credits" class="text-white">0</span>
+          <p class="text-[10px] text-purple-200 mt-1">
+            Tổng Quiz: <span id="total-quizzes" class="text-white">0</span>
           </p>
         </div>
       </div>
@@ -76,38 +76,29 @@
       <div class="flex-1 overflow-y-auto custom-scroll pr-2 max-h-[300px]">
         <table
           class="w-full text-sm text-left border-separate border-spacing-y-2"
-          id="gpa-table"
+          id="quiz-table"
         >
           <thead
             class="text-xs text-slate-500 uppercase sticky top-0 bg-white z-10"
           >
             <tr>
-              <th class="px-3 py-2">Môn học</th>
-              <th class="px-3 py-2 w-16 text-center">TC</th>
+              <th class="px-3 py-2">Tên Quiz</th>
               <th class="px-3 py-2 w-20 text-center">Điểm</th>
+              <th class="px-3 py-2 w-24 text-center">Trạng thái</th>
               <th class="px-3 py-2 w-8"></th>
             </tr>
           </thead>
-          <tbody class="text-slate-600" id="gpa-table-body">
-            <!-- Rows will be added here -->
+          <tbody class="text-slate-600" id="quiz-table-body">
+            <!-- Row 1 -->
             <tr class="group animate-fade-in">
               <td
                 class="bg-slate-50 rounded-l-xl border-y border-l border-slate-100 p-2"
               >
                 <input
                   type="text"
-                  placeholder="Nhập tên môn..."
+                  placeholder="Nhập tên Quiz..."
+                  value="Quiz Chương 1"
                   class="w-full bg-transparent border-none focus:ring-0 p-0 text-sm placeholder-slate-400 font-medium text-slate-700"
-                />
-              </td>
-              <td class="bg-slate-50 border-y border-slate-100 p-2">
-                <input
-                  type="number"
-                  min="1"
-                  max="10"
-                  value="3"
-                  onchange="calculateGPA()"
-                  class="w-full bg-white border border-slate-200 rounded-lg px-2 py-1 text-center focus:ring-2 focus:ring-blue-100 focus:border-blue-300 outline-none transition-all gpa-credit text-xs font-bold text-slate-600"
                 />
               </td>
               <td class="bg-slate-50 border-y border-slate-100 p-2">
@@ -116,40 +107,35 @@
                   min="0"
                   max="10"
                   step="0.1"
-                  placeholder="0.0"
-                  onchange="calculateGPA()"
-                  class="w-full bg-white border border-slate-200 rounded-lg px-2 py-1 text-center focus:ring-2 focus:ring-blue-100 focus:border-blue-300 outline-none transition-all gpa-score text-xs font-bold text-blue-600"
+                  value="8.5"
+                  onchange="calculateQuizProgress()"
+                  class="w-full bg-white border border-slate-200 rounded-lg px-2 py-1 text-center focus:ring-2 focus:ring-purple-100 focus:border-purple-300 outline-none transition-all quiz-score text-xs font-bold text-purple-600"
                 />
+              </td>
+              <td class="bg-slate-50 border-y border-slate-100 p-2 text-center">
+                <span class="px-2 py-1 bg-green-100 text-green-600 rounded text-[10px] font-bold">Hoàn thành</span>
               </td>
               <td
                 class="bg-slate-50 rounded-r-xl border-y border-r border-slate-100 p-2 text-center"
               >
                 <button
-                  onclick="removeSubjectRow(this)"
+                  onclick="removeQuizRow(this)"
                   class="w-6 h-6 rounded-full hover:bg-red-50 text-slate-300 hover:text-red-500 transition-all opacity-0 group-hover:opacity-100 flex items-center justify-center"
                 >
                   <i class="fa-solid fa-xmark text-xs"></i>
                 </button>
               </td>
             </tr>
+            <!-- Row 2 -->
             <tr class="group animate-fade-in">
               <td
                 class="bg-slate-50 rounded-l-xl border-y border-l border-slate-100 p-2"
               >
                 <input
                   type="text"
-                  placeholder="Nhập tên môn..."
+                  placeholder="Nhập tên Quiz..."
+                  value="Quiz Chương 2"
                   class="w-full bg-transparent border-none focus:ring-0 p-0 text-sm placeholder-slate-400 font-medium text-slate-700"
-                />
-              </td>
-              <td class="bg-slate-50 border-y border-slate-100 p-2">
-                <input
-                  type="number"
-                  min="1"
-                  max="10"
-                  value="3"
-                  onchange="calculateGPA()"
-                  class="w-full bg-white border border-slate-200 rounded-lg px-2 py-1 text-center focus:ring-2 focus:ring-blue-100 focus:border-blue-300 outline-none transition-all gpa-credit text-xs font-bold text-slate-600"
                 />
               </td>
               <td class="bg-slate-50 border-y border-slate-100 p-2">
@@ -158,40 +144,35 @@
                   min="0"
                   max="10"
                   step="0.1"
-                  placeholder="0.0"
-                  onchange="calculateGPA()"
-                  class="w-full bg-white border border-slate-200 rounded-lg px-2 py-1 text-center focus:ring-2 focus:ring-blue-100 focus:border-blue-300 outline-none transition-all gpa-score text-xs font-bold text-blue-600"
+                  value="7.0"
+                  onchange="calculateQuizProgress()"
+                  class="w-full bg-white border border-slate-200 rounded-lg px-2 py-1 text-center focus:ring-2 focus:ring-purple-100 focus:border-purple-300 outline-none transition-all quiz-score text-xs font-bold text-purple-600"
                 />
+              </td>
+              <td class="bg-slate-50 border-y border-slate-100 p-2 text-center">
+                <span class="px-2 py-1 bg-green-100 text-green-600 rounded text-[10px] font-bold">Hoàn thành</span>
               </td>
               <td
                 class="bg-slate-50 rounded-r-xl border-y border-r border-slate-100 p-2 text-center"
               >
                 <button
-                  onclick="removeSubjectRow(this)"
+                  onclick="removeQuizRow(this)"
                   class="w-6 h-6 rounded-full hover:bg-red-50 text-slate-300 hover:text-red-500 transition-all opacity-0 group-hover:opacity-100 flex items-center justify-center"
                 >
                   <i class="fa-solid fa-xmark text-xs"></i>
                 </button>
               </td>
             </tr>
+            <!-- Row 3 -->
             <tr class="group animate-fade-in">
               <td
                 class="bg-slate-50 rounded-l-xl border-y border-l border-slate-100 p-2"
               >
                 <input
                   type="text"
-                  placeholder="Nhập tên môn..."
+                  placeholder="Nhập tên Quiz..."
+                  value="Quiz Chương 3"
                   class="w-full bg-transparent border-none focus:ring-0 p-0 text-sm placeholder-slate-400 font-medium text-slate-700"
-                />
-              </td>
-              <td class="bg-slate-50 border-y border-slate-100 p-2">
-                <input
-                  type="number"
-                  min="1"
-                  max="10"
-                  value="3"
-                  onchange="calculateGPA()"
-                  class="w-full bg-white border border-slate-200 rounded-lg px-2 py-1 text-center focus:ring-2 focus:ring-blue-100 focus:border-blue-300 outline-none transition-all gpa-credit text-xs font-bold text-slate-600"
                 />
               </td>
               <td class="bg-slate-50 border-y border-slate-100 p-2">
@@ -200,16 +181,19 @@
                   min="0"
                   max="10"
                   step="0.1"
-                  placeholder="0.0"
-                  onchange="calculateGPA()"
-                  class="w-full bg-white border border-slate-200 rounded-lg px-2 py-1 text-center focus:ring-2 focus:ring-blue-100 focus:border-blue-300 outline-none transition-all gpa-score text-xs font-bold text-blue-600"
+                  placeholder="--"
+                  onchange="calculateQuizProgress()"
+                  class="w-full bg-white border border-slate-200 rounded-lg px-2 py-1 text-center focus:ring-2 focus:ring-purple-100 focus:border-purple-300 outline-none transition-all quiz-score text-xs font-bold text-purple-600"
                 />
+              </td>
+              <td class="bg-slate-50 border-y border-slate-100 p-2 text-center">
+                <span class="px-2 py-1 bg-orange-100 text-orange-600 rounded text-[10px] font-bold">Chưa làm</span>
               </td>
               <td
                 class="bg-slate-50 rounded-r-xl border-y border-r border-slate-100 p-2 text-center"
               >
                 <button
-                  onclick="removeSubjectRow(this)"
+                  onclick="removeQuizRow(this)"
                   class="w-6 h-6 rounded-full hover:bg-red-50 text-slate-300 hover:text-red-500 transition-all opacity-0 group-hover:opacity-100 flex items-center justify-center"
                 >
                   <i class="fa-solid fa-xmark text-xs"></i>
@@ -221,15 +205,15 @@
       </div>
 
       <button
-        onclick="addSubjectRow()"
-        class="w-full mt-3 py-2 border-2 border-dashed border-slate-200 rounded-xl text-slate-400 font-bold text-sm hover:border-blue-400 hover:text-blue-600 hover:bg-blue-50 transition-all flex items-center justify-center gap-2"
+        onclick="addQuizRow()"
+        class="w-full mt-3 py-2 border-2 border-dashed border-slate-200 rounded-xl text-slate-400 font-bold text-sm hover:border-purple-400 hover:text-purple-600 hover:bg-purple-50 transition-all flex items-center justify-center gap-2"
       >
-        <i class="fa-solid fa-plus"></i> Thêm môn học
+        <i class="fa-solid fa-plus"></i> Thêm Quiz
       </button>
 
       <div class="mt-4 pt-4 border-t border-slate-100 text-center">
         <p class="text-[10px] text-slate-400 italic">
-          Điểm số được tự động cập nhật khi bạn nhập liệu
+          Tiến độ được tự động tính khi bạn nhập điểm Quiz
         </p>
       </div>
     </div>
@@ -249,7 +233,7 @@
             </div>
             <div>
               <h3 class="font-bold text-slate-800">Danh sách việc cần làm</h3>
-              <p class="text-xs text-slate-500">Quản lý công việc & bài tập</p>
+              <p class="text-xs text-slate-500">Quản lý công việc & Quiz</p>
             </div>
           </div>
           <button

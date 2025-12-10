@@ -193,9 +193,9 @@ import {
 
 import {
   renderUtilities,
-  addSubjectRow,
-  removeSubjectRow,
-  calculateGPA,
+  addQuizRow,
+  removeQuizRow,
+  calculateQuizProgress,
   switchPomodoroMode,
   togglePomodoro,
   resetPomodoro,
@@ -342,9 +342,9 @@ window.connectWithTutor = connectWithTutor;
 
 // Utilities Functions
 window.renderUtilities = renderUtilities;
-window.addSubjectRow = addSubjectRow;
-window.removeSubjectRow = removeSubjectRow;
-window.calculateGPA = calculateGPA;
+window.addQuizRow = addQuizRow;
+window.removeQuizRow = removeQuizRow;
+window.calculateQuizProgress = calculateQuizProgress;
 window.switchPomodoroMode = switchPomodoroMode;
 window.togglePomodoro = togglePomodoro;
 window.resetPomodoro = resetPomodoro;
