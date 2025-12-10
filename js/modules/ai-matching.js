@@ -78,9 +78,64 @@ export function resetAIMatching() {
 let currentChatRole = "ai"; // 'ai' or 'tutor'
 let isTyping = false;
 
-// Connect with Tutor (Opens Chat)
+// Connect with Tutor (Opens Chat) - Legacy, kept for backward compatibility
 export function connectWithTutor(tutorName) {
   openChat(tutorName, "tutor");
+}
+
+// Register for Tutor's Course
+export function registerTutorCourse(tutorName, courseId, courseName) {
+  // Import confirmation modal
+  if (typeof window.showConfirmModal === "function") {
+    window.showConfirmModal(
+      `Đăng ký môn học`,
+      `Bạn có muốn đăng ký môn <strong>${courseName}</strong> với Tutor <strong>${tutorName}</strong>?`,
+      () => {
+        // Add course to student's course list (mock)
+        const newCourse = {
+          id: courseId,
+          name: courseName,
+          tutor: tutorName,
+          deadline: "30/12/2025",
+          progress: 0,
+          week: 1,
+          totalWeeks: 15,
+          icon: "fa-book",
+          color: "green",
+        };
+        
+        // Check if mockStudentCourses is available
+        if (window.mockStudentCourses) {
+          // Check if already registered
+          const exists = window.mockStudentCourses.find(c => c.id === courseId);
+          if (exists) {
+            showToast(`Bạn đã đăng ký môn ${courseName} rồi!`, "warning");
+            return;
+          }
+          window.mockStudentCourses.push(newCourse);
+        }
+        
+        showToast(`Đã đăng ký thành công ${courseName} với Tutor ${tutorName}!`, "success");
+        
+        // Navigate to student courses page
+        setTimeout(() => {
+          if (typeof window.switchTab === "function") {
+            window.switchTab("courses_student");
+          }
+        }, 1000);
+      },
+      "Đăng ký",
+      "bg-indigo-600"
+    );
+  } else {
+    // Fallback if confirm modal not available
+    showToast(`Đã đăng ký thành công ${courseName} với Tutor ${tutorName}!`, "success");
+    setTimeout(() => {
+      if (typeof window.switchTab === "function") {
+        window.switchTab("courses_student");
+      }
+    }, 1000);
+  }
 }
 
 // Open Chat Modal
@@ -257,6 +312,7 @@ window.scrollToMatchingForm = scrollToMatchingForm;
 window.startAIMatching = startAIMatching;
 window.resetAIMatching = resetAIMatching;
 window.connectWithTutor = connectWithTutor;
+window.registerTutorCourse = registerTutorCourse;
 window.openChat = openChat;
 window.closeChat = closeChat;
 window.sendChatMessage = sendChatMessage;
