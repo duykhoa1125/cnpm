@@ -61,11 +61,6 @@ export const roleMenus = {
   admin: [
     { id: "dashboard_admin", icon: "fa-gauge-high", text: "Dashboard" },
     { id: "progress_admin", icon: "fa-ranking-star", text: "Báo cáo Đào tạo" },
-    {
-      id: "feedback_view_admin",
-      icon: "fa-star-half-stroke",
-      text: "Quản lý Đánh giá",
-    },
     { id: "system_admin", icon: "fa-gears", text: "Hệ thống & Logs" },
   ],
 };
