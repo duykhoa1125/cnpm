@@ -61,16 +61,16 @@ export function renderTutorCourses() {
                             }</p>
                         </div>
                         <div class="bg-slate-50/80 p-2.5 rounded-xl border border-slate-100 text-center hover:bg-white hover:shadow-sm transition">
-                            <p class="text-[10px] text-slate-400 uppercase font-bold tracking-wider">Vắng</p>
-                            <p class="font-black text-red-500 text-lg">${
-                              c.studentsCount - c.studentsPresent
+                            <p class="text-[10px] text-slate-400 uppercase font-bold tracking-wider">Quiz đã giao</p>
+                            <p class="font-black text-purple-500 text-lg">${
+                              c.materials ? c.materials.length : 3
                             }</p>
                         </div>
                         <div class="bg-slate-50/80 p-2.5 rounded-xl border border-slate-100 text-center hover:bg-white hover:shadow-sm transition">
-                            <p class="text-[10px] text-slate-400 uppercase font-bold tracking-wider">ĐTB</p>
+                            <p class="text-[10px] text-slate-400 uppercase font-bold tracking-wider">Tiến độ TB</p>
                             <p class="font-black text-emerald-500 text-lg">${
-                              isNaN(avgScore) ? "--" : avgScore.toFixed(1)
-                            }</p>
+                              Math.round(c.students.reduce((acc, s) => acc + (s.progress || 0), 0) / c.students.length)
+                            }%</p>
                         </div>
                     </div>
                 </div>
@@ -82,10 +82,10 @@ export function renderTutorCourses() {
                         <i class="fa-solid fa-folder-open"></i> Quản lý & Chi tiết
                     </button>
                     <div class="flex gap-2">
-                         <button onclick="takeAttendance('${
+                         <button onclick="createNewQuiz('${
                            c.id
-                         }')" class="flex-1 px-4 py-2.5 rounded-xl bg-white border border-slate-200 text-xs font-bold text-slate-600 hover:bg-slate-50 transition flex items-center justify-center gap-2">
-                            <i class="fa-solid fa-list-check"></i> Điểm danh
+                         }')" class="flex-1 px-4 py-2.5 rounded-xl bg-white border border-slate-200 text-xs font-bold text-slate-600 hover:bg-purple-50 hover:border-purple-300 hover:text-purple-600 transition flex items-center justify-center gap-2">
+                            <i class="fa-solid fa-brain"></i> Tạo Quiz
                         </button>
                         <button onclick="sendEmail('${
                           c.id
@@ -110,16 +110,17 @@ export function renderTutorCourses() {
 
 // Render Class Detail Tabs
 function renderClassDetailTabs(c) {
-  const avgScore =
-    c.students.reduce((acc, s) => acc + (parseFloat(s.average) || 0), 0) /
-    (c.students.filter((s) => s.average !== "--").length || 1);
+  // Calculate average progress instead of score
+  const avgProgress = Math.round(
+    c.students.reduce((acc, s) => acc + (s.progress || 0), 0) / c.students.length
+  );
 
   return `
         <div class="flex border-b border-slate-200 mb-6 overflow-x-auto">
             <button class="detail-tab-btn active px-4 py-2 text-sm font-bold text-blue-600 border-b-2 border-blue-600 transition whitespace-nowrap" onclick="switchDetailTab(this, 'tab-students-${
               c.id
             }')">
-                <i class="fa-solid fa-user-graduate mr-2"></i>Sinh viên & Điểm
+                <i class="fa-solid fa-user-graduate mr-2"></i>Sinh viên & Tiến độ
             </button>
             <button class="detail-tab-btn px-4 py-2 text-sm font-bold text-slate-500 hover:text-blue-600 transition whitespace-nowrap" onclick="switchDetailTab(this, 'tab-materials-${
               c.id
@@ -141,10 +142,10 @@ function renderClassDetailTabs(c) {
                     <i class="fa-solid fa-magnifying-glass absolute left-3 top-1/2 -translate-y-1/2 text-slate-400 text-xs"></i>
                 </div>
                 <div class="flex gap-2">
-                    <button onclick="openGradeModal('${
+                    <button onclick="createNewQuiz('${
                       c.id
-                    }')" class="px-3 py-1.5 rounded-lg bg-blue-100 text-blue-700 text-xs font-bold hover:bg-blue-200 transition">
-                        <i class="fa-solid fa-pen-to-square mr-1"></i>Nhập điểm
+                    }')" class="px-3 py-1.5 rounded-lg bg-purple-100 text-purple-700 text-xs font-bold hover:bg-purple-200 transition">
+                        <i class="fa-solid fa-brain mr-1"></i>Tạo Quiz mới
                     </button>
                     <button onclick="exportClassData('${
                       c.id
@@ -160,10 +161,8 @@ function renderClassDetailTabs(c) {
                         <tr>
                             <th class="p-3">MSSV</th>
                             <th class="p-3">Họ tên</th>
-                            <th class="p-3 text-center">Tiến độ</th>
-                            <th class="p-3 text-center">Giữa kỳ</th>
-                            <th class="p-3 text-center">Cuối kỳ</th>
-                            <th class="p-3 text-center">Tổng kết</th>
+                            <th class="p-3 text-center">Tiến độ Quiz</th>
+                            <th class="p-3 text-center">Quiz hoàn thành</th>
                             <th class="p-3 text-right">Trạng thái</th>
                         </tr>
                     </thead>
@@ -178,29 +177,26 @@ function renderClassDetailTabs(c) {
                             }</td>
                             <td class="p-3 font-bold">${s.name}</td>
                             <td class="p-3 text-center">
-                                <div class="w-full bg-slate-200 rounded-full h-1.5 mb-1 overflow-hidden">
-                                    <div class="bg-blue-500 h-1.5 rounded-full" style="width: ${
+                                <div class="w-full bg-slate-200 rounded-full h-2 mb-1 overflow-hidden max-w-[120px] mx-auto">
+                                    <div class="bg-gradient-to-r from-blue-500 to-purple-500 h-2 rounded-full" style="width: ${
                                       s.progress
                                     }%"></div>
                                 </div>
-                                <span class="text-[10px] text-slate-500">${
+                                <span class="text-[10px] font-bold ${s.progress >= 80 ? 'text-green-600' : s.progress >= 50 ? 'text-blue-600' : 'text-orange-500'}">${
                                   s.progress
                                 }%</span>
                             </td>
-                            <td class="p-3 text-center font-mono">${
-                              s.midterm
-                            }</td>
-                            <td class="p-3 text-center font-mono">${
-                              s.final
-                            }</td>
-                            <td class="p-3 text-center font-bold font-mono text-blue-600">${
-                              s.average
-                            }</td>
+                            <td class="p-3 text-center">
+                                <span class="font-bold text-purple-600">${Math.floor(s.progress / 25)}/4</span>
+                                <span class="text-[10px] text-slate-400 ml-1">quiz</span>
+                            </td>
                             <td class="p-3 text-right">
                                 ${
-                                  s.status === "warning"
-                                    ? `<span class="px-2 py-1 bg-red-100 text-red-600 rounded text-[10px] font-bold">Cảnh báo</span>`
-                                    : `<span class="px-2 py-1 bg-green-100 text-green-600 rounded text-[10px] font-bold">Đạt</span>`
+                                  s.progress < 30
+                                    ? `<span class="px-2 py-1 bg-red-100 text-red-600 rounded text-[10px] font-bold">Cần chú ý</span>`
+                                    : s.progress < 70
+                                    ? `<span class="px-2 py-1 bg-orange-100 text-orange-600 rounded text-[10px] font-bold">Đang học</span>`
+                                    : `<span class="px-2 py-1 bg-green-100 text-green-600 rounded text-[10px] font-bold">Tốt</span>`
                                 }
                             </td>
                         </tr>
@@ -211,7 +207,7 @@ function renderClassDetailTabs(c) {
                           c.students.length > 5
                             ? `
                         <tr>
-                            <td colspan="7" class="p-3 text-center text-xs text-slate-400 italic bg-slate-50">
+                            <td colspan="5" class="p-3 text-center text-xs text-slate-400 italic bg-slate-50">
                                 ... và ${
                                   c.students.length - 5
                                 } sinh viên khác ...
@@ -223,6 +219,7 @@ function renderClassDetailTabs(c) {
                 </table>
             </div>
         </div>
+
 
         <!-- Materials Tab -->
         <div id="tab-materials-${c.id}" class="detail-tab-content hidden">
@@ -294,17 +291,15 @@ function renderClassDetailTabs(c) {
                     <h6 class="text-xs font-bold text-slate-500 uppercase mb-4">Tổng quan</h6>
                     <ul class="space-y-3 text-sm">
                         <li class="flex justify-between">
-                            <span class="text-slate-600">Điểm trung bình lớp</span>
-                            <span class="font-bold text-slate-800">${avgScore.toFixed(
-                              2
-                            )}</span>
+                            <span class="text-slate-600">Tiến độ trung bình</span>
+                            <span class="font-bold text-emerald-600">${avgProgress}%</span>
                         </li>
                         <li class="flex justify-between">
-                            <span class="text-slate-600">Tỷ lệ qua môn (dự kiến)</span>
+                            <span class="text-slate-600">Tỷ lệ hoàn thành Quiz</span>
                             <span class="font-bold text-green-600">92%</span>
                         </li>
                         <li class="flex justify-between">
-                            <span class="text-slate-600">Sinh viên cần chú ý</span>
+                            <span class="text-slate-600">SV chưa hoàn thành Quiz</span>
                             <span class="font-bold text-red-500">3</span>
                         </li>
                     </ul>
@@ -354,22 +349,18 @@ export function exportClassData(courseId) {
 
   showToast(`Đang xuất báo cáo lớp ${courseId}...`, "info");
 
-  // Create CSV content
+  // Create CSV content - Only progress, no grades
   const headers = [
     "MSSV",
     "Ho Ten",
-    "Tien Do (%)",
-    "Diem GK",
-    "Diem CK",
-    "Diem TK",
+    "Tien Do Quiz (%)",
+    "Quiz hoan thanh",
   ];
   const rows = course.students.map((s) => [
     s.id,
     s.name,
     s.progress || 0,
-    s.midterm,
-    s.final,
-    s.average,
+    `${Math.floor((s.progress || 0) / 25)}/4`,
   ]);
 
   const csvContent =
@@ -693,7 +684,30 @@ window.openSaveScheduleModal = openSaveScheduleModal;
 window.closeSaveScheduleModal = closeSaveScheduleModal;
 window.confirmSaveSchedule = confirmSaveSchedule;
 
-// --- Grade Entry Logic ---
+// --- Create New Quiz ---
+export function createNewQuiz(courseId) {
+  const course = mockTutorClasses.find((c) => c.id === courseId);
+  if (!course) return;
+
+  // Show modal for creating quiz
+  if (typeof window.showConfirmModal === "function") {
+    window.showConfirmModal(
+      "Tạo Quiz mới",
+      `Bạn muốn tạo Quiz mới cho lớp <strong>${course.name} (${course.group})</strong>?<br><br>
+       <small class="text-slate-500">Chức năng tạo Quiz chi tiết sẽ được phát triển trong phiên bản tiếp theo.</small>`,
+      () => {
+        showToast(`Đã tạo Quiz mới cho lớp ${course.name}!`, "success");
+      },
+      "Tạo Quiz",
+      "bg-purple-600"
+    );
+  } else {
+    showToast(`Chức năng tạo Quiz cho lớp ${course.name} đang được phát triển!`, "info");
+  }
+}
+
+window.createNewQuiz = createNewQuiz;
+
 
 let currentGradeCourseId = null;
 
